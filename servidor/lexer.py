@@ -7,7 +7,6 @@ class MyLexer(object):
         self.lexer = lex.lex(module=self, debug=False)
 
     tokens = (
-
         'ID',
         'ARROW',
         'CONJ',
@@ -26,10 +25,8 @@ class MyLexer(object):
 
     t_ignore = ' \t'
 
-    ident = r'[a-zA-Z][a-zA-Z0-9_]*'
-
-    @TOKEN(ident)
     def t_ID(self, t):
+        r'[a-zA-Z][a-zA-Z0-9_]*'
         return t
 
     def t_newline(self, t):

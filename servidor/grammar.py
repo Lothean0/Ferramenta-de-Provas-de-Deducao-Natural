@@ -35,6 +35,7 @@ class MyParser(object):
         '''Expression : Expression BinaryOp Expression'''
         p[0] = f'{p[1]}{p[2]}{p[3]}'
 
+
     def p_BinaryOp_1(self, p):
         '''BinaryOp : ARROW'''
         p[0] = f'{p[1]}'
