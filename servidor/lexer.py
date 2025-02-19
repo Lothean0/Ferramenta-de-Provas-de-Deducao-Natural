@@ -1,5 +1,4 @@
 import ply.lex as lex
-from ply.lex import TOKEN
 
 tokens = (
 
@@ -21,10 +20,8 @@ t_RPAREN = r'\)'
 
 t_ignore = ' \t'
 
-ident = r'[a-zA-Z][a-zA-Z0-9_]*'
-
-@TOKEN(ident)
 def t_ID(t):
+    r'[a-zA-Z][a-zA-Z0-9_]*'
     return t
 
 def t_newline(t):
@@ -35,10 +32,13 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
+Lexer = lex.lex()
 if __name__ == '__main__':
-    lexer = lex.lex()
     while True:
-        data = input()
-        lexer.input(data)
-        for tok in lexer:
-            print(f"Token: {tok.type}, Value: {tok.value}")
+        try:
+            data = input()
+            Lexer.input(data)
+            for tok in Lexer:
+                print(f"Token: {tok.type}, Value: {tok.value}")
+        except EOFError:
+            break
