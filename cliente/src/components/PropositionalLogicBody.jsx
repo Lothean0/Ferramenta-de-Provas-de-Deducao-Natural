@@ -1,6 +1,6 @@
-import '../styles/Header.css';
+import '../styles/PropositionLogicBody.css';
 
-function Header() {
+function PropositionalLogicBody() {
   
     return (
         <header className="header-container">
@@ -11,5 +11,4 @@ function Header() {
     )
   }
   
-  export default Header;
-  
+  export default PropositionalLogicBody;
