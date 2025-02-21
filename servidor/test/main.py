@@ -58,20 +58,21 @@ def apply_implication_rule(
         before_imp, after_imp = map(remove_outer_brackets, split_expr)
         print(f'Before implication: {before_imp}')
         print(f'After implication: {after_imp}')
-        if check_knowledge_base(before_imp, knowledge_base) or not knowledge_base:
+
+        """
+        print(f'1', check_knowledge_base(before_imp, knowledge_base), '\n')
+        print(f'2', knowledge_base, '\n')
+        """
+
+        if not check_knowledge_base(before_imp, knowledge_base):
+            """
+            print(f'11', check_knowledge_base(before_imp, knowledge_base), '\n')
+            print(f'22', knowledge_base, '\n')
+            """
             knowledge_base.append(DeductionStep(obtained=[after_imp], rule="impl", from_=before_imp))
             return after_imp
+    print('2')
     return None
-
-
-rule_registry = RuleRegistry()
-
-rule_registry.register_rule(Rule(
-    name="impl",
-    other_names=["Introduction: Implication"],
-    description="If 'A -> B' and A is known, then infer B.",
-    apply=apply_implication_rule
-))
 
 
 def apply_rule(
@@ -84,12 +85,45 @@ def apply_rule(
         return rule.apply(expr, knowledge_base)
     return None
 
+if __name__ == '__main__':
 
-base = []
-expression = "(p0 -> p1) -> p1"
+    rule_registry = RuleRegistry()
 
-result = apply_rule(expression, "impl", base)
-print(result)
-print(base)
+    rule_registry.register_rule(Rule(
+        name="impl",
+        other_names=["Introduction: Implication"],
+        description="If 'A -> B' and A is known, then infer B.",
+        apply=apply_implication_rule
+    ))
+
+
+
+    lista = []
+    expression = "p0 -> ((p0 -> p1) -> p1)"
+
+    print(f'First expression::{type(expression).__name__}: {expression}\n')
+    result = apply_rule(expression, "impl", lista)
+
+    print(f'First Result::{type(result).__name__}: {result}')
+    print(f'First List::{type(lista).__name__}: {lista}\n')
+
+    print(f'Second expression::{type(result).__name__}: {result}\n')
+    result2 = apply_rule(result, "impl", lista)
+
+    print(f'Second Result::{type(result2).__name__}: {result2}')
+    print(f'Second List::{type(lista).__name__}: {lista}')
+
+
+"""
+expression: (p0 -> p1) -> p1
+Expression after split: ['(p0 -> p1)', 'p1']
+
+Before implication: p0 -> p1
+After implication: p1
+
+Result: p1
+
+List: [DeductionStep(obtained=['p1'], rule='impl', from_='p0 -> p1')]
+"""
 
 
