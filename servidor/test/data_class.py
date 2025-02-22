@@ -1,8 +1,10 @@
 from attr import dataclass
 from typing import List, Optional, Dict, Callable
+
 C_RED = '\033[91m'
 C_GREEN = '\033[92m'
 C_YELLOW = '\033[93m'
+C_BLUE = '\033[94m'
 C_END = '\033[0m'
 
 @dataclass
@@ -13,9 +15,9 @@ class DeductionStep:
 
     def __post_init__(self):
         if not self.obtained:
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'DeductionStep must have at least one obtained.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'DeductionStep must have at least one obtained.')
         if not isinstance(self.rule, str) or not self.rule:
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'DeductionStep must have rule as string.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'DeductionStep must have rule as string.')
 
 
 @dataclass
@@ -27,9 +29,9 @@ class Rule:
 
     def __post_init__(self):
         if not isinstance(self.name, str) or not self.name:
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'Rule must have name as string.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Rule must have name as string.')
         if not callable(self.apply):
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'Rule must have apply as callable.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Rule must have apply as callable.')
 
 
 
@@ -39,15 +41,15 @@ class RuleRegistry:
 
     def register_rule(self, rule: Rule):
         if rule.name in self.rules:
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'Rule already registered.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Rule already registered.')
         self.rules[rule.name] = rule
         if rule.other_names:
             for alias in rule.other_names:
                 if alias in self.rules:
-                    raise ValueError(C_RED + f'[ERROR]' + C_END + f'Rule already registered.')
+                    raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Rule already registered.')
                 self.rules[alias] = rule
 
     def get_rule(self, name: str) -> Optional[Rule]:
         if not isinstance(name, str):
-            raise ValueError(C_RED + f'[ERROR]' + C_END + f'Rule name must be string.')
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Rule name must be string.')
         return self.rules.get(name)
