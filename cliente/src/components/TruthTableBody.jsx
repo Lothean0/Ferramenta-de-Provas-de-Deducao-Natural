@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 
 import '../styles/TruthTableBody.css';
 
+/*
 
 const TruthTableBody = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    {/* const errors = validateTruthTableInput(inputValue) */}
+    { //const errors = validateTruthTableInput(inputValue)}
     if (errors) {
         alert(errors);
         return;
@@ -24,5 +25,19 @@ const TruthTableBody = () => {
         </div>
     )
 }
+
+*/
+function TruthTableBody() {
+  
+    return (
+        <header className="header-container">
+            <h1 className="title"> 
+                Ferramenta Dedução de Provas Naturais
+            </h1>
+        </header>  
+    )
+  }
+
+
 
 export default TruthTableBody;
