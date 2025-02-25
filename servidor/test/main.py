@@ -1,6 +1,10 @@
 import re
 from data_class import *
 
+"""
+Rn if it doesnt find a suitable rule it stops
+"""
+
 def check_knowledge_base(
         premise_expr: str,
         knowledge_base: List[DeductionStep]
@@ -87,7 +91,7 @@ def apply_rule(
         rule_name = suggest_rule(logical_expr)
         if rule_name:
             print(C_BLUE + f'[SUGGESTION] ' + C_END + f'Suggested Rule: {rule_name}')
-            user_input = input(f'Apply this rule (yes/no): ').strip().lower()
+            user_input = input(f'Apply this rule (Yes/No): ').strip().lower()
             print()
             if user_input == 'no':
                 rule_name = input('Enter the rule you want to apply: ').strip()
@@ -97,11 +101,15 @@ def apply_rule(
                 return None
         else:
             print(C_RED + f'[ERROR]' + C_END + f'No suitable rule found')
+            print()
             return None
     rule = rule_registry.get_rule(rule_name)
     if rule:
         return rule.apply(logical_expr, knowledge_base)
-    return None
+    else:
+        print(C_RED + f'[ERROR] ' + C_END + f'Rule not found')
+        print()
+        return None
 
 if __name__ == '__main__':
 
@@ -124,16 +132,14 @@ if __name__ == '__main__':
     knowledge_base = []
     expression = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
 
-    print(C_GREEN + f'[INFO] ' + C_END + f'Initial expression::{type(expression).__name__} = {expression}\n')
-    result = apply_rule(expression, None, knowledge_base)
+    i = 0
+    while expression:
+        print(C_GREEN + f'[INFO] ' + C_END + f'Expression_{i}::{type(expression).__name__} = {expression}\n')
+        result = apply_rule(expression, None, knowledge_base)
+        print(C_GREEN + f'[INFO] ' + C_END + f'Result::{type(result).__name__} = {result}')
+        print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base::{type(knowledge_base).__name__} = {knowledge_base}\n')
 
-    print(C_GREEN + f'[INFO] ' + C_END + f'First Result::{type(result).__name__} = {result}')
-    print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base::{type(knowledge_base).__name__} = {knowledge_base}\n')
+        expression = result
+        i = i+1
 
-    if result:
-        print(C_GREEN + f'[INFO] ' + C_END + f'Second expression::{type(result).__name__} = {result}\n')
-        result2 = apply_rule(result, None, knowledge_base)
-
-        print(C_GREEN + f'[INFO] ' + C_END + f'Second Result::{type(result2).__name__} = {result2}')
-        print(C_GREEN + f'[INFO] ' + C_END + f'Second Knowledge Base::{type(knowledge_base).__name__} = {knowledge_base}')
 
