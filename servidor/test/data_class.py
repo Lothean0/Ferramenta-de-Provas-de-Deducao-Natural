@@ -7,11 +7,13 @@ C_YELLOW = '\033[93m'
 C_BLUE = '\033[94m'
 C_END = '\033[0m'
 
-@dataclass
+"""
+@dataclass(repr=False)
 class DeductionStep:
     obtained: List[str]
     rule: str
     from_: Optional[str]
+    label: Optional[str]
 
     def __post_init__(self):
         if not self.obtained:
@@ -19,13 +21,22 @@ class DeductionStep:
         if not isinstance(self.rule, str) or not self.rule:
             raise ValueError(C_RED + f'[ERROR] ' + C_END + f'DeductionStep must have rule as string.')
 
+    def __repr__(self):
+        return (f'\n'
+                f'{C_BLUE} DeductionStep({C_END}\n'
+                f'{C_BLUE}     obtained= {C_END}{self.obtained},\n'
+                f'{C_BLUE}     rule= {C_END}{self.rule},\n'
+                f'{C_BLUE}     from_= {C_END}{self.from_},\n'
+                f'{C_BLUE}     label= {C_END}{self.label}\n'
+                f')')
+"""
 
 @dataclass
 class Rule:
     name: str
     other_names: Optional[List[str]]
     description: Optional[str]
-    apply: Callable[[str, List[DeductionStep]], Optional[str]]
+    apply: Callable[[str, List[str]], Optional[str]]
 
     def __post_init__(self):
         if not isinstance(self.name, str) or not self.name:

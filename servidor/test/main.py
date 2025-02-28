@@ -1,15 +1,27 @@
-import re
 from data_class import *
+import re
 
 """
-Rn if it doesnt find a suitable rule it stops
+This function checks if the antecedent or the negation of the consequent
+is present in the knowledge base or wheter any of them can be deduced by
+the current contents of the knowledge base.
 """
+
+"""
+Modus Ponens (MP):
+Also know as: Implication Elimination, Affirming the Antecedent
+
+Modus Ponens is a valid rule of inference that states if you have a 
+conditional statement (p->q) and the antecedent (p) is true, then you 
+can infer that the consequent (q) is also true
+"""
+
 
 def check_knowledge_base(
         premise_expr: str,
-        knowledge_base: List[DeductionStep]
+        knowledge_base: List[str]
 ) -> bool:
-    return any(premise_expr in step.obtained for step in knowledge_base)
+    return premise_expr in knowledge_base
 
 def split_expression(
         logical_expr: str,
@@ -45,9 +57,19 @@ def split_expression(
     return args
 
 
-def apply_implication_rule(
+def apply_axiom_rule(
         logical_expr: str,
-        knowledge_base: List[DeductionStep]
+        knowledge_base: List[str],
+) -> Optional[str]:
+    res = input('Seleciona Axioma: ')
+    if res in knowledge_base:
+        if res==logical_expr:
+            return 'foo'
+    return 'boo'
+
+def apply_Introduction_Implication(
+        logical_expr: str,
+        knowledge_base: List[str]
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
@@ -56,53 +78,31 @@ def apply_implication_rule(
         print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {arguments[2]}\n')
 
     if not check_knowledge_base(arguments[1], knowledge_base):
-        knowledge_base.append(DeductionStep(obtained=[arguments[2]], rule="impl", from_=arguments[1]))
-        return arguments[2]
-    return None
+        knowledge_base.append(
+            arguments[1]
+        )
+    lista_branca.append(arguments[2])
+    return arguments[2]
 
 
-def apply_negation_rule(
+def apply_Elimination_Implication(
         logical_expr: str,
-        knowledge_base: List[DeductionStep]
+        knowledge_base: List[str]
 ) -> Optional[str]:
-    return None
+        print(knowledge_base)
+        res = input('Seliona hipotese')
+        if res in knowledge_base:
+            lista_branca.append(res)
 
-def suggest_rule(
-        logical_expr: str,
-) -> Optional[str]:
-    try:
-        arguments = split_expression(logical_expr)
-        operator = arguments[0]
-
-        if operator == '->':
-            return "impl"
-        elif operator == '~':
-            return "neg"
-    except Exception as e:
-        print(C_RED + f'[ERROR] ' + C_END + f'Invalid expression')
-    return None
+            lista_branca.append(f"EBinOp(->, {res}, {logical_expr})")
+            return 'foo2'
+        return ''
 
 def apply_rule(
         logical_expr: str,
         rule_name: str,
-        knowledge_base: List[DeductionStep]
+        knowledge_base: List[str]
 ) -> Optional[str]:
-    if not rule_name:
-        rule_name = suggest_rule(logical_expr)
-        if rule_name:
-            print(C_BLUE + f'[SUGGESTION] ' + C_END + f'Suggested Rule: {rule_name}')
-            user_input = input(f'Apply this rule (Yes/No): ').strip().lower()
-            print()
-            if user_input == 'no':
-                rule_name = input('Enter the rule you want to apply: ').strip()
-                print(C_YELLOW + f'[DEBUG] ' + C_END + f'Applied Rule: {rule_name}')
-            elif user_input != 'yes':
-                print(C_RED + '[ERROR] ' + C_END + 'Invalid input')
-                return None
-        else:
-            print(C_RED + f'[ERROR]' + C_END + f'No suitable rule found')
-            print()
-            return None
     rule = rule_registry.get_rule(rule_name)
     if rule:
         return rule.apply(logical_expr, knowledge_base)
@@ -116,30 +116,52 @@ if __name__ == '__main__':
     rule_registry = RuleRegistry()
 
     rule_registry.register_rule(Rule(
-        name='impl',
+        name='II',
         other_names=['Introduction: Implication'],
+        description='I dont know',
+        apply=apply_Introduction_Implication
+    ))
+
+
+    rule_registry.register_rule(Rule(
+        name="EI",
+        other_names=['Elimination: Implication'],
         description='If A -> B and A is known, then infer B.',
-        apply=apply_implication_rule
+        apply=apply_Elimination_Implication
     ))
 
     rule_registry.register_rule(Rule(
-        name='neg',
-        other_names=['Introduction: Negation'],
-        description='',
-        apply=apply_negation_rule
+        name="A",
+        other_names=['Axiom: Implication'],
+        description='I dont know',
+        apply=apply_axiom_rule
     ))
 
+
     knowledge_base = []
-    expression = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
+    while True:
+        res = input(C_BLUE + f'[ADD] ' + C_END + f'Add Hypt? (Yes/No) ').strip()
+        if res.__eq__('Yes'):
+            hypt = input(C_BLUE + f'[Hypt] (EVar() or EBinOp()) ' + C_END).strip()
+            knowledge_base.append(hypt
+            )
+        elif res.__eq__('No'):
+            break
 
-    i = 0
-    while expression:
-        print(C_GREEN + f'[INFO] ' + C_END + f'Expression_{i}::{type(expression).__name__} = {expression}\n')
-        result = apply_rule(expression, None, knowledge_base)
-        print(C_GREEN + f'[INFO] ' + C_END + f'Result::{type(result).__name__} = {result}')
-        print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base::{type(knowledge_base).__name__} = {knowledge_base}\n')
+    print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge_Base_: {knowledge_base}\n')
 
-        expression = result
-        i = i+1
+    lista_branca = []
+    expression_1 = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
+    lista_branca.append(expression_1)
 
 
+    while lista_branca:
+        print(C_YELLOW + f'[INFO] ' + C_END + f'Lista_: {lista_branca}\n')
+        print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge_Base_: {knowledge_base}\n')
+
+        rule = input('Regra?')
+        result = apply_rule(lista_branca[0], rule_name=rule, knowledge_base=knowledge_base)
+        print(C_YELLOW + f'[INFO] ' + C_END + f'Result: {result}')
+        if result != '':
+            lista_branca.remove(lista_branca[0])
+        print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge_Base_: {knowledge_base}\n')
