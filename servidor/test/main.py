@@ -145,7 +145,6 @@ if __name__ == '__main__':
     expression_1 = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
     problems.append(expression_1)
 
-
     while problems:
         print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
         print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base: {knowledge_base}\n')
