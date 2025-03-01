@@ -134,13 +134,12 @@ if __name__ == '__main__':
     knowledge_base = []
     while True:
         res = input(C_BLUE + f'[ADD] ' + C_END + f'Add Hypothesis? (Yes/No) ').strip()
+        print()
         if res.__eq__('Yes'):
             hypothesis = input(C_BLUE + f'[Hypt] (EVar() or EBinOp()) ' + C_END).strip()
             knowledge_base.append(hypothesis)
         elif res.__eq__('No'):
             break
-
-    print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge_Base_: {knowledge_base}\n')
 
     problems = []
     expression_1 = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
@@ -148,12 +147,12 @@ if __name__ == '__main__':
 
 
     while problems:
-        print(C_YELLOW + f'[INFO] ' + C_END + f'Problems List: {problems}\n')
-        print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge Base: {knowledge_base}\n')
+        print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
+        print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base: {knowledge_base}\n')
 
         rule = input('Rule: ')
+        print()
         result = apply_rule(problems[0], rule_name=rule, knowledge_base=knowledge_base)
-        print(C_YELLOW + f'[INFO] ' + C_END + f'Result: {result}')
+        print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')
         if result != '':
             problems.remove(problems[0])
-        print(C_YELLOW + f'[INFO] ' + C_END + f'knowledge_Base_: {knowledge_base}\n')
