@@ -5,7 +5,7 @@ import PropositionalLogicBody from "../components/PropositionalLogicBody"
 const PropositionalLogic = () => {
   return (
     <>
-      <Header />
+      {/*<Header />*/}
       <PropositionalLogicBody />
     </>
   );
