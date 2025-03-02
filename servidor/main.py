@@ -3,6 +3,7 @@ from flask_cors import CORS
 import re
 from typing import List, Optional
 
+
 app = Flask(__name__)
 CORS(app, origins="*")
 
@@ -100,6 +101,7 @@ def check_expression():
 
     return jsonify({"EXPRESSION":expression, "status": "Rule applied", "result": result})
 
+
 @app.route("/api/users", methods=['GET'])
 def users():
     return jsonify({
@@ -125,6 +127,7 @@ rule_registry.register_rule(Rule(
     description='Axiom application rule',
     apply=apply_axiom_rule
 ))
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
