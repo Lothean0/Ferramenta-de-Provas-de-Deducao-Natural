@@ -7,6 +7,9 @@ function PropositionalLogicBody() {
     const [expression, setExpression] = useState("");
     const [rule, setRule] = useState("");
 
+    const [test, setTest] = useState("");
+
+
     async function getUser() {
         try {
             const response = await axios.get("http://127.0.0.1:3000/api/users");
