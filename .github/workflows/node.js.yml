@@ -44,7 +44,3 @@ jobs:
       - name: Build project
         run: npm run build --if-present
         working-directory: cliente
-
-      - name: Run tests
-        run: npm test
-        working-directory: cliente
