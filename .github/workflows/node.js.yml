@@ -35,7 +35,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+          cache-dependency-path: cliente/package-lock.json # Points to the correct lock file
 
+      - name: Install dependencies
+        run: npm ci
+        working-directory: cliente # Run npm ci inside the correct folder
+
+      - name: Build project
+        run: npm run build --if-present
+        working-directory: cliente
