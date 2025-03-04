@@ -1,3 +1,7 @@
+from typing import Tuple
+
+from pysmt.logics import LOGICS
+
 from data_class import *
 import re
 
@@ -42,6 +46,16 @@ def split_expression(
         args.append(''.join(current_arg).strip())
 
     return args
+
+
+
+
+
+
+
+
+
+
 
 
 def apply_axiom_rule(
@@ -93,6 +107,123 @@ def apply_Implication_Elimination(
             return 'foo'
         return 'boo'
 
+def apply_Conjunction_Introduction(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) < 3:
+        return None
+
+    antecedent, consequent = arguments[1], arguments[2]
+
+    problems.append(antecedent)
+    problems.append(consequent)
+    return 'boo'
+
+
+def apply_Conjunction_Elimination_1(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Select Hypothesis: ')
+    if res in knowledge_base:
+        problems.append(f"EBinOp(AND, {logical_expr}, {res})")
+        return 'foo'
+    return 'boo'
+
+
+def apply_Conjunction_Elimination_2(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Select Hypothesis: ')
+    if res in knowledge_base:
+        problems.append(f"EBinOp(AND, {res}, {logical_expr})")
+        return 'foo'
+    return 'boo'
+
+
+def apply_Disjunction_Introduction_1(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) < 3:
+        return None
+
+    antecedent, consequent = arguments[1], arguments[2]
+
+    problems.append(antecedent)
+    return antecedent
+
+
+def apply_Disjunction_Introduction_2(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) < 3:
+        return None
+
+    antecedent, consequent = arguments[1], arguments[2]
+
+    problems.append(antecedent)
+    return consequent
+
+
+# ESTA ESTA MAL
+def apply_Disjunction_Elimination(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    knowledge_base.append('VARIAVEL 1')
+    knowledge_base.append('VARIAVEL 2')
+    problems.append(f"EBinOp(AND, EVar(VARIAVEL 1), EVar(VARIAVEL 2))")
+    problems.extend([logical_expr] * 2)
+    return 'boo'
+
+
+def apply_Negation_Introduction(
+        logical_expr: str,
+        knowledge_base: List[str]
+) -> Optional[str]:
+    # logical_expr: EUnOp(~, EVar(p0))
+    # content = expr.split("~,")[1].strip() or
+    content = None
+    match = re.search(r"EUnOp\(~, (.+)\)", logical_expr)
+
+    if match:
+        content = match.group(1)
+
+
+    problems.append('ABSOLUTO')
+
+    if content:
+        knowledge_base.append(content)
+
+    return 'boo'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def apply_rule(
         logical_expr: str,
         rule_name: str,
@@ -125,9 +256,44 @@ if __name__ == '__main__':
 
     rule_registry.register_rule(Rule(
         name="A",
-        other_names=['Axiom: Implication'],
+        other_names=['Axiom'],
         description='I dont know',
         apply=apply_axiom_rule
+    ))
+
+    rule_registry.register_rule(Rule(
+        name="IC",
+        other_names=['Introduction: Conjunction'],
+        description='I dont know',
+        apply=apply_Conjunction_Introduction
+    ))
+
+    rule_registry.register_rule(Rule(
+        name="EC_1",
+        other_names=['Elimination: Conjunction_1'],
+        description='I dont know',
+        apply=apply_Conjunction_Elimination_1
+    ))
+
+    rule_registry.register_rule(Rule(
+        name="EC_2",
+        other_names=['Elimination: Conjunction_2'],
+        description='I dont know',
+        apply=apply_Conjunction_Elimination_2
+    ))
+
+    rule_registry.register_rule(Rule(
+        name="ID_1",
+        other_names=['Introduction: Disjunction_1'],
+        description='I dont know',
+        apply=apply_Disjunction_Introduction_1
+    ))
+
+    rule_registry.register_rule(Rule(
+        name="ID_2",
+        other_names=['Introduction: Disjunction_2'],
+        description='I dont know',
+        apply=apply_Disjunction_Introduction_2
     ))
 
 
@@ -142,7 +308,8 @@ if __name__ == '__main__':
             break
 
     problems = []
-    expression_1 = "EBinOp(->, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
+    expression_1 = "EUnOp(~, EVar(p0))"
+    # expression_1 = "EBinOp(*, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
     problems.append(expression_1)
 
     while problems:

@@ -82,7 +82,8 @@ def apply_Implication_Introduction(
     problems.append(consequent)
     return consequent
 
-
+# ISTO DEVE ESTAR MAL
+# DEPOIS CORRIGIR ISTO
 def apply_Implication_Elimination(
     logical_expr: str, knowledge_base: List[str]
 ) -> Optional[str]:
@@ -110,7 +111,7 @@ def check_expression():
     if not expression or not rule:
         return jsonify({"error": "Missing expression or rule"}), 400
 
-    problems.append(expression)  # Append expression to problems list
+    problems.append(expression)
     result = apply_rule(expression, rule, knowledge_base)
 
     return jsonify(
