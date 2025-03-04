@@ -1,5 +1,5 @@
 import re
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -18,7 +18,7 @@ class Rule:
 
 class RuleRegistry:
     def __init__(self):
-        self.rules: dict[str, Rule] = {}
+        self.rules: Dict[str, Rule] = {}
 
     def register_rule(self, rule: Rule) -> None:
         self.rules[rule.name] = rule
