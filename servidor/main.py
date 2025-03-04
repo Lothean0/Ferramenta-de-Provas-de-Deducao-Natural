@@ -61,7 +61,6 @@ def split_expression(logical_expr: str) -> List[str]:
 def apply_axiom_rule(logical_expr: str, knowledge_base: List[str]) -> Optional[str]:
     return 'foo' if logical_expr in knowledge_base else 'boo'
 
-
 def apply_Implication_Introduction(logical_expr: str, knowledge_base: List[str]) -> Optional[str]:
     arguments = split_expression(logical_expr)
     if len(arguments) < 3:
