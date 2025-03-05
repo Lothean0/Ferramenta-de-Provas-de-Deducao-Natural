@@ -62,6 +62,7 @@ def apply_axiom_rule(
         logical_expr: str,
         knowledge_base: List[str],
 ) -> Optional[str]:
+    # "Select hypothesis ; VER AXIOMA"
     res = input('Seleciona Axioma: ')
     return 'foo' if res in knowledge_base and res == logical_expr else 'boo'
 
@@ -242,7 +243,7 @@ if __name__ == '__main__':
     rule_registry.register_rule(Rule(
         name='II',
         other_names=['Introduction: Implication'],
-        description='I dont know',
+        description='If A -> B we assume that A is a hypothesis and infer B',
         apply=apply_Implication_Introduction,
     ))
 
@@ -257,14 +258,14 @@ if __name__ == '__main__':
     rule_registry.register_rule(Rule(
         name="A",
         other_names=['Axiom'],
-        description='I dont know',
+        description='If A is a problem and also an hypothesis then A is an Axiom',
         apply=apply_axiom_rule
     ))
 
     rule_registry.register_rule(Rule(
         name="IC",
         other_names=['Introduction: Conjunction'],
-        description='I dont know',
+        description='If A && B we infer A or we infer B',
         apply=apply_Conjunction_Introduction
     ))
 
@@ -285,7 +286,7 @@ if __name__ == '__main__':
     rule_registry.register_rule(Rule(
         name="ID_1",
         other_names=['Introduction: Disjunction_1'],
-        description='I dont know',
+        description='If A || B we infer A and B as a different problems',
         apply=apply_Disjunction_Introduction_1
     ))
 
