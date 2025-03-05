@@ -62,7 +62,7 @@ def apply_axiom_rule(
         logical_expr: str,
         knowledge_base: List[str],
 ) -> Optional[str]:
-    # "Select hypothesis ; VER AXIOMA"
+    # "Select hypothesis
     res = input('Seleciona Axioma: ')
     return 'foo' if res in knowledge_base and res == logical_expr else 'boo'
 
@@ -309,8 +309,8 @@ if __name__ == '__main__':
             break
 
     problems = []
-    expression_1 = "EUnOp(~, EVar(p0))"
-    # expression_1 = "EBinOp(*, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
+    #expression_1 = "EUnOp(~, EVar(p0))"
+    expression_1 = "EBinOp(*, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
     problems.append(expression_1)
 
     while problems:
