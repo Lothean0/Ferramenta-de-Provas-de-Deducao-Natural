@@ -29,7 +29,7 @@ class EBinOp(Expr):
 
 def p_Program(p):
     '''Program : ExpressionList'''
-    p[0] = p[1]
+    p[0] = str(p[1])
 
 def p_ExpressionList_1(p):
     '''ExpressionList : Expression'''
@@ -47,9 +47,13 @@ def p_Expression_2(p):
     '''Expression : Expression BinaryOp Expression'''
     p[0] = EBinOp(p[2], p[1], p[3])
 
+def p_Expression_3(p):
+    '''Expression : LPAREN Expression RPAREN'''
+    p[0] = p[2]
+
 def p_BinaryOp_1(p):
     '''BinaryOp : ARROW'''
-    p[0] = '→'
+    p[0] = '->'
 
 def p_BinaryOp_2(p):
     '''BinaryOp : CONJ'''

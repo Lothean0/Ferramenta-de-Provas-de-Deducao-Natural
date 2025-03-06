@@ -1,0 +1,236 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Program
+Rule 1     Program -> ExpressionList
+Rule 2     ExpressionList -> Expression
+Rule 3     ExpressionList -> Expression ExpressionList
+Rule 4     Expression -> ID
+Rule 5     Expression -> Expression BinaryOp Expression
+Rule 6     Expression -> LPAREN Expression RPAREN
+Rule 7     BinaryOp -> ARROW
+Rule 8     BinaryOp -> CONJ
+Rule 9     BinaryOp -> DISJ
+Rule 10    BinaryOp -> NOT
+
+Terminals, with rules where they appear
+
+ARROW                : 7
+CONJ                 : 8
+DISJ                 : 9
+ID                   : 4
+LPAREN               : 6
+NOT                  : 10
+RPAREN               : 6
+error                : 
+
+Nonterminals, with rules where they appear
+
+BinaryOp             : 5
+Expression           : 2 3 5 5 6
+ExpressionList       : 1 3
+Program              : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Program
+    (1) Program -> . ExpressionList
+    (2) ExpressionList -> . Expression
+    (3) ExpressionList -> . Expression ExpressionList
+    (4) Expression -> . ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . LPAREN Expression RPAREN
+
+    ID              shift and go to state 4
+    LPAREN          shift and go to state 5
+
+    Program                        shift and go to state 1
+    ExpressionList                 shift and go to state 2
+    Expression                     shift and go to state 3
+
+state 1
+
+    (0) S' -> Program .
+
+
+
+state 2
+
+    (1) Program -> ExpressionList .
+
+    $end            reduce using rule 1 (Program -> ExpressionList .)
+
+
+state 3
+
+    (2) ExpressionList -> Expression .
+    (3) ExpressionList -> Expression . ExpressionList
+    (5) Expression -> Expression . BinaryOp Expression
+    (2) ExpressionList -> . Expression
+    (3) ExpressionList -> . Expression ExpressionList
+    (7) BinaryOp -> . ARROW
+    (8) BinaryOp -> . CONJ
+    (9) BinaryOp -> . DISJ
+    (10) BinaryOp -> . NOT
+    (4) Expression -> . ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . LPAREN Expression RPAREN
+
+    $end            reduce using rule 2 (ExpressionList -> Expression .)
+    ARROW           shift and go to state 8
+    CONJ            shift and go to state 9
+    DISJ            shift and go to state 10
+    NOT             shift and go to state 11
+    ID              shift and go to state 4
+    LPAREN          shift and go to state 5
+
+    Expression                     shift and go to state 3
+    ExpressionList                 shift and go to state 6
+    BinaryOp                       shift and go to state 7
+
+state 4
+
+    (4) Expression -> ID .
+
+    ARROW           reduce using rule 4 (Expression -> ID .)
+    CONJ            reduce using rule 4 (Expression -> ID .)
+    DISJ            reduce using rule 4 (Expression -> ID .)
+    NOT             reduce using rule 4 (Expression -> ID .)
+    ID              reduce using rule 4 (Expression -> ID .)
+    LPAREN          reduce using rule 4 (Expression -> ID .)
+    $end            reduce using rule 4 (Expression -> ID .)
+    RPAREN          reduce using rule 4 (Expression -> ID .)
+
+
+state 5
+
+    (6) Expression -> LPAREN . Expression RPAREN
+    (4) Expression -> . ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . LPAREN Expression RPAREN
+
+    ID              shift and go to state 4
+    LPAREN          shift and go to state 5
+
+    Expression                     shift and go to state 12
+
+state 6
+
+    (3) ExpressionList -> Expression ExpressionList .
+
+    $end            reduce using rule 3 (ExpressionList -> Expression ExpressionList .)
+
+
+state 7
+
+    (5) Expression -> Expression BinaryOp . Expression
+    (4) Expression -> . ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . LPAREN Expression RPAREN
+
+    ID              shift and go to state 4
+    LPAREN          shift and go to state 5
+
+    Expression                     shift and go to state 13
+
+state 8
+
+    (7) BinaryOp -> ARROW .
+
+    ID              reduce using rule 7 (BinaryOp -> ARROW .)
+    LPAREN          reduce using rule 7 (BinaryOp -> ARROW .)
+
+
+state 9
+
+    (8) BinaryOp -> CONJ .
+
+    ID              reduce using rule 8 (BinaryOp -> CONJ .)
+    LPAREN          reduce using rule 8 (BinaryOp -> CONJ .)
+
+
+state 10
+
+    (9) BinaryOp -> DISJ .
+
+    ID              reduce using rule 9 (BinaryOp -> DISJ .)
+    LPAREN          reduce using rule 9 (BinaryOp -> DISJ .)
+
+
+state 11
+
+    (10) BinaryOp -> NOT .
+
+    ID              reduce using rule 10 (BinaryOp -> NOT .)
+    LPAREN          reduce using rule 10 (BinaryOp -> NOT .)
+
+
+state 12
+
+    (6) Expression -> LPAREN Expression . RPAREN
+    (5) Expression -> Expression . BinaryOp Expression
+    (7) BinaryOp -> . ARROW
+    (8) BinaryOp -> . CONJ
+    (9) BinaryOp -> . DISJ
+    (10) BinaryOp -> . NOT
+
+    RPAREN          shift and go to state 14
+    ARROW           shift and go to state 8
+    CONJ            shift and go to state 9
+    DISJ            shift and go to state 10
+    NOT             shift and go to state 11
+
+    BinaryOp                       shift and go to state 7
+
+state 13
+
+    (5) Expression -> Expression BinaryOp Expression .
+    (5) Expression -> Expression . BinaryOp Expression
+    (7) BinaryOp -> . ARROW
+    (8) BinaryOp -> . CONJ
+    (9) BinaryOp -> . DISJ
+    (10) BinaryOp -> . NOT
+
+  ! shift/reduce conflict for ARROW resolved as shift
+  ! shift/reduce conflict for CONJ resolved as shift
+  ! shift/reduce conflict for DISJ resolved as shift
+  ! shift/reduce conflict for NOT resolved as shift
+    ID              reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    LPAREN          reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    $end            reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    RPAREN          reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    ARROW           shift and go to state 8
+    CONJ            shift and go to state 9
+    DISJ            shift and go to state 10
+    NOT             shift and go to state 11
+
+  ! ARROW           [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+  ! CONJ            [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+  ! DISJ            [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+  ! NOT             [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+
+    BinaryOp                       shift and go to state 7
+
+state 14
+
+    (6) Expression -> LPAREN Expression RPAREN .
+
+    ARROW           reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    CONJ            reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    DISJ            reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    NOT             reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    ID              reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    LPAREN          reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    $end            reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+    RPAREN          reduce using rule 6 (Expression -> LPAREN Expression RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ARROW in state 13 resolved as shift
+WARNING: shift/reduce conflict for CONJ in state 13 resolved as shift
+WARNING: shift/reduce conflict for DISJ in state 13 resolved as shift
+WARNING: shift/reduce conflict for NOT in state 13 resolved as shift

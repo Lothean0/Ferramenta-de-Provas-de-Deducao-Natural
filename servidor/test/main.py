@@ -1,5 +1,6 @@
 from data_class import *
 import re
+from grammar import myparser
 
 """
 This function checks if the antecedent or the negation of the consequent
@@ -59,6 +60,7 @@ def apply_axiom_rule(
         knowledge_base: List[str],
 ) -> Optional[str]:
     res = input('Select hypothesis: ')
+    res=myparser.parse(res)
     return 'foo' if res in knowledge_base and res == logical_expr else 'boo'
 
 def apply_Implication_Introduction(
@@ -302,9 +304,16 @@ if __name__ == '__main__':
             knowledge_base.append(hypothesis)
         elif res.__eq__('No'):
             break
-
+    
     problems = []
-    expression_1 = "EBinOp(*, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
+    # Take user input and parse it using the grammar parser
+    user_input = input('Enter logical expression: ')
+    parsed_expression = myparser.parse(user_input)
+    if parsed_expression:
+        print(f'Parsed Expression: {parsed_expression}')
+    else:
+        print('Error parsing expression')
+    expression_1 = parsed_expression
     problems.append(expression_1)
 
     while problems:

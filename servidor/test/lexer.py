@@ -11,7 +11,7 @@ tokens = (
     'RPAREN',
 )
 
-t_ARROW = r'→'
+t_ARROW = r'->'
 t_CONJ = r'∧'
 t_DISJ = r'∨'
 t_NOT = r'~'
