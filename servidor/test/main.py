@@ -1,7 +1,3 @@
-from typing import Tuple
-
-from pysmt.logics import LOGICS
-
 from data_class import *
 import re
 
@@ -62,8 +58,7 @@ def apply_axiom_rule(
         logical_expr: str,
         knowledge_base: List[str],
 ) -> Optional[str]:
-    # "Select hypothesis
-    res = input('Seleciona Axioma: ')
+    res = input('Select hypothesis: ')
     return 'foo' if res in knowledge_base and res == logical_expr else 'boo'
 
 def apply_Implication_Introduction(
@@ -73,8 +68,8 @@ def apply_Implication_Introduction(
     arguments = split_expression(logical_expr)
 
     if len(arguments) < 3:
-        return None
-
+        return ''
+    # ERRO
     antecedent, consequent = arguments[1], arguments[2]
 
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
@@ -309,7 +304,6 @@ if __name__ == '__main__':
             break
 
     problems = []
-    #expression_1 = "EUnOp(~, EVar(p0))"
     expression_1 = "EBinOp(*, EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)))"
     problems.append(expression_1)
 
