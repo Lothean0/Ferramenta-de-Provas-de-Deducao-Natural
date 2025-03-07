@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ARROW CONJ DISJ ID LPAREN NOT RPARENProgram : ExpressionListExpressionList : ExpressionExpressionList : Expression ExpressionListExpression : IDExpression : Expression BinaryOp ExpressionExpression : LPAREN Expression RPARENBinaryOp : ARROWBinaryOp : CONJBinaryOp : DISJBinaryOp : NOT'
+_lr_signature = 'ARROW CONJ DISJ ID LPAREN NOT RPARENProgram : ExpressionListExpressionList : ExpressionExpressionList : Expression ExpressionListExpression : IDExpression : Expression BinaryOp ExpressionExpression : UnaryOp ExpressionExpression : LPAREN Expression RPARENBinaryOp : ARROWBinaryOp : CONJBinaryOp : DISJUnaryOp : NOT'
     
-_lr_action_items = {'ID':([0,3,4,5,7,8,9,10,11,13,14,],[4,4,-4,4,4,-7,-8,-9,-10,-5,-6,]),'LPAREN':([0,3,4,5,7,8,9,10,11,13,14,],[5,5,-4,5,5,-7,-8,-9,-10,-5,-6,]),'$end':([1,2,3,4,6,13,14,],[0,-1,-2,-4,-3,-5,-6,]),'ARROW':([3,4,12,13,14,],[8,-4,8,8,-6,]),'CONJ':([3,4,12,13,14,],[9,-4,9,9,-6,]),'DISJ':([3,4,12,13,14,],[10,-4,10,10,-6,]),'NOT':([3,4,12,13,14,],[11,-4,11,11,-6,]),'RPAREN':([4,12,13,14,],[-4,14,-5,-6,]),}
+_lr_action_items = {'ID':([0,3,4,5,6,7,9,10,11,12,13,15,16,],[4,4,-4,4,4,-11,4,-8,-9,-10,-6,-5,-7,]),'LPAREN':([0,3,4,5,6,7,9,10,11,12,13,15,16,],[6,6,-4,6,6,-11,6,-8,-9,-10,-6,-5,-7,]),'NOT':([0,3,4,5,6,7,9,10,11,12,13,15,16,],[7,7,-4,7,7,-11,7,-8,-9,-10,-6,-5,-7,]),'$end':([1,2,3,4,8,13,15,16,],[0,-1,-2,-4,-3,-6,-5,-7,]),'ARROW':([3,4,13,14,15,16,],[10,-4,10,10,10,-7,]),'CONJ':([3,4,13,14,15,16,],[11,-4,11,11,11,-7,]),'DISJ':([3,4,13,14,15,16,],[12,-4,12,12,12,-7,]),'RPAREN':([4,13,14,15,16,],[-4,-6,16,-5,-7,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'Program':([0,],[1,]),'ExpressionList':([0,3,],[2,6,]),'Expression':([0,3,5,7,],[3,3,12,13,]),'BinaryOp':([3,12,13,],[7,7,7,]),}
+_lr_goto_items = {'Program':([0,],[1,]),'ExpressionList':([0,3,],[2,8,]),'Expression':([0,3,5,6,9,],[3,3,13,14,15,]),'UnaryOp':([0,3,5,6,9,],[5,5,5,5,5,]),'BinaryOp':([3,13,14,15,],[9,9,9,9,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,14 +27,15 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> Program","S'",1,None,None,None),
-  ('Program -> ExpressionList','Program',1,'p_Program','grammar.py',31),
-  ('ExpressionList -> Expression','ExpressionList',1,'p_ExpressionList_1','grammar.py',35),
-  ('ExpressionList -> Expression ExpressionList','ExpressionList',2,'p_ExpressionList','grammar.py',39),
-  ('Expression -> ID','Expression',1,'p_Expression_1','grammar.py',43),
-  ('Expression -> Expression BinaryOp Expression','Expression',3,'p_Expression_2','grammar.py',47),
-  ('Expression -> LPAREN Expression RPAREN','Expression',3,'p_Expression_3','grammar.py',51),
-  ('BinaryOp -> ARROW','BinaryOp',1,'p_BinaryOp_1','grammar.py',55),
-  ('BinaryOp -> CONJ','BinaryOp',1,'p_BinaryOp_2','grammar.py',59),
-  ('BinaryOp -> DISJ','BinaryOp',1,'p_BinaryOp_3','grammar.py',63),
-  ('BinaryOp -> NOT','BinaryOp',1,'p_BinaryOp_4','grammar.py',67),
+  ('Program -> ExpressionList','Program',1,'p_Program','grammar.py',42),
+  ('ExpressionList -> Expression','ExpressionList',1,'p_ExpressionList_1','grammar.py',46),
+  ('ExpressionList -> Expression ExpressionList','ExpressionList',2,'p_ExpressionList','grammar.py',50),
+  ('Expression -> ID','Expression',1,'p_Expression_1','grammar.py',54),
+  ('Expression -> Expression BinaryOp Expression','Expression',3,'p_Expression_2','grammar.py',58),
+  ('Expression -> UnaryOp Expression','Expression',2,'p_Expression_3','grammar.py',62),
+  ('Expression -> LPAREN Expression RPAREN','Expression',3,'p_Expression_4','grammar.py',66),
+  ('BinaryOp -> ARROW','BinaryOp',1,'p_BinaryOp_1','grammar.py',70),
+  ('BinaryOp -> CONJ','BinaryOp',1,'p_BinaryOp_2','grammar.py',74),
+  ('BinaryOp -> DISJ','BinaryOp',1,'p_BinaryOp_3','grammar.py',78),
+  ('UnaryOp -> NOT','UnaryOp',1,'p_UnariOp','grammar.py',82),
 ]

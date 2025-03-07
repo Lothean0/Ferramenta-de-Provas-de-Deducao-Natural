@@ -26,6 +26,17 @@ class EBinOp(Expr):
 
     def __repr__(self):
         return self.__str__()
+    
+class EUnOp(Expr):
+    def __init__(self, op, expr):
+        self.op = op
+        self.expr = expr
+
+    def __str__(self):
+        return f"EUnOp({self.op}, {self.expr})"
+    
+    def __repr__(self):
+        return self.__str__()
 
 def p_Program(p):
     '''Program : ExpressionList'''
@@ -48,6 +59,10 @@ def p_Expression_2(p):
     p[0] = EBinOp(p[2], p[1], p[3])
 
 def p_Expression_3(p):
+    '''Expression : UnaryOp Expression'''
+    p[0] = EUnOp(p[1], p[2])
+
+def p_Expression_4(p):
     '''Expression : LPAREN Expression RPAREN'''
     p[0] = p[2]
 
@@ -63,8 +78,8 @@ def p_BinaryOp_3(p):
     '''BinaryOp : DISJ'''
     p[0] = '∨'
 
-def p_BinaryOp_4(p):
-    '''BinaryOp : NOT'''
+def p_UnariOp(p):
+    '''UnaryOp : NOT'''
     p[0] = '~'
 
 # Error handling
