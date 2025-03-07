@@ -316,5 +316,5 @@ if __name__ == '__main__':
         print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base: {temp2}')
         result = apply_rule(problems[0][0], rule_name=rule,knowledge_base=knowledge_base,available_hypothesis=problems[0][1])
         if result != 'boo' and result != 'foo':
-            result = expr_to_string(result)
+            result = myparser.parse(result)
         print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')
