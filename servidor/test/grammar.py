@@ -14,6 +14,7 @@ class EVar(Expr):
 
     def __repr__(self):
         return self.__str__()
+    
 
 class EBinOp(Expr):
     def __init__(self, op, left, right):
@@ -26,6 +27,7 @@ class EBinOp(Expr):
 
     def __repr__(self):
         return self.__str__()
+
     
 class EUnOp(Expr):
     def __init__(self, op, expr):
@@ -38,7 +40,8 @@ class EUnOp(Expr):
     def __repr__(self):
         return self.__str__()
 
-def p_Program(p):
+
+def p_Program_1(p):
     '''Program : ExpressionList'''
     p[0] = str(p[1])
 
@@ -46,7 +49,7 @@ def p_ExpressionList_1(p):
     '''ExpressionList : Expression'''
     p[0] = p[1]
 
-def p_ExpressionList(p):
+def p_ExpressionList_2(p):
     '''ExpressionList : Expression ExpressionList'''
     p[0] = EBinOp(",", p[1], p[2])
 
@@ -69,6 +72,30 @@ def p_Expression_4(p):
 def p_Expression_5(p):
     '''Expression : LPAREN Expression RPAREN'''
     p[0] = p[2]
+
+def p_Program_2(p):
+    '''Program : EExpressionList'''
+    p[0] = p[1]
+
+def p_EExpressionList_1(p):
+    '''EExpressionList : EExpression'''
+    p[0] = p[1]
+
+def p_EExpressionList_2(p):
+    '''EExpressionList : EExpression EExpressionList'''
+    p[0] = p[1] + p[2]
+
+def p_EVar(p):
+    '''EExpression : EVar LPAREN ID RPAREN'''
+    p[0] = p[3]
+
+def p_EBinOp(p):
+    '''EExpression : EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN'''
+    p[0] = p[5] + p[3] + p[7]
+
+def p_EUnOp(p):
+    '''EExpression : EUnOp LPAREN UnaryOp COMMA EExpression RPAREN'''
+    p[0] = p[3] + p[5]
 
 def p_BinaryOp_1(p):
     '''BinaryOp : ARROW'''
