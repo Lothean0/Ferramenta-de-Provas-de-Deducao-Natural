@@ -8,6 +8,7 @@ is present in the knowledge base or wheter any of them can be deduced by
 the current contents of the knowledge base.
 """
 n_hypothesis = 0
+
 def split_expression(
         logical_expr: str,
 ) -> List[str]:
@@ -38,13 +39,8 @@ def split_expression(
     return args
 
 
-
-
-
-
 def apply_axiom_rule(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     res = input('Select hypothesis: ')
@@ -56,9 +52,9 @@ def apply_axiom_rule(
                 return 'foo'
     return 'boo'
 
+
 def apply_Implication_Introduction(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
@@ -71,19 +67,24 @@ def apply_Implication_Introduction(
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Antecedent = {antecedent}')
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')
+
     temp=''
     global n_hypothesis
     for key, value in knowledge_base.items():
         if value == antecedent:
             temp=key
+
     if temp == '':
         temp = f'X{n_hypothesis}'
         knowledge_base[temp] = antecedent
         n_hypothesis += 1
-    problems.remove((logical_expr,available_hypothesis))
+
     available_hypothesis.append(temp)
+    problems.remove((logical_expr,available_hypothesis))
     problems.append((consequent,available_hypothesis))
+
     return consequent
+
 
 """
 Modus Ponens (MP):
@@ -95,7 +96,6 @@ can infer that the consequent (q) is also true
 """
 def apply_Implication_Elimination(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
         print(knowledge_base)
@@ -106,9 +106,9 @@ def apply_Implication_Elimination(
             return 'foo'
         return 'boo'
 
+
 def apply_Conjunction_Introduction(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
@@ -125,7 +125,6 @@ def apply_Conjunction_Introduction(
 
 def apply_Conjunction_Elimination_1(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     print(knowledge_base)
@@ -138,7 +137,6 @@ def apply_Conjunction_Elimination_1(
 
 def apply_Conjunction_Elimination_2(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     print(knowledge_base)
@@ -151,7 +149,6 @@ def apply_Conjunction_Elimination_2(
 
 def apply_Disjunction_Introduction_1(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
@@ -167,7 +164,6 @@ def apply_Disjunction_Introduction_1(
 
 def apply_Disjunction_Introduction_2(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
@@ -184,7 +180,6 @@ def apply_Disjunction_Introduction_2(
 # ESTA ESTA MAL
 def apply_Disjunction_Elimination(
         logical_expr: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     knowledge_base.append('VARIAVEL 1')
@@ -219,14 +214,14 @@ def apply_Negation_Introduction(
 def apply_rule(
         logical_expr: str,
         rule_name: str,
-        knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
 ) -> Optional[str]:
     rule = rule_registry.get_rule(rule_name)
     if rule:
-        return rule.apply(logical_expr, knowledge_base, available_hypothesis)
+        return rule.apply(logical_expr, available_hypothesis)
     print(C_RED + f'[ERROR] ' + C_END + f'Rule not found')
     return None
+
 
 if __name__ == '__main__':
 
@@ -292,28 +287,38 @@ if __name__ == '__main__':
                 n_hypothesis += 1
         elif res.__eq__('No'):
             break
-    
+        else:
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Incorrect input')
+
     problems = []
     user_input = input('Enter logical expression: ')
     parsed_expression = myparser.parse(user_input)
+
     if parsed_expression:
         print(f'Parsed Expression: {parsed_expression}')
     else:
         print('Error parsing expression')
+
     expression_1 = parsed_expression
     problems.append((expression_1, [x for x in knowledge_base.keys() if x is not None]))
+
     while problems:
         print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
-        print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base: {knowledge_base}\n')
+        print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base_1: {knowledge_base}\n')
 
         rule = input('Rule: ')
         print()
         temp2 = []
+
         for temp in problems[0][1]:
             if temp in knowledge_base.keys():
                 temp2.append(knowledge_base[temp])
-        print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base: {temp2}')
-        result = apply_rule(problems[0][0], rule_name=rule,knowledge_base=knowledge_base,available_hypothesis=problems[0][1])
+
+        print(C_GREEN + f'[INFO] ' + C_END + f'Knowledge Base_2: {temp2}')
+
+        result = apply_rule(problems[0][0], rule_name=rule,available_hypothesis=problems[0][1])
         if result != 'boo' and result != 'foo':
+            print(result)
             result = myparser.parse(result)
+
         print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')
