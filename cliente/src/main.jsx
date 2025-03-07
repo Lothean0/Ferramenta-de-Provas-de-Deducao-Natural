@@ -6,7 +6,7 @@ import './index.css';
 import HomePage from './pages/HomePage';
 import PropositionalLogic from './pages/PropositionalLogic'
 import TruthTable from './pages/TruthTable';
-import QuantificationalLogic from './pages/QuantificationalLogic';
+import About from './pages/About';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/' element={<HomePage />} />
         <Route path='/Propositional-Logic' element={<PropositionalLogic />} />
         <Route path='/Truth-Table' element={<TruthTable />} />
-        <Route path='/Quantificational-Logic' element={<QuantificationalLogic />} />
+        <Route path='/About' element={<About />} />
       </Routes>
     </Router>
   </StrictMode>,
