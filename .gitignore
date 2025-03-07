@@ -1,4 +1,4 @@
 .idea/*
 .vscode/*
 **/__pycache__
-.dan_private/*
+.servidor/dan_private/
