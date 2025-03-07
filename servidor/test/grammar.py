@@ -55,14 +55,18 @@ def p_Expression_1(p):
     p[0] = EVar(p[1])
 
 def p_Expression_2(p):
+    '''Expression : UnaryOp ID'''
+    p[0] = EUnOp(p[1], EVar(p[2]))
+
+def p_Expression_3(p):
     '''Expression : Expression BinaryOp Expression'''
     p[0] = EBinOp(p[2], p[1], p[3])
 
-def p_Expression_3(p):
-    '''Expression : UnaryOp Expression'''
-    p[0] = EUnOp(p[1], p[2])
-
 def p_Expression_4(p):
+    '''Expression : UnaryOp LPAREN Expression RPAREN'''
+    p[0] = EUnOp(p[1], p[3])
+
+def p_Expression_5(p):
     '''Expression : LPAREN Expression RPAREN'''
     p[0] = p[2]
 

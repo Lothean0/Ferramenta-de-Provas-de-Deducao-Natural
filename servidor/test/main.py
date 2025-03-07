@@ -45,16 +45,6 @@ def split_expression(
     return args
 
 
-
-
-
-
-
-
-
-
-
-
 def apply_axiom_rule(
         logical_expr: str,
         knowledge_base: List[str],
@@ -208,20 +198,6 @@ def apply_Negation_Introduction(
     return 'boo'
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def apply_rule(
         logical_expr: str,
         rule_name: str,
@@ -240,7 +216,6 @@ if __name__ == '__main__':
     rule_registry.register_rule(Rule(
         name='II',
         other_names=['Introduction: Implication'],
-        description='If A -> B we assume that A is a hypothesis and infer B',
         apply=apply_Implication_Introduction,
     ))
 
@@ -248,52 +223,46 @@ if __name__ == '__main__':
     rule_registry.register_rule(Rule(
         name="EI",
         other_names=['Elimination: Implication'],
-        description='If A -> B and A is known, then infer B.',
         apply=apply_Implication_Elimination
     ))
 
     rule_registry.register_rule(Rule(
         name="A",
         other_names=['Axiom'],
-        description='If A is a problem and also an hypothesis then A is an Axiom',
         apply=apply_axiom_rule
     ))
 
     rule_registry.register_rule(Rule(
         name="IC",
         other_names=['Introduction: Conjunction'],
-        description='If A && B we infer A or we infer B',
         apply=apply_Conjunction_Introduction
     ))
 
     rule_registry.register_rule(Rule(
         name="EC_1",
         other_names=['Elimination: Conjunction_1'],
-        description='I dont know',
         apply=apply_Conjunction_Elimination_1
     ))
 
     rule_registry.register_rule(Rule(
         name="EC_2",
         other_names=['Elimination: Conjunction_2'],
-        description='I dont know',
         apply=apply_Conjunction_Elimination_2
     ))
 
     rule_registry.register_rule(Rule(
         name="ID_1",
         other_names=['Introduction: Disjunction_1'],
-        description='If A || B we infer A and B as a different problems',
         apply=apply_Disjunction_Introduction_1
     ))
 
     rule_registry.register_rule(Rule(
         name="ID_2",
         other_names=['Introduction: Disjunction_2'],
-        description='I dont know',
         apply=apply_Disjunction_Introduction_2
     ))
 
+    # print(rule_registry)
 
     knowledge_base = []
     while True:
@@ -306,7 +275,6 @@ if __name__ == '__main__':
             break
     
     problems = []
-    # Take user input and parse it using the grammar parser
     user_input = input('Enter logical expression: ')
     parsed_expression = myparser.parse(user_input)
     if parsed_expression:
