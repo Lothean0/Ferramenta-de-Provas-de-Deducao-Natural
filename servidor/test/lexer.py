@@ -9,6 +9,10 @@ tokens = (
     'NOT',
     'LPAREN',
     'RPAREN',
+    'EVar',
+    'EBinOp',
+    'EUnOp',
+    'COMMA'
 )
 
 t_ARROW = r'->'
@@ -17,6 +21,20 @@ t_DISJ = r'∨'
 t_NOT = r'~'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_COMMA = r','
+
+
+def t_EVar(t):
+    r'EVar'
+    return t
+
+def t_EBinOp(t):
+    r'EBinOp'
+    return t
+
+def t_EUnOp(t):
+    r'EUnOp'
+    return t
 
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z0-9_]*'
