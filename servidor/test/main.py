@@ -1,7 +1,6 @@
 from data_class import *
 import re
 from grammar import myparser
-from grammar import expr_to_string
 
 """
 This function checks if the antecedent or the negation of the consequent
