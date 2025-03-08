@@ -2,13 +2,31 @@ from data_class import *
 import re
 from grammar import myparser
 
+
+n_hypothesis = 0
+
+
+def removeOuterParentheses(s: str) -> str:
+    result = ''
+
+    if s[0] != '(':
+        return s
+
+    stack = []
+    for i in s:
+        stack.append(i)
+        if stack and stack.count('(') == stack.count(')'):
+            part = ''.join(stack)
+            result += part[1:-1]
+            stack = []
+
+    return result
+
 """
 This function checks if the antecedent or the negation of the consequent
 is present in the knowledge base or wheter any of them can be deduced by
 the current contents of the knowledge base.
 """
-n_hypothesis = 0
-
 def split_expression(
         logical_expr: str,
 ) -> List[str]:
@@ -51,7 +69,6 @@ def apply_axiom_rule(
                 problems.remove((logical_expr,available_hypothesis))
                 return 'foo'
     return 'boo'
-
 
 def apply_Implication_Introduction(
         logical_expr: str,
@@ -291,8 +308,7 @@ if __name__ == '__main__':
             raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Incorrect input')
 
     problems = []
-    user_input = input('Enter logical expression: ')
-    parsed_expression = myparser.parse(user_input)
+    parsed_expression = myparser.parse(user_input := input('Enter logical expression: '))
 
     if parsed_expression:
         print(f'Parsed Expression: {parsed_expression}')
@@ -319,6 +335,6 @@ if __name__ == '__main__':
         result = apply_rule(problems[0][0], rule_name=rule,available_hypothesis=problems[0][1])
         if result != 'boo' and result != 'foo':
             print(result)
-            result = myparser.parse(result)
+            result = removeOuterParentheses(myparser.parse(result))
 
         print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')

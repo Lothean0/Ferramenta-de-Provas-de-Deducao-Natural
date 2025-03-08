@@ -14,7 +14,7 @@ class EVar(Expr):
 
     def __repr__(self):
         return self.__str__()
-    
+
 
 class EBinOp(Expr):
     def __init__(self, op, left, right):
@@ -28,7 +28,7 @@ class EBinOp(Expr):
     def __repr__(self):
         return self.__str__()
 
-    
+
 class EUnOp(Expr):
     def __init__(self, op, expr):
         self.op = op
@@ -36,7 +36,7 @@ class EUnOp(Expr):
 
     def __str__(self):
         return f"EUnOp({self.op}, {self.expr})"
-    
+
     def __repr__(self):
         return self.__str__()
 
@@ -48,10 +48,6 @@ def p_Program_1(p:str) -> None:
 def p_ExpressionList_1(p:str) -> None:
     '''ExpressionList : Expression'''
     p[0] = p[1]
-
-def p_ExpressionList_2(p:str) -> None:
-    '''ExpressionList : Expression ExpressionList'''
-    p[0] = EBinOp(",", p[1], p[2])
 
 def p_Expression_1(p:str) -> None:
     '''Expression : ID'''
