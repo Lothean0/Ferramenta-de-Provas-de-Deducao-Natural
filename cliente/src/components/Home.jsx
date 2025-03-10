@@ -28,10 +28,10 @@ function Home() {
 
                 <Card
                     image={landscape3}
-                    altText="Quantificational Logic Calculator"
-                    description="Calculator"
-                    title="Quantificational Logic"
-                    link="/Quantificational-Logic"
+                    altText="About"
+                    description="About"
+                    title="About"
+                    link="/About"
                 />
 
             </div>

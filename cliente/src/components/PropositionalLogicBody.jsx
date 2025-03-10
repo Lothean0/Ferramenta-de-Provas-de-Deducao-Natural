@@ -1,4 +1,3 @@
-{/*
 import { useEffect, useState } from 'react';
 import '../styles/PropositionLogicBody.css';
 import axios from 'axios';
@@ -37,7 +36,7 @@ function PropositionalLogicBody() {
 }
 
 export default PropositionalLogicBody;
-*/}
+
 
 {/*
 import { useState } from "react";

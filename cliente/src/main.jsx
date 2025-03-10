@@ -18,6 +18,6 @@ createRoot(document.getElementById('root')).render(
         <Route path='/About' element={<About />} />
       </Routes>
     </Router>
-  </StrictMode>,
+  </StrictMode>
 )
 
