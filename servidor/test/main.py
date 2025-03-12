@@ -111,16 +111,20 @@ Modus Ponens is a valid rule of inference that states if you have a
 conditional statement (p->q) and the antecedent (p) is true, then you 
 can infer that the consequent (q) is also true
 """
+
+"""
+Verificar esta regra!! temos de aplicar para qualquer hipotese. por exemplo (p1->p0)->p0 = II p0 = EI(p1->p0) (p1-p0)->p0, p0
+"""
 def apply_Implication_Elimination(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
         print(knowledge_base)
-        res = input('Select Hypothesis: ')
-        if res in knowledge_base:
-            problems.append(res)
-            problems.append(f"EBinOp(->, {res}, {logical_expr})")
-            return 'foo'
+        res = input('Formula auxiliar: ')
+        #if res in knowledge_base:
+        problems.append(res)
+        problems.append(f"EBinOp(->, {res}, {logical_expr})")
+        #    return 'foo'
         return 'boo'
 
 
