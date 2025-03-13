@@ -1,0 +1,42 @@
+[
+    {
+        "name": "II",
+        "other_names": ["Introduction: Implication"],
+        "apply": "apply_Implication_Introduction"
+    },
+    {
+        "name": "EI",
+        "other_names": ["Elimination: Implication"],
+        "apply": "apply_Implication_Elimination"
+    },
+    {
+        "name": "A",
+        "other_names": ["Axiom"],
+        "apply": "apply_axiom_rule"
+    },
+    {
+        "name": "IC",
+        "other_names": ["Introduction: Conjunction"],
+        "apply": "apply_Conjunction_Introduction"
+    },
+    {
+        "name": "EC_1",
+        "other_names": ["Elimination: Conjunction_1"],
+        "apply": "apply_Conjunction_Elimination_1"
+    },
+    {
+        "name": "EC_2",
+        "other_names": ["Elimination: Conjunction_2"],
+        "apply": "apply_Conjunction_Elimination_2"
+    },
+    {
+        "name": "ID_1",
+        "other_names": ["Introduction: Disjunction_1"],
+        "apply": "apply_Disjunction_Introduction_1"
+    },
+    {
+        "name": "ID_2",
+        "other_names": ["Introduction: Disjunction_2"],
+        "apply": "apply_Disjunction_Introduction_2"
+    }
+]

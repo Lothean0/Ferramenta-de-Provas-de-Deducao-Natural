@@ -1,68 +1,17 @@
 from data_class import *
-import re
+from utils import *
 from grammar import myparser
 
+import json
 
 n_hypothesis = 0
-
-
-def removeOuterParentheses(s: str) -> str:
-    result = ''
-
-    if s[0] != '(':
-        return s
-
-    stack = []
-    for i in s:
-        stack.append(i)
-        if stack and stack.count('(') == stack.count(')'):
-            part = ''.join(stack)
-            result += part[1:-1]
-            stack = []
-
-    return result
-
-"""
-This function checks if the antecedent or the negation of the consequent
-is present in the knowledge base or wheter any of them can be deduced by
-the current contents of the knowledge base.
-"""
-def split_expression(
-        logical_expr: str,
-) -> List[str]:
-    pattern = r'([A-Za-z]+)\((.*)\)'
-    match = re.match(pattern, logical_expr)
-    if not match:
-        raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Invalid expression')
-
-    # match.group(1) = EbinOp
-    content = match.group(2) # = [ -> , EVar(p0), EBinOp(->, EBinOp(->, EVar(p0), EVar(p1)), EVar(p1)) ]"
-    balance, args, current_arg = 0, [], []
-
-    for char in content:
-        if char == '(':
-            balance += 1
-        elif char == ')':
-            balance -= 1
-
-        if char == ',' and balance == 0:
-            args.append(''.join(current_arg).strip())
-            current_arg = []
-        else:
-            current_arg.append(char)
-
-    if current_arg:
-        args.append(''.join(current_arg).strip())
-
-    return args
-
 
 def apply_axiom_rule(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
-    res = input('Select hypothesis: ')
-    res=myparser.parse(res)
+    scanner = input('Select hypothesis: ')
+    res = myparser.parse(scanner)
     for key, value in knowledge_base.items():
         if value == res:
             if key in available_hypothesis:
@@ -70,33 +19,33 @@ def apply_axiom_rule(
                 return 'foo'
     return 'boo'
 
-def apply_Implication_Introduction(
+def apply_implication_introduction(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
 
-    if len(arguments) < 3:
-        return 'erro'
-    # ERRO
+    if len(arguments) != 3 or arguments[0] != '->':
+        raise ValueError('Implication introduction requires 3 arguments or symbol not ->')
+
     antecedent, consequent = arguments[1], arguments[2]
 
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Antecedent = {antecedent}')
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')
 
-    temp=''
+    tmp=''
     global n_hypothesis
     for key, value in knowledge_base.items():
         if value == antecedent:
-            temp=key
+            tmp=key
 
-    if temp == '':
-        temp = f'X{n_hypothesis}'
-        knowledge_base[temp] = antecedent
+    if tmp == '':
+        tmp = f'X{n_hypothesis}'
+        knowledge_base[tmp] = remove_outer_parentheses(myparser.parse(antecedent))
         n_hypothesis += 1
 
-    available_hypothesis.append(temp)
+    available_hypothesis.append(tmp)
     problems.remove((logical_expr,available_hypothesis))
     problems.append((consequent,available_hypothesis))
 
@@ -115,7 +64,7 @@ can infer that the consequent (q) is also true
 """
 Verificar esta regra!! temos de aplicar para qualquer hipotese. por exemplo (p1->p0)->p0 = II p0 = EI(p1->p0) (p1-p0)->p0, p0
 """
-def apply_Implication_Elimination(
+def apply_implication_elimination(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -128,7 +77,7 @@ def apply_Implication_Elimination(
         return 'boo'
 
 
-def apply_Conjunction_Introduction(
+def apply_conjunction_introduction(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -144,7 +93,7 @@ def apply_Conjunction_Introduction(
     return 'boo'
 
 
-def apply_Conjunction_Elimination_1(
+def apply_conjunction_elimination_1(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -156,7 +105,7 @@ def apply_Conjunction_Elimination_1(
     return 'boo'
 
 
-def apply_Conjunction_Elimination_2(
+def apply_conjunction_elimination_2(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -168,7 +117,7 @@ def apply_Conjunction_Elimination_2(
     return 'boo'
 
 
-def apply_Disjunction_Introduction_1(
+def apply_disjunction_introduction_1(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -183,7 +132,7 @@ def apply_Disjunction_Introduction_1(
     return antecedent
 
 
-def apply_Disjunction_Introduction_2(
+def apply_disjunction_introduction_2(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -199,7 +148,7 @@ def apply_Disjunction_Introduction_2(
 
 
 # ESTA ESTA MAL
-def apply_Disjunction_Elimination(
+def apply_disjunction_elimination(
         logical_expr: str,
         available_hypothesis: List[str],
 ) -> Optional[str]:
@@ -210,7 +159,7 @@ def apply_Disjunction_Elimination(
     return 'boo'
 
 
-def apply_Negation_Introduction(
+def apply_negation_introduction(
         logical_expr: str,
         knowledge_base: Dict[str, str],
         available_hypothesis: List[str],
@@ -243,59 +192,44 @@ def apply_rule(
     print(C_RED + f'[ERROR] ' + C_END + f'Rule not found')
     return None
 
+def get_function_map() -> Dict[str, Callable[[str, List[str]], Optional[str]]]:
+    return  {
+        "apply_Implication_Introduction": apply_implication_introduction,
+        "apply_Implication_Elimination": apply_implication_elimination,
+        "apply_axiom_rule": apply_axiom_rule,
+        "apply_Conjunction_Introduction": apply_conjunction_introduction,
+        "apply_Conjunction_Elimination_1": apply_conjunction_elimination_1,
+        "apply_Conjunction_Elimination_2": apply_conjunction_elimination_2,
+        "apply_Disjunction_Introduction_1": apply_disjunction_introduction_1,
+        "apply_Disjunction_Introduction_2": apply_disjunction_introduction_2,
+        "apply_Disjunction_Elimination": apply_disjunction_elimination,
+        "apply_Negation_Introduction": apply_negation_introduction
+    }
+
+def load_rules_from_file(file_path: str, rr: RuleRegistry) -> None:
+    function_map = get_function_map()
+    with open(file_path, 'r') as f:
+        rules_data = json.load(f)
+
+        for rule_data in rules_data:
+            function_name = rule_data['apply']
+
+            if function_name not in function_map:
+                raise ValueError(f"Unknown function name in JSON: {function_name}")
+
+            new_rule = Rule(
+                name=rule_data['name'],
+                other_names=rule_data.get('other_names', []),
+                apply=function_map[function_name]
+            )
+            rr.register_rule(new_rule)
+
 
 if __name__ == '__main__':
 
     rule_registry = RuleRegistry()
 
-    rule_registry.register_rule(Rule(
-        name='II',
-        other_names=['Introduction: Implication'],
-        apply=apply_Implication_Introduction,
-    ))
-
-
-    rule_registry.register_rule(Rule(
-        name="EI",
-        other_names=['Elimination: Implication'],
-        apply=apply_Implication_Elimination
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="A",
-        other_names=['Axiom'],
-        apply=apply_axiom_rule
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="IC",
-        other_names=['Introduction: Conjunction'],
-        apply=apply_Conjunction_Introduction
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="EC_1",
-        other_names=['Elimination: Conjunction_1'],
-        apply=apply_Conjunction_Elimination_1
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="EC_2",
-        other_names=['Elimination: Conjunction_2'],
-        apply=apply_Conjunction_Elimination_2
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="ID_1",
-        other_names=['Introduction: Disjunction_1'],
-        apply=apply_Disjunction_Introduction_1
-    ))
-
-    rule_registry.register_rule(Rule(
-        name="ID_2",
-        other_names=['Introduction: Disjunction_2'],
-        apply=apply_Disjunction_Introduction_2
-    ))
+    load_rules_from_file('rules.json', rule_registry)
 
     knowledge_base = {}
     while True:
@@ -316,11 +250,10 @@ if __name__ == '__main__':
 
     if parsed_expression:
         print(f'Parsed Expression: {parsed_expression}')
+        problems.append((parsed_expression, [x for x in knowledge_base.keys() if x is not None]))
+
     else:
         print('Error parsing expression')
-
-    expression_1 = parsed_expression
-    problems.append((expression_1, [x for x in knowledge_base.keys() if x is not None]))
 
     while problems:
         print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
@@ -339,6 +272,6 @@ if __name__ == '__main__':
         result = apply_rule(problems[0][0], rule_name=rule,available_hypothesis=problems[0][1])
         if result != 'boo' and result != 'foo':
             print(result)
-            result = removeOuterParentheses(myparser.parse(result))
+            result = remove_outer_parentheses(myparser.parse(result))
 
         print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')
