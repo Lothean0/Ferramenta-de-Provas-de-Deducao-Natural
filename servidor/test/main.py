@@ -38,9 +38,9 @@ def apply_implication_introduction(
 
     antecedent, consequent = arguments[1], arguments[2]
 
-    print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
+    """print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Antecedent = {antecedent}')
-    print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')
+    print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')"""
 
     global n_hypothesis
     tmp = next((kb_key for kb_key, kb_value in knowledge_base.items() if value == antecedent), None)
@@ -273,6 +273,14 @@ def load_rules_from_file(file_path: str, rr: RuleRegistry) -> None:
             rr.register_rule(new_rule)
 
 
+"""def print_tree(node: TreeNode, level: int = 0):
+    indent = "    " * level
+    print(f"{indent}- [{node.status}] Problem: {node.problem}")
+
+    for child in node.children:
+        print_tree(child, level + 1)"""
+
+
 if __name__ == '__main__':
 
     rule_registry = RuleRegistry()
@@ -300,6 +308,14 @@ if __name__ == '__main__':
         print(f'Parsed Expression: {parsed_expression}\n')
         problems.append((parsed_expression, [x for x in knowledge_base.keys() if x is not None]))
 
+        """root_node = TreeNode(
+            status="NotProve",
+            problem={'Xi': parsed_expression},
+            knowledge_base=knowledge_base.copy()
+        )
+
+        current_node = root_node"""
+
     else:
         print('Error parsing expression')
 
@@ -315,13 +331,29 @@ if __name__ == '__main__':
         else:
             for key, value in knowledge_base.items():
                 print(C_YELLOW + f'{key}: ' + C_END + f'{myparser.parse(value)}')
-        result, status = apply_rule(problems[0][0], rule_name=rule,available_hypothesis=problems[0][1])
 
-        if status == 'Ok':
-            print(result)
-            if result != 'boo' and result != 'foo':
-                print(result)
-                result = remove_outer_parentheses(myparser.parse(result))
+        idx = int(input('Enter Problem index: '))
+        if idx < len(problems):
+            result, status = apply_rule(problems[idx][0], rule_name=rule, available_hypothesis=problems[0][1])
+        else:
+            print(C_RED + '[ERROR] ' + C_END + 'Index out of range')
+            continue
+
+        if status == 'Ok' and result not in ['boo', 'foo']:
+            result = remove_outer_parentheses(myparser.parse(result))
+
+            """new_node = TreeNode(
+                status='NotProve',
+                problem={f'X_ii': result},
+                knowledge_base=knowledge_base.copy(),
+                parent=current_node
+            )
+
+            current_node.add_child(new_node)
+            current_node = new_node"""
+        else:
+            print(C_RED + '[ERROR] ' + C_END + 'Failed to apply rule, skipping...')
+            continue
 
         print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base After Applying Rule')
         if not knowledge_base:
@@ -331,3 +363,5 @@ if __name__ == '__main__':
                 print(C_YELLOW + f'{key}: ' + C_END + f'{myparser.parse(value)}')
 
         print(C_GREEN + f'[INFO] ' + C_END + f'Result: {result}')
+
+        # print_tree(root_node)

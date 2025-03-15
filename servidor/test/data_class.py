@@ -62,14 +62,15 @@ class RuleRegistry:
         return ''.join(output)
 
 
-@dataclass(frozen=True, order=True)
+@dataclass(order=True)
 class TreeNode:
-    status = str
+    status: str
     problem: Dict[str, str] = field(default_factory=dict)
     knowledge_base: Dict[str, str] = field(default_factory=dict) # creates a empty dict
     parent: Optional['TreeNode'] = None
     children: Optional[List['TreeNode']] = field(default_factory=list)  # List of child nodes, default empty list
 
+    """
     def add_child(self, child_node: 'TreeNode') -> TreeNode:
         children = list(self.children)
         children.append(child_node)
@@ -78,4 +79,7 @@ class TreeNode:
             knowledge_base=self.knowledge_base,
             parent=self,
             children=children
-        )
+        )"""
+
+    def add_child(self, child_node: 'TreeNode') -> TreeNode:
+        self.children.append(child_node)
