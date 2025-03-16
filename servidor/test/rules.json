@@ -38,5 +38,15 @@
         "name": "ID_2",
         "other_names": ["Introduction: Disjunction_2"],
         "apply": "apply_Disjunction_Introduction_2"
+    },
+    {
+        "name": "ED",
+        "other_names": ["Elimination: Disjunction"],
+        "apply": "apply_Disjunction_Elimination"
+    },
+    {
+        "name": "IN",
+        "other_names": ["Introduction: Negation"],
+        "apply": "apply_Negation_Introduction"
     }
 ]

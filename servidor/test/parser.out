@@ -1,0 +1,510 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Program
+Rule 1     Program -> ExpressionList
+Rule 2     ExpressionList -> Expression
+Rule 3     Expression -> ID
+Rule 4     Expression -> UnaryOp ID
+Rule 5     Expression -> Expression BinaryOp Expression
+Rule 6     Expression -> UnaryOp LPAREN Expression RPAREN
+Rule 7     Expression -> LPAREN Expression RPAREN
+Rule 8     Program -> EExpressionList
+Rule 9     EExpressionList -> EExpression
+Rule 10    EExpressionList -> EExpression EExpressionList
+Rule 11    EExpression -> EVar LPAREN ID RPAREN
+Rule 12    EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+Rule 13    EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+Rule 14    BinaryOp -> ARROW
+Rule 15    BinaryOp -> CONJ
+Rule 16    BinaryOp -> DISJ
+Rule 17    UnaryOp -> NOT
+
+Terminals, with rules where they appear
+
+ARROW                : 14
+COMMA                : 12 12 13
+CONJ                 : 15
+DISJ                 : 16
+EBinOp               : 12
+EUnOp                : 13
+EVar                 : 11
+ID                   : 3 4 11
+LPAREN               : 6 7 11 12 13
+NOT                  : 17
+RPAREN               : 6 7 11 12 13
+error                : 
+
+Nonterminals, with rules where they appear
+
+BinaryOp             : 5 12
+EExpression          : 9 10 12 12 13
+EExpressionList      : 8 10
+Expression           : 2 5 5 6 7
+ExpressionList       : 1
+Program              : 0
+UnaryOp              : 4 6 13
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Program
+    (1) Program -> . ExpressionList
+    (8) Program -> . EExpressionList
+    (2) ExpressionList -> . Expression
+    (9) EExpressionList -> . EExpression
+    (10) EExpressionList -> . EExpression EExpressionList
+    (3) Expression -> . ID
+    (4) Expression -> . UnaryOp ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . UnaryOp LPAREN Expression RPAREN
+    (7) Expression -> . LPAREN Expression RPAREN
+    (11) EExpression -> . EVar LPAREN ID RPAREN
+    (12) EExpression -> . EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (13) EExpression -> . EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+    (17) UnaryOp -> . NOT
+
+    ID              shift and go to state 6
+    LPAREN          shift and go to state 8
+    EVar            shift and go to state 9
+    EBinOp          shift and go to state 10
+    EUnOp           shift and go to state 11
+    NOT             shift and go to state 12
+
+    Program                        shift and go to state 1
+    ExpressionList                 shift and go to state 2
+    EExpressionList                shift and go to state 3
+    Expression                     shift and go to state 4
+    EExpression                    shift and go to state 5
+    UnaryOp                        shift and go to state 7
+
+state 1
+
+    (0) S' -> Program .
+
+
+
+state 2
+
+    (1) Program -> ExpressionList .
+
+    $end            reduce using rule 1 (Program -> ExpressionList .)
+
+
+state 3
+
+    (8) Program -> EExpressionList .
+
+    $end            reduce using rule 8 (Program -> EExpressionList .)
+
+
+state 4
+
+    (2) ExpressionList -> Expression .
+    (5) Expression -> Expression . BinaryOp Expression
+    (14) BinaryOp -> . ARROW
+    (15) BinaryOp -> . CONJ
+    (16) BinaryOp -> . DISJ
+
+    $end            reduce using rule 2 (ExpressionList -> Expression .)
+    ARROW           shift and go to state 14
+    CONJ            shift and go to state 15
+    DISJ            shift and go to state 16
+
+    BinaryOp                       shift and go to state 13
+
+state 5
+
+    (9) EExpressionList -> EExpression .
+    (10) EExpressionList -> EExpression . EExpressionList
+    (9) EExpressionList -> . EExpression
+    (10) EExpressionList -> . EExpression EExpressionList
+    (11) EExpression -> . EVar LPAREN ID RPAREN
+    (12) EExpression -> . EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (13) EExpression -> . EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+
+    $end            reduce using rule 9 (EExpressionList -> EExpression .)
+    EVar            shift and go to state 9
+    EBinOp          shift and go to state 10
+    EUnOp           shift and go to state 11
+
+    EExpression                    shift and go to state 5
+    EExpressionList                shift and go to state 17
+
+state 6
+
+    (3) Expression -> ID .
+
+    ARROW           reduce using rule 3 (Expression -> ID .)
+    CONJ            reduce using rule 3 (Expression -> ID .)
+    DISJ            reduce using rule 3 (Expression -> ID .)
+    $end            reduce using rule 3 (Expression -> ID .)
+    RPAREN          reduce using rule 3 (Expression -> ID .)
+
+
+state 7
+
+    (4) Expression -> UnaryOp . ID
+    (6) Expression -> UnaryOp . LPAREN Expression RPAREN
+
+    ID              shift and go to state 18
+    LPAREN          shift and go to state 19
+
+
+state 8
+
+    (7) Expression -> LPAREN . Expression RPAREN
+    (3) Expression -> . ID
+    (4) Expression -> . UnaryOp ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . UnaryOp LPAREN Expression RPAREN
+    (7) Expression -> . LPAREN Expression RPAREN
+    (17) UnaryOp -> . NOT
+
+    ID              shift and go to state 6
+    LPAREN          shift and go to state 8
+    NOT             shift and go to state 12
+
+    Expression                     shift and go to state 20
+    UnaryOp                        shift and go to state 7
+
+state 9
+
+    (11) EExpression -> EVar . LPAREN ID RPAREN
+
+    LPAREN          shift and go to state 21
+
+
+state 10
+
+    (12) EExpression -> EBinOp . LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+
+    LPAREN          shift and go to state 22
+
+
+state 11
+
+    (13) EExpression -> EUnOp . LPAREN UnaryOp COMMA EExpression RPAREN
+
+    LPAREN          shift and go to state 23
+
+
+state 12
+
+    (17) UnaryOp -> NOT .
+
+    ID              reduce using rule 17 (UnaryOp -> NOT .)
+    LPAREN          reduce using rule 17 (UnaryOp -> NOT .)
+    COMMA           reduce using rule 17 (UnaryOp -> NOT .)
+
+
+state 13
+
+    (5) Expression -> Expression BinaryOp . Expression
+    (3) Expression -> . ID
+    (4) Expression -> . UnaryOp ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . UnaryOp LPAREN Expression RPAREN
+    (7) Expression -> . LPAREN Expression RPAREN
+    (17) UnaryOp -> . NOT
+
+    ID              shift and go to state 6
+    LPAREN          shift and go to state 8
+    NOT             shift and go to state 12
+
+    Expression                     shift and go to state 24
+    UnaryOp                        shift and go to state 7
+
+state 14
+
+    (14) BinaryOp -> ARROW .
+
+    ID              reduce using rule 14 (BinaryOp -> ARROW .)
+    LPAREN          reduce using rule 14 (BinaryOp -> ARROW .)
+    NOT             reduce using rule 14 (BinaryOp -> ARROW .)
+    COMMA           reduce using rule 14 (BinaryOp -> ARROW .)
+
+
+state 15
+
+    (15) BinaryOp -> CONJ .
+
+    ID              reduce using rule 15 (BinaryOp -> CONJ .)
+    LPAREN          reduce using rule 15 (BinaryOp -> CONJ .)
+    NOT             reduce using rule 15 (BinaryOp -> CONJ .)
+    COMMA           reduce using rule 15 (BinaryOp -> CONJ .)
+
+
+state 16
+
+    (16) BinaryOp -> DISJ .
+
+    ID              reduce using rule 16 (BinaryOp -> DISJ .)
+    LPAREN          reduce using rule 16 (BinaryOp -> DISJ .)
+    NOT             reduce using rule 16 (BinaryOp -> DISJ .)
+    COMMA           reduce using rule 16 (BinaryOp -> DISJ .)
+
+
+state 17
+
+    (10) EExpressionList -> EExpression EExpressionList .
+
+    $end            reduce using rule 10 (EExpressionList -> EExpression EExpressionList .)
+
+
+state 18
+
+    (4) Expression -> UnaryOp ID .
+
+    ARROW           reduce using rule 4 (Expression -> UnaryOp ID .)
+    CONJ            reduce using rule 4 (Expression -> UnaryOp ID .)
+    DISJ            reduce using rule 4 (Expression -> UnaryOp ID .)
+    $end            reduce using rule 4 (Expression -> UnaryOp ID .)
+    RPAREN          reduce using rule 4 (Expression -> UnaryOp ID .)
+
+
+state 19
+
+    (6) Expression -> UnaryOp LPAREN . Expression RPAREN
+    (3) Expression -> . ID
+    (4) Expression -> . UnaryOp ID
+    (5) Expression -> . Expression BinaryOp Expression
+    (6) Expression -> . UnaryOp LPAREN Expression RPAREN
+    (7) Expression -> . LPAREN Expression RPAREN
+    (17) UnaryOp -> . NOT
+
+    ID              shift and go to state 6
+    LPAREN          shift and go to state 8
+    NOT             shift and go to state 12
+
+    UnaryOp                        shift and go to state 7
+    Expression                     shift and go to state 25
+
+state 20
+
+    (7) Expression -> LPAREN Expression . RPAREN
+    (5) Expression -> Expression . BinaryOp Expression
+    (14) BinaryOp -> . ARROW
+    (15) BinaryOp -> . CONJ
+    (16) BinaryOp -> . DISJ
+
+    RPAREN          shift and go to state 26
+    ARROW           shift and go to state 14
+    CONJ            shift and go to state 15
+    DISJ            shift and go to state 16
+
+    BinaryOp                       shift and go to state 13
+
+state 21
+
+    (11) EExpression -> EVar LPAREN . ID RPAREN
+
+    ID              shift and go to state 27
+
+
+state 22
+
+    (12) EExpression -> EBinOp LPAREN . BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (14) BinaryOp -> . ARROW
+    (15) BinaryOp -> . CONJ
+    (16) BinaryOp -> . DISJ
+
+    ARROW           shift and go to state 14
+    CONJ            shift and go to state 15
+    DISJ            shift and go to state 16
+
+    BinaryOp                       shift and go to state 28
+
+state 23
+
+    (13) EExpression -> EUnOp LPAREN . UnaryOp COMMA EExpression RPAREN
+    (17) UnaryOp -> . NOT
+
+    NOT             shift and go to state 12
+
+    UnaryOp                        shift and go to state 29
+
+state 24
+
+    (5) Expression -> Expression BinaryOp Expression .
+    (5) Expression -> Expression . BinaryOp Expression
+    (14) BinaryOp -> . ARROW
+    (15) BinaryOp -> . CONJ
+    (16) BinaryOp -> . DISJ
+
+  ! shift/reduce conflict for ARROW resolved as shift
+  ! shift/reduce conflict for CONJ resolved as shift
+  ! shift/reduce conflict for DISJ resolved as shift
+    $end            reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    RPAREN          reduce using rule 5 (Expression -> Expression BinaryOp Expression .)
+    ARROW           shift and go to state 14
+    CONJ            shift and go to state 15
+    DISJ            shift and go to state 16
+
+  ! ARROW           [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+  ! CONJ            [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+  ! DISJ            [ reduce using rule 5 (Expression -> Expression BinaryOp Expression .) ]
+
+    BinaryOp                       shift and go to state 13
+
+state 25
+
+    (6) Expression -> UnaryOp LPAREN Expression . RPAREN
+    (5) Expression -> Expression . BinaryOp Expression
+    (14) BinaryOp -> . ARROW
+    (15) BinaryOp -> . CONJ
+    (16) BinaryOp -> . DISJ
+
+    RPAREN          shift and go to state 30
+    ARROW           shift and go to state 14
+    CONJ            shift and go to state 15
+    DISJ            shift and go to state 16
+
+    BinaryOp                       shift and go to state 13
+
+state 26
+
+    (7) Expression -> LPAREN Expression RPAREN .
+
+    ARROW           reduce using rule 7 (Expression -> LPAREN Expression RPAREN .)
+    CONJ            reduce using rule 7 (Expression -> LPAREN Expression RPAREN .)
+    DISJ            reduce using rule 7 (Expression -> LPAREN Expression RPAREN .)
+    $end            reduce using rule 7 (Expression -> LPAREN Expression RPAREN .)
+    RPAREN          reduce using rule 7 (Expression -> LPAREN Expression RPAREN .)
+
+
+state 27
+
+    (11) EExpression -> EVar LPAREN ID . RPAREN
+
+    RPAREN          shift and go to state 31
+
+
+state 28
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp . COMMA EExpression COMMA EExpression RPAREN
+
+    COMMA           shift and go to state 32
+
+
+state 29
+
+    (13) EExpression -> EUnOp LPAREN UnaryOp . COMMA EExpression RPAREN
+
+    COMMA           shift and go to state 33
+
+
+state 30
+
+    (6) Expression -> UnaryOp LPAREN Expression RPAREN .
+
+    ARROW           reduce using rule 6 (Expression -> UnaryOp LPAREN Expression RPAREN .)
+    CONJ            reduce using rule 6 (Expression -> UnaryOp LPAREN Expression RPAREN .)
+    DISJ            reduce using rule 6 (Expression -> UnaryOp LPAREN Expression RPAREN .)
+    $end            reduce using rule 6 (Expression -> UnaryOp LPAREN Expression RPAREN .)
+    RPAREN          reduce using rule 6 (Expression -> UnaryOp LPAREN Expression RPAREN .)
+
+
+state 31
+
+    (11) EExpression -> EVar LPAREN ID RPAREN .
+
+    EVar            reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+    EBinOp          reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+    EUnOp           reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+    $end            reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+    COMMA           reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+    RPAREN          reduce using rule 11 (EExpression -> EVar LPAREN ID RPAREN .)
+
+
+state 32
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp COMMA . EExpression COMMA EExpression RPAREN
+    (11) EExpression -> . EVar LPAREN ID RPAREN
+    (12) EExpression -> . EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (13) EExpression -> . EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+
+    EVar            shift and go to state 9
+    EBinOp          shift and go to state 10
+    EUnOp           shift and go to state 11
+
+    EExpression                    shift and go to state 34
+
+state 33
+
+    (13) EExpression -> EUnOp LPAREN UnaryOp COMMA . EExpression RPAREN
+    (11) EExpression -> . EVar LPAREN ID RPAREN
+    (12) EExpression -> . EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (13) EExpression -> . EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+
+    EVar            shift and go to state 9
+    EBinOp          shift and go to state 10
+    EUnOp           shift and go to state 11
+
+    EExpression                    shift and go to state 35
+
+state 34
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression . COMMA EExpression RPAREN
+
+    COMMA           shift and go to state 36
+
+
+state 35
+
+    (13) EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression . RPAREN
+
+    RPAREN          shift and go to state 37
+
+
+state 36
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA . EExpression RPAREN
+    (11) EExpression -> . EVar LPAREN ID RPAREN
+    (12) EExpression -> . EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN
+    (13) EExpression -> . EUnOp LPAREN UnaryOp COMMA EExpression RPAREN
+
+    EVar            shift and go to state 9
+    EBinOp          shift and go to state 10
+    EUnOp           shift and go to state 11
+
+    EExpression                    shift and go to state 38
+
+state 37
+
+    (13) EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .
+
+    EVar            reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+    EBinOp          reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+    EUnOp           reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+    $end            reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+    COMMA           reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+    RPAREN          reduce using rule 13 (EExpression -> EUnOp LPAREN UnaryOp COMMA EExpression RPAREN .)
+
+
+state 38
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression . RPAREN
+
+    RPAREN          shift and go to state 39
+
+
+state 39
+
+    (12) EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .
+
+    EVar            reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+    EBinOp          reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+    EUnOp           reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+    $end            reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+    COMMA           reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+    RPAREN          reduce using rule 12 (EExpression -> EBinOp LPAREN BinaryOp COMMA EExpression COMMA EExpression RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ARROW in state 24 resolved as shift
+WARNING: shift/reduce conflict for CONJ in state 24 resolved as shift
+WARNING: shift/reduce conflict for DISJ in state 24 resolved as shift

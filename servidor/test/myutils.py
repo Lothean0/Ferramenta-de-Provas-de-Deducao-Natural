@@ -2,7 +2,7 @@ import re
 
 from typing import List
 
-from servidor.test.data_class import C_RED, C_END
+from data_class import C_RED, C_END
 
 def remove_outer_parentheses(s: str) -> str:
 
