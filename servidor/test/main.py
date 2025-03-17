@@ -3,7 +3,7 @@ from matplotlib.style.core import available
 from data_class import *
 from myutils import *
 from grammar import myparser
-
+import os
 import json
 
 n_hypothesis = 0
@@ -398,9 +398,8 @@ def load_rules_from_file(file_path: str, rr: RuleRegistry) -> None:
 if __name__ == '__main__':
 
     rule_registry = RuleRegistry()
-
-    load_rules_from_file('servidor/test/rules.json', rule_registry)
-    #load_rules_from_file('rules.json', rule_registry)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    load_rules_from_file(f'{dir_path}/rules.json', rule_registry)
 
     knowledge_base = {}
     while True:
