@@ -12,7 +12,7 @@ C_END = '\033[0m'
 class Rule:
     name: str
     other_names: Optional[List[str]] = field(default_factory=list) # creates an empty list
-    apply: Callable[[str, List[str]], Optional[str]] = field(default=lambda x, y: None)
+    apply: Callable[[str, set[str], str], Optional[str]] = field(default=lambda x, y: None)
 
 
     def __post_init__(self) -> None:

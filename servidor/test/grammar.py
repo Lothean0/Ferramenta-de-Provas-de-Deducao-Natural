@@ -105,6 +105,10 @@ def p_BinaryOp_3(p:str) -> None:
     '''BinaryOp : DISJ'''
     p[0] = '∨'
 
+def p_BinaryOp_4(p:str) -> None:
+    '''BinaryOp : LONG'''
+    p[0] = '⟺'
+
 def p_UnariOp(p:str) -> None:
     '''UnaryOp : NOT'''
     p[0] = '~'

@@ -7,6 +7,8 @@ tokens = (
     'CONJ',
     'DISJ',
     'NOT',
+    'LONG',
+    'ABSURD',
     'LPAREN',
     'RPAREN',
     'EVar',
@@ -19,6 +21,8 @@ t_ARROW = r'->'
 t_CONJ = r'∧'
 t_DISJ = r'∨'
 t_NOT = r'~'
+t_LONG = r'⟺'
+t_ABSURD = r'⊥'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r','

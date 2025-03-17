@@ -1,3 +1,5 @@
+from matplotlib.style.core import available
+
 from data_class import *
 from myutils import *
 from grammar import myparser
@@ -188,41 +190,44 @@ def apply_disjunction_introduction_2(
 
 
 # --- DISJUNCTION ELIMINATION ------------------------------------------------------------------------------------------
+
 def apply_disjunction_elimination(
         logical_expr: str,
         available_hypothesis: set[str],
         problem: str
 ) -> Optional[str]:
+
     print(knowledge_base)
     res = input('Aux Formula (from kb or enter new expression): ')
     res = myparser.parse(res)
     expr=split_expression(res)
+
     global n_hypothesis
     if len(expr) != 3 or expr[0] != '∨':
         raise ValueError('Disjunction elimination requires 3 arguments or symbol ∨')
-    
+
+    tmp1, tmp2 = available_hypothesis.copy(), available_hypothesis.copy()
+    antecedent, consequent = expr[1], expr[2]
+
+
     for kb_key, kb_value in knowledge_base.items():
-        if kb_value == expr[1]:
-            tmp1 = available_hypothesis.copy()
+        if kb_value == antecedent:
             tmp1.add(kb_key)
-        if kb_value == expr[2]:
-            tmp2 = available_hypothesis.copy()
+        if kb_value == consequent:
             tmp2.add(kb_key)
             
     if expr[1] not in knowledge_base.values():
-        knowledge_base[f'X{n_hypothesis}'] = expr[1]
+        knowledge_base[f'X{n_hypothesis}'] = antecedent
         n_hypothesis += 1
-        tmp1 = available_hypothesis.copy()
         tmp1.add(f'X{n_hypothesis-1}')
 
     if expr[2] not in knowledge_base.values():
-        knowledge_base[f'X{n_hypothesis}'] = expr[2]
+        knowledge_base[f'X{n_hypothesis}'] = consequent
         n_hypothesis += 1
-        tmp2 = available_hypothesis.copy()
         tmp2.add(f'X{n_hypothesis-1}')
 
     del problems[problem]
-    problems[problem+'1']=(f"EBinOp(∨, {expr[1]}, {expr[2]})", available_hypothesis)
+    problems[problem+'1']=(f"EBinOp(∨, {antecedent}, {consequent})", available_hypothesis)
     problems[problem+'2']=(f"{logical_expr}", tmp1)
     problems[problem+'3']=(f"{logical_expr}", tmp2)
     return 'foo'
@@ -251,6 +256,89 @@ def apply_negation_introduction(
             n_hypothesis += 1
     return 'boo'
 
+# --- IF AND ONLY IF ---------------------------------------------------------------------------------------------------
+
+
+def apply_ifandonlyif_introduction(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) != 3 or arguments[0] != '⟺':
+        raise ValueError('if and only if introduction requires 3 arguments or symbol ⟺')
+
+    tmp1, tmp2 = available_hypothesis.copy(), available_hypothesis.copy()
+    antecedent, consequent = arguments[1], arguments[2]
+
+    # | ------------------ FALTA FAZER ISTO ------------------- |
+    # | for kb_key, kb_value in knowledge_base.items():         |
+    # |     if kb_value == antecedent:                          |
+    # |         tmp1.add(kb_key)                                |
+    # |     if kb_value == consequent:                          |
+    # |         tmp2.add(kb_key)                                |
+    # |                                                         |
+    # | if arguments[1] not in knowledge_base.values():         |
+    # |     knowledge_base[f'X{n_hypothesis}'] = antecedent     |
+    # |     n_hypothesis += 1                                   |
+    # |     tmp1.add(f'X{n_hypothesis - 1}')                    |
+    # |                                                         |
+    # | if arguments[2] not in knowledge_base.values():         |
+    # |     knowledge_base[f'X{n_hypothesis}'] = consequent     |
+    # |     n_hypothesis += 1                                   |
+    # |     tmp2.add(f'X{n_hypothesis - 1}')                    |
+    # | --------------------------------------------------------|
+
+    del problems[problem]
+    problems[problem + '1'] = (antecedent, tmp1)  # available_hypothesis.add(antecedent)
+    problems[problem + '2'] = (consequent, tmp2)
+    return 'boo'
+
+
+def apply_ifandonlyif_elimination_1(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = myparser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'boo'
+
+
+def apply_ifandonlyif_elimination__2(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = myparser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'boo'
+
 
 # --- OTHERS -----------------------------------------------------------------------------------------------------------
 
@@ -266,7 +354,7 @@ def apply_rule(
     print(C_RED + f'[ERROR] ' + C_END + f'Rule not found')
     return None, 'Err'
 
-def get_function_map() -> Dict[str, Callable[[str, set[str]], Optional[str]]]:
+def get_function_map() -> Dict[str, Callable[[str, set[str], str], Optional[str]]]:
     return  {
         "apply_Implication_Introduction": apply_implication_introduction,
         "apply_Implication_Elimination": apply_implication_elimination,
@@ -311,7 +399,8 @@ if __name__ == '__main__':
 
     rule_registry = RuleRegistry()
 
-    load_rules_from_file('servidor/test/rules.json', rule_registry)
+    # load_rules_from_file('servidor/test/rules.json', rule_registry)
+    load_rules_from_file('rules.json', rule_registry)
 
     knowledge_base = {}
     while True:
