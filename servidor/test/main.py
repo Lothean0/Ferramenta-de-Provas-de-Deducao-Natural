@@ -81,7 +81,7 @@ def apply_implication_elimination(
         problem: str
 ) -> Optional[str]:
         print(knowledge_base)
-        res = input('Aux Formula (from kb or enter new expression): ')
+        res = input('Enter an Auxiliar Formula: ')
         if res in knowledge_base:
             aux_formula = knowledge_base.get(res)
             del problems[problem]

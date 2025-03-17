@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from idlelib.tree import TreeNode
+#from idlelib.tree import TreeNode
 from typing import Tuple, List, Optional, Dict, Callable
 
 C_RED = '\033[91m'
@@ -61,7 +61,7 @@ class RuleRegistry:
 
         return ''.join(output)
 
-
+"""
 @dataclass(order=True)
 class TreeNode:
     status: str
@@ -70,7 +70,7 @@ class TreeNode:
     parent: Optional['TreeNode'] = None
     children: Optional[List['TreeNode']] = field(default_factory=list)  # List of child nodes, default empty list
 
-    """
+    
     def add_child(self, child_node: 'TreeNode') -> TreeNode:
         children = list(self.children)
         children.append(child_node)
@@ -79,7 +79,9 @@ class TreeNode:
             knowledge_base=self.knowledge_base,
             parent=self,
             children=children
-        )"""
+        )
 
     def add_child(self, child_node: 'TreeNode') -> TreeNode:
         self.children.append(child_node)
+
+"""
