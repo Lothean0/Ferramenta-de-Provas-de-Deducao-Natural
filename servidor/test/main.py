@@ -53,11 +53,12 @@ def apply_implication_introduction(
         knowledge_base[tmp] = antecedent
         n_hypothesis += 1
 
-    available_hypothesis.add(tmp)
+    available_hypothesis_new = available_hypothesis.copy()
+    available_hypothesis_new.add(tmp)
 
     del problems[problem]
 
-    problems[problem+'1'] = (consequent, available_hypothesis)
+    problems[problem+'1'] = (consequent, available_hypothesis_new)
 
     return consequent
 
@@ -206,30 +207,30 @@ def apply_disjunction_elimination(
     if len(expr) != 3 or expr[0] != '∨':
         raise ValueError('Disjunction elimination requires 3 arguments or symbol ∨')
 
-    tmp1, tmp2 = available_hypothesis.copy(), available_hypothesis.copy()
+    available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
     antecedent, consequent = expr[1], expr[2]
 
 
     for kb_key, kb_value in knowledge_base.items():
         if kb_value == antecedent:
-            tmp1.add(kb_key)
+            available_hypothesis_new1.add(kb_key)
         if kb_value == consequent:
-            tmp2.add(kb_key)
+            available_hypothesis_new2.add(kb_key)
             
     if expr[1] not in knowledge_base.values():
         knowledge_base[f'X{n_hypothesis}'] = antecedent
         n_hypothesis += 1
-        tmp1.add(f'X{n_hypothesis-1}')
+        available_hypothesis_new1.add(f'X{n_hypothesis-1}')
 
     if expr[2] not in knowledge_base.values():
         knowledge_base[f'X{n_hypothesis}'] = consequent
         n_hypothesis += 1
-        tmp2.add(f'X{n_hypothesis-1}')
+        available_hypothesis_new2.add(f'X{n_hypothesis-1}')
 
     del problems[problem]
     problems[problem+'1']=(f"EBinOp(∨, {antecedent}, {consequent})", available_hypothesis)
-    problems[problem+'2']=(f"{logical_expr}", tmp1)
-    problems[problem+'3']=(f"{logical_expr}", tmp2)
+    problems[problem+'2']=(f"{logical_expr}", available_hypothesis_new1)
+    problems[problem+'3']=(f"{logical_expr}", available_hypothesis_new2)
     return 'foo'
 
 # --- NEGATION ---------------------------------------------------------------------------------------------------------
@@ -270,30 +271,30 @@ def apply_ifandonlyif_introduction(
     if len(arguments) != 3 or arguments[0] != '⟺':
         raise ValueError('if and only if introduction requires 3 arguments or symbol ⟺')
 
-    tmp1, tmp2 = available_hypothesis.copy(), available_hypothesis.copy()
+    available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
     antecedent, consequent = arguments[1], arguments[2]
 
     # | ------------------ FALTA FAZER ISTO ------------------- |
     # | for kb_key, kb_value in knowledge_base.items():         |
     # |     if kb_value == antecedent:                          |
-    # |         tmp1.add(kb_key)                                |
+    # |         available_hypothesis_new1.add(kb_key)                                |
     # |     if kb_value == consequent:                          |
-    # |         tmp2.add(kb_key)                                |
+    # |         available_hypothesis_new2.add(kb_key)                                |
     # |                                                         |
     # | if arguments[1] not in knowledge_base.values():         |
     # |     knowledge_base[f'X{n_hypothesis}'] = antecedent     |
     # |     n_hypothesis += 1                                   |
-    # |     tmp1.add(f'X{n_hypothesis - 1}')                    |
+    # |     available_hypothesis_new1.add(f'X{n_hypothesis - 1}')                    |
     # |                                                         |
     # | if arguments[2] not in knowledge_base.values():         |
     # |     knowledge_base[f'X{n_hypothesis}'] = consequent     |
     # |     n_hypothesis += 1                                   |
-    # |     tmp2.add(f'X{n_hypothesis - 1}')                    |
+    # |     available_hypothesis_new2.add(f'X{n_hypothesis - 1}')                    |
     # | --------------------------------------------------------|
 
     del problems[problem]
-    problems[problem + '1'] = (antecedent, tmp1)  # available_hypothesis.add(antecedent)
-    problems[problem + '2'] = (consequent, tmp2)
+    problems[problem + '1'] = (antecedent, available_hypothesis_new1)  # available_hypothesis.add(antecedent)
+    problems[problem + '2'] = (consequent, available_hypothesis_new2)
     return 'boo'
 
 
