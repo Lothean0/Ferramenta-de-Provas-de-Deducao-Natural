@@ -399,8 +399,8 @@ if __name__ == '__main__':
 
     rule_registry = RuleRegistry()
 
-    # load_rules_from_file('servidor/test/rules.json', rule_registry)
-    load_rules_from_file('rules.json', rule_registry)
+    load_rules_from_file('servidor/test/rules.json', rule_registry)
+    #load_rules_from_file('rules.json', rule_registry)
 
     knowledge_base = {}
     while True:
