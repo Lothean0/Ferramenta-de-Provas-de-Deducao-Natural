@@ -443,6 +443,7 @@ if __name__ == '__main__':
         if not knowledge_base:
             print(C_YELLOW + f'Empty knowledge base' + C_END)
         else:
+            print(C_YELLOW + f'{"Hypotesis"}: ' + C_END)
             for key, value in knowledge_base.items():
                 print(C_YELLOW + f'{key}: ' + C_END + f'{myparser.parse(value)}')
         if len(problems) == 1:
@@ -469,6 +470,7 @@ if __name__ == '__main__':
         if not knowledge_base:
             print(C_YELLOW + f'Empty knowledge base' + C_END)
         else:
+            print(C_YELLOW + f'{"Hypotesis"}: ' + C_END)
             for key, value in knowledge_base.items():
                 print(C_YELLOW + f'{key}: ' + C_END + f'{myparser.parse(value)}')
 
@@ -476,6 +478,7 @@ if __name__ == '__main__':
             print(C_GREEN + f'[INFO] ' + C_END + f'All problems solved')
             break
         else:
+            print(C_YELLOW + f'{"Problems"}: ' + C_END)
             for key, value in problems.items():
                 print(C_YELLOW + f'{key}: ' + C_END + f'{remove_outer_parentheses(myparser.parse(value[0]))}')
 
