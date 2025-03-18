@@ -199,7 +199,7 @@ def apply_disjunction_elimination(
 ) -> Optional[str]:
 
     print(knowledge_base)
-    res = input('Aux Formula (from kb or enter new expression): ')
+    res = input('Main Disjunction (from kb or enter new expression): ')
     res = myparser.parse(res)
     expr=split_expression(res)
 
@@ -320,7 +320,7 @@ def apply_ifandonlyif_elimination_1(
         return 'boo'
 
 
-def apply_ifandonlyif_elimination__2(
+def apply_ifandonlyif_elimination_2(
         logical_expr: str,
         available_hypothesis: set[str],
         problem: str
@@ -366,7 +366,10 @@ def get_function_map() -> Dict[str, Callable[[str, set[str], str], Optional[str]
         "apply_Disjunction_Introduction_1": apply_disjunction_introduction_1,
         "apply_Disjunction_Introduction_2": apply_disjunction_introduction_2,
         "apply_Disjunction_Elimination": apply_disjunction_elimination,
-        "apply_Negation_Introduction": apply_negation_introduction
+        "apply_Negation_Introduction": apply_negation_introduction,
+        #"apply_IfAndOnlyIf_Introduction": apply_ifandonlyif_introduction,
+        "apply_IfAndOnlyIf_Elimination_1": apply_ifandonlyif_elimination_1,
+        "apply_IfAndOnlyIf_Elimination_2": apply_ifandonlyif_elimination_2
     }
 
 def load_rules_from_file(file_path: str, rr: RuleRegistry) -> None:
@@ -434,9 +437,9 @@ if __name__ == '__main__':
         print('Error parsing expression')
 
     while problems:
+        #parsing needed
         print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
 
-        rule = input('Rule: ')
         print()
 
         print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base Before Applying Rule')
@@ -451,6 +454,7 @@ if __name__ == '__main__':
         else:
             idx = input('Enter Problem index: ')
         if idx in problems.keys():
+            rule = input('Rule: ')
             apply_rule(problems[idx][0], rule_name=rule, available_hypothesis=problems[idx][1], problem=idx)
         else:
             print(C_RED + '[ERROR] ' + C_END + 'Index out of range')
