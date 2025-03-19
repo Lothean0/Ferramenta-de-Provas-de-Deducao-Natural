@@ -48,5 +48,15 @@
         "name": "IN",
         "other_names": ["Introduction: Negation"],
         "apply": "apply_Negation_Introduction"
+    },
+    {
+        "name": "IF_1",
+        "other_names": ["Elimination: IF_1"],
+        "apply": "apply_IfAndOnlyIf_Elimination_1"
+    },
+    {
+        "name": "IF_2",
+        "other_names": ["Elimination: IF_2"],
+        "apply": "apply_IfAndOnlyIf_Elimination_2"
     }
 ]
