@@ -274,23 +274,23 @@ def apply_ifandonlyif_introduction(
     available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
     antecedent, consequent = arguments[1], arguments[2]
 
-    # | ------------------ FALTA FAZER ISTO ------------------- |
-    # | for kb_key, kb_value in knowledge_base.items():         |
-    # |     if kb_value == antecedent:                          |
-    # |         available_hypothesis_new1.add(kb_key)                                |
-    # |     if kb_value == consequent:                          |
-    # |         available_hypothesis_new2.add(kb_key)                                |
-    # |                                                         |
-    # | if arguments[1] not in knowledge_base.values():         |
-    # |     knowledge_base[f'X{n_hypothesis}'] = antecedent     |
-    # |     n_hypothesis += 1                                   |
-    # |     available_hypothesis_new1.add(f'X{n_hypothesis - 1}')                    |
-    # |                                                         |
-    # | if arguments[2] not in knowledge_base.values():         |
-    # |     knowledge_base[f'X{n_hypothesis}'] = consequent     |
-    # |     n_hypothesis += 1                                   |
-    # |     available_hypothesis_new2.add(f'X{n_hypothesis - 1}')                    |
-    # | --------------------------------------------------------|
+    # | ------------------ FALTA FAZER ISTO -------------------- |
+    # | for kb_key, kb_value in knowledge_base.items():          |
+    # |     if kb_value == antecedent:                           |
+    # |         available_hypothesis_new1.add(kb_key)            |
+    # |     if kb_value == consequent:                           |
+    # |         available_hypothesis_new2.add(kb_key)            |
+    # |                                                          |
+    # | if arguments[1] not in knowledge_base.values():          |
+    # |     knowledge_base[f'X{n_hypothesis}'] = antecedent      |
+    # |     n_hypothesis += 1                                    |
+    # |     available_hypothesis_new1.add(f'X{n_hypothesis - 1}')|
+    # |                                                          |
+    # | if arguments[2] not in knowledge_base.values():          |
+    # |     knowledge_base[f'X{n_hypothesis}'] = consequent      |
+    # |     n_hypothesis += 1                                    |
+    # |     available_hypothesis_new2.add(f'X{n_hypothesis - 1}')|
+    # | -------------------------------------------------------- |
 
     del problems[problem]
     problems[problem + '1'] = (antecedent, available_hypothesis_new1)  # available_hypothesis.add(antecedent)
