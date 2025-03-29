@@ -59,5 +59,3 @@ class BinOpDeclaration:
     left: Any
     right: Any
     lineno: int
-
-.\servidor\main.py .\servidor\test\data_class.py .\servidor\coq\coq_ast\ast_nodes.py .\servidor\coq\coq_parser\coq_lexer.py .\servidor\coq\coq_parser\coq_parser.py .\servidor\coq\coq_semantic\semantic_analyzer.py .\servidor\coq\coq_semantic\symbol_table.py .\servidor\dto\init__.py .\servidor\dto\logic_dto.py .\servidor\dto\user_dto.py .\servidor\test\truthtable.py
