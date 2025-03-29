@@ -104,7 +104,7 @@ def apply_rule(
 
 @app.route("/api/checkExpression", methods=["POST"])
 def check_expression():
-    data = request.get_json()
+    """data = request.get_json()
     expression = data.get("expression", "")
     rule = data.get("rule", "")
 
@@ -116,7 +116,11 @@ def check_expression():
 
     return jsonify(
         {"EXPRESSION": expression, "status": "Rule applied", "result": result}
-    )
+
+    )"""
+    data = request.json
+    print("Received:", data)  # Debugging
+    return jsonify({"message": "Data received successfully", "received": data}), 400
 
 
 @app.route("/api/users", methods=["GET"])
