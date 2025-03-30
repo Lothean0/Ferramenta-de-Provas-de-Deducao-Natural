@@ -22,7 +22,7 @@ class LemmaDeclaration:
 
 
 @dataclass
-class InstructionDeclaration:
+class ApplyRuleDeclaration:
     name: str
     params: str
     lineno: int

@@ -1,16 +1,15 @@
-from typing import Any, Optional
-
-
 class SymbolTable:
 
     def __init__(self):
-        self.symbols = {}
+        self.symbols = []
 
-    def add(self, name: str, declaration: Any):
-        self.symbols[name] = declaration
 
-    def lookup(self, name: str) -> Optional[Any]:
-        return self.symbols.get(name, None)
+    def add(self, name: str):
+        self.symbols.append(name)
+
 
     def is_declared(self, name: str) -> bool:
         return name in self.symbols
+
+    def __str__(self):
+        return f'Symbol table: {self.symbols}'

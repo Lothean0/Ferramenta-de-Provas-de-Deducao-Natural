@@ -4,7 +4,7 @@ from servidor.coq.coq_ast.ast_nodes import (
     ProgramDeclaration,
     LemmaDeclaration,
     ProofDeclaration,
-    InstructionDeclaration,
+    ApplyRuleDeclaration,
     QuitDeclaration,
     EVarDeclaration,
     BodyDeclaration,
@@ -34,15 +34,16 @@ class SemanticAnalyzer:
         self.symbol_table = SymbolTable()
 
 
-    def analyze(self, ast: Optional[Any]) -> Optional[Any]:
+    def analyze(self, ast) -> Any:
         if ast is None:
             return
+
         self.visit(ast)
         return ast
 
 
     def visit(self, node: Any) -> Optional[str]:
-        print(f"Visiting node of type: {type(node).__name__}")  # Debugging print statement
+        # print(f"Visiting node of type: {type(node).__name__}")  # Debugging print statement
         method_name = f'visit_{node.__class__.__name__}'
         visitor = getattr(self, method_name, self.generic_visit)
         return visitor(node)
@@ -57,18 +58,37 @@ class SemanticAnalyzer:
             self.visit(decl)
 
 
+    def visit_ProofDeclaration(self, node: ProofDeclaration) -> Any:
+        print(f'[Visiting] ProofDeclaration\n')
+
+
+    def visit_ApplyRuleDeclaration(self, node: ApplyRuleDeclaration) -> Any:
+        print(f'[Visiting] ApplyRuleDeclaration\n')
+
+
+    def visit_QuitDeclaration(self, node: QuitDeclaration) -> Any:
+        print(f'[Visiting] QuitDeclaration\n')
+
+
     def visit_LemmaDeclaration(self, node: LemmaDeclaration) -> Any:
         # print(f"Visiting Lemma: {node.name}")
+        for param in node.params:
+            self.symbol_table.add(param["var_name"])
+        print(f'Printing: {self.symbol_table}\n')
         self.visit(node.body)
 
 
     def visit_BodyDeclaration(self, node: BodyDeclaration) -> Any:
         # print(f"Visiting Body: {node.lineno}")
+        print(f'This is the body:\n{node.body}\n')
         self.visit(node.body)
-
 
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:
         # print(f"Visiting Binary Operation: {node.operation}")
+        # print(f'\n\nThis is a BinOpDeclaration:\n{node}')
+        if node.operation not in ('→','∧','∨', '⟺'):
+            raise SemanticError('Operation not supported')
+
         self.visit(node.left)
         self.visit(node.right)
 
@@ -76,4 +96,12 @@ class SemanticAnalyzer:
     def visit_EVarDeclaration(self, node: EVarDeclaration) -> Any:
         # print(f"Visiting Variable: {node.name}")
         if not self.symbol_table.is_declared(node.name):
-            self.symbol_table.add(node.name, node)
+            raise SemanticError('Variable not declared')
+
+
+    def visit_EUnOpDeclaration(self, node: EUnOpDeclaration) -> Any:
+        if node.operation not in ('¬'):
+            raise SemanticError('Operation not supported')
+
+        if node.body is not None:
+            self.visit(node.body)

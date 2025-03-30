@@ -1,0 +1,5 @@
+Lemma lm1 p1 p2 p3 : ((p1->p2)->p3) .
+Proof .
+Apply II pp1 .
+Apply EI pp2 .
+Quit .

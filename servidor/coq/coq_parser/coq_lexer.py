@@ -4,10 +4,8 @@ import ply.lex as lex
 from ply.lex import TOKEN
 
 reserved = (
-        'LEMMA', 'GOAL',
-        'PROOF', 'QUIT',
-        'EVar',
-        'EBinOp', 'EUnOp'
+        'LEMMA', 'PROOF',
+        'QUIT', 'APPLY'
 )
 
 tokens = reserved + (
@@ -15,13 +13,11 @@ tokens = reserved + (
     'CONJ', 'DISJ',
     'NOT', 'LONG',
     #'ABSURD',
-    'LPAREN',
-    'RPAREN', 'COMMA',
-    'COLON', 'DOT',
-    'HYPHEN',
+    'LPAREN', 'RPAREN',
+    'COLON', 'DOT'
 )
 
-t_ARROW = r'→'
+t_ARROW = r'->'
 t_CONJ = r'∧'
 t_DISJ = r'∨'
 t_NOT = r'¬'
@@ -29,10 +25,8 @@ t_LONG = r'⟺'
 # t_ABSURD = r'⊥'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_COMMA = r','
 t_COLON = r':'
 t_DOT = r'.'
-t_HYPHEN = r'\-'
 
 identifier = r'[a-zA-Z][a-zA-Z0-9_]*'
 
@@ -55,14 +49,14 @@ def t_error(t: Any):
 
 t_ignore = ' \t'
 
-lexer = lex.lex()
+Lexer = lex.lex()
 
 if __name__ == '__main__':
     while True:
         try:
             data = input()
-            lexer.input(data)
-            for tok in lexer:
+            Lexer.input(data)
+            for tok in Lexer:
                 print(f"Token: {tok.type}, Value: {tok.value}")
         except EOFError:
             break
