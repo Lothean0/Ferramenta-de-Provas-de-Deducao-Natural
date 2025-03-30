@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'GochiHand';
+    src: url('../assets/fonts/GochiHand/GochiHand-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     --first-color: rgb(19, 31, 90);
     --title-color: rgba(38, 38, 38, 1);
@@ -9,11 +16,13 @@
 }
 
 .card__container {
+    position: absolute;
     display: grid;
     row-gap: 3.5rem;
     grid-template-columns: repeat(auto-fit, minmax(328px, 1fr));
     background: transparent;
     gap: 2rem;
+    font-family: 'GochiHand', sans-serif;
 }
   
 .card__article {
