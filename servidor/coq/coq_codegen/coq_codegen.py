@@ -11,6 +11,16 @@ from servidor.coq.coq_ast.ast_nodes import (
     BodyDeclaration,
     BinOpDeclaration
 )
+from servidor.main import apply_rule, apply_Implication_Introduction
+from servidor.test.data_class import C_BLUE, C_RED
+
+
+C_RED = '\033[91m'
+C_GREEN = '\033[92m'
+C_YELLOW = '\033[93m'
+C_BLUE = '\033[94m'
+C_END = '\033[0m'
+
 
 class CodeGenerator:
 
@@ -92,7 +102,14 @@ class CodeGenerator:
         function_name = node.name
         params = node.params
 
-        if params:
+        sreingg = 'EBinOp(∧, EVar(p0), EBinOp(∧, EVar(p3), EVar(p1)))'
+        sreingg2 = apply_Implication_Introduction(sreingg, [])
+        if sreingg2 is not None:
+            sreingg3 = apply_Implication_Introduction(sreingg2, [])
+
+        if sreingg3 is not None:
+            self.emit(C_BLUE + f'\t\tResult2 {sreingg2}' + C_RED + f', Result3 {sreingg3}' + C_END)
+        elif params:
             self.emit(f'\t\tCall {function_name}({params})', f'Apply rule: {function_name} with argument {params}')
         else:
             self.emit(f'\t\tCall {function_name}()', f'Apply rule: {function_name} with no arguments')
