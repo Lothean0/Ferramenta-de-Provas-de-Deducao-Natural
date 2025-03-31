@@ -1,0 +1,22 @@
+.about-container {
+    position: absolute;
+    top:100px;
+}
+
+.enunciado {
+    position: absolute;
+    height: 400px;
+    width: 100vw;
+    top: 0px;
+}
+
+.quadrado {
+    position: absolute;
+    top: 350px;
+    background: rgb(235, 55, 187);
+    
+}
+
+.cabeca {
+    justify-content: space-between;
+}
