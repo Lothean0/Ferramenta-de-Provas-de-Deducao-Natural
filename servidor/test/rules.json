@@ -50,13 +50,18 @@
         "apply": "apply_Negation_Introduction"
     },
     {
-        "name": "IF_1",
+        "name": "EIF_1",
         "other_names": ["Elimination: IF_1"],
         "apply": "apply_IfAndOnlyIf_Elimination_1"
     },
     {
-        "name": "IF_2",
+        "name": "EIF_2",
         "other_names": ["Elimination: IF_2"],
         "apply": "apply_IfAndOnlyIf_Elimination_2"
+    },
+    {
+        "name": "IIF",
+        "other_names": ["Introduction: IF"],
+        "apply": "apply_IfAndOnlyIf_Introduction"
     }
 ]

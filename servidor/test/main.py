@@ -45,13 +45,10 @@ def apply_implication_introduction(
     print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')"""
 
     global n_hypothesis
-    tmp = next((kb_key for kb_key, kb_value in knowledge_base.items() if kb_value == antecedent), None)
-    print(tmp)
 
-    if tmp is None:
-        tmp = f'X{n_hypothesis}'
-        knowledge_base[tmp] = antecedent
-        n_hypothesis += 1
+    tmp = f'X{n_hypothesis}'
+    knowledge_base[tmp] = antecedent
+    n_hypothesis += 1
 
     available_hypothesis_new = available_hypothesis.copy()
     available_hypothesis_new.add(tmp)
@@ -217,15 +214,13 @@ def apply_disjunction_elimination(
         if kb_value == consequent:
             available_hypothesis_new2.add(kb_key)
             
-    if expr[1] not in knowledge_base.values():
-        knowledge_base[f'X{n_hypothesis}'] = antecedent
-        n_hypothesis += 1
-        available_hypothesis_new1.add(f'X{n_hypothesis-1}')
+    knowledge_base[f'X{n_hypothesis}'] = antecedent
+    available_hypothesis_new1.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
 
-    if expr[2] not in knowledge_base.values():
-        knowledge_base[f'X{n_hypothesis}'] = consequent
-        n_hypothesis += 1
-        available_hypothesis_new2.add(f'X{n_hypothesis-1}')
+    knowledge_base[f'X{n_hypothesis}'] = consequent
+    available_hypothesis_new2.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
 
     del problems[problem]
     problems[problem+'1']=(f"EBinOp(∨, {antecedent}, {consequent})", available_hypothesis)
@@ -252,9 +247,8 @@ def apply_negation_introduction(
     problems[problem+'1']=('ABSOLUTO', available_hypothesis)
     global n_hypothesis
     if content:
-        if content not in knowledge_base.values():
-            knowledge_base[f'X{n_hypothesis}'] = content
-            n_hypothesis += 1
+        knowledge_base[f'X{n_hypothesis}'] = content
+        n_hypothesis += 1
     return 'boo'
 
 # --- IF AND ONLY IF ---------------------------------------------------------------------------------------------------
@@ -274,26 +268,15 @@ def apply_ifandonlyif_introduction(
     available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
     antecedent, consequent = arguments[1], arguments[2]
 
-    # | ------------------ FALTA FAZER ISTO -------------------- |
-    # | for kb_key, kb_value in knowledge_base.items():          |
-    # |     if kb_value == antecedent:                           |
-    # |         available_hypothesis_new1.add(kb_key)            |
-    # |     if kb_value == consequent:                           |
-    # |         available_hypothesis_new2.add(kb_key)            |
-    # |                                                          |
-    # | if arguments[1] not in knowledge_base.values():          |
-    # |     knowledge_base[f'X{n_hypothesis}'] = antecedent      |
-    # |     n_hypothesis += 1                                    |
-    # |     available_hypothesis_new1.add(f'X{n_hypothesis - 1}')|
-    # |                                                          |
-    # | if arguments[2] not in knowledge_base.values():          |
-    # |     knowledge_base[f'X{n_hypothesis}'] = consequent      |
-    # |     n_hypothesis += 1                                    |
-    # |     available_hypothesis_new2.add(f'X{n_hypothesis - 1}')|
-    # | -------------------------------------------------------- |
-
+    global n_hypothesis
     del problems[problem]
-    problems[problem + '1'] = (antecedent, available_hypothesis_new1)  # available_hypothesis.add(antecedent)
+    knowledge_base[f'X{n_hypothesis}'] = consequent
+    available_hypothesis_new1.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+    knowledge_base[f'X{n_hypothesis}'] = antecedent
+    available_hypothesis_new2.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+    problems[problem + '1'] = (antecedent, available_hypothesis_new1)
     problems[problem + '2'] = (consequent, available_hypothesis_new2)
     return 'boo'
 
@@ -367,7 +350,7 @@ def get_function_map() -> Dict[str, Callable[[str, set[str], str], Optional[str]
         "apply_Disjunction_Introduction_2": apply_disjunction_introduction_2,
         "apply_Disjunction_Elimination": apply_disjunction_elimination,
         "apply_Negation_Introduction": apply_negation_introduction,
-        #"apply_IfAndOnlyIf_Introduction": apply_ifandonlyif_introduction,
+        "apply_IfAndOnlyIf_Introduction": apply_ifandonlyif_introduction,
         "apply_IfAndOnlyIf_Elimination_1": apply_ifandonlyif_elimination_1,
         "apply_IfAndOnlyIf_Elimination_2": apply_ifandonlyif_elimination_2
     }
@@ -411,9 +394,8 @@ if __name__ == '__main__':
         print()
         if res.__eq__('Yes'):
             hypothesis = myparser.parse(input(C_BLUE + f'Hypothesis: ' + C_END).strip())
-            if hypothesis not in knowledge_base.values():
-                knowledge_base[f'X{n_hypothesis}'] = hypothesis
-                n_hypothesis += 1
+            knowledge_base[f'X{n_hypothesis}'] = hypothesis
+            n_hypothesis += 1
         elif res.__eq__('No'):
             break
         else:
@@ -437,7 +419,6 @@ if __name__ == '__main__':
         print('Error parsing expression')
 
     while problems:
-        #parsing needed
         print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
 
         print()
