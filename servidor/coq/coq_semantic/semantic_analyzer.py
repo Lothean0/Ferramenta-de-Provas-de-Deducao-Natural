@@ -59,28 +59,31 @@ class SemanticAnalyzer:
 
 
     def visit_ProofDeclaration(self, node: ProofDeclaration) -> Any:
-        print(f'[Visiting] ProofDeclaration\n')
+        # print(f'[Visiting] ProofDeclaration\n')
+        pass
 
 
     def visit_ApplyRuleDeclaration(self, node: ApplyRuleDeclaration) -> Any:
-        print(f'[Visiting] ApplyRuleDeclaration\n')
+        # print(f'[Visiting] ApplyRuleDeclaration\n')
+        pass
 
 
     def visit_QuitDeclaration(self, node: QuitDeclaration) -> Any:
-        print(f'[Visiting] QuitDeclaration\n')
+        # print(f'[Visiting] QuitDeclaration\n')
+        pass
 
 
     def visit_LemmaDeclaration(self, node: LemmaDeclaration) -> Any:
         # print(f"Visiting Lemma: {node.name}")
         for param in node.params:
             self.symbol_table.add(param["var_name"])
-        print(f'Printing: {self.symbol_table}\n')
+        print(f'{self.symbol_table}\n')
         self.visit(node.body)
 
 
     def visit_BodyDeclaration(self, node: BodyDeclaration) -> Any:
         # print(f"Visiting Body: {node.lineno}")
-        print(f'This is the body:\n{node.body}\n')
+        # print(f'This is the body:\n{node.body}\n')
         self.visit(node.body)
 
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:

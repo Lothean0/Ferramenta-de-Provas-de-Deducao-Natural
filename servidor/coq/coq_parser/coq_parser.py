@@ -1,7 +1,7 @@
 from typing import Any
 
 import ply.yacc as yacc
-from coq_lexer import tokens
+from .coq_lexer import tokens
 
 from servidor.coq.coq_ast.ast_nodes import (
     ProgramDeclaration,
@@ -14,12 +14,6 @@ from servidor.coq.coq_ast.ast_nodes import (
     BodyDeclaration,
     BinOpDeclaration
 )
-from servidor.coq.coq_codegen.coq_codegen import CodeGenerator
-from servidor.coq.coq_semantic.semantic_analyzer import SemanticAnalyzer
-
-C_RED = '\033[91m'
-C_GREEN = '\033[92m'
-C_END = '\033[0m'
 
 def p_Program_1(p: Any) -> None:
     '''Program : ExpressionList'''
@@ -179,56 +173,3 @@ def p_error(p: Any) -> None:
 
 
 Parser = yacc.yacc()
-
-"""if __name__ == '__main__':
-    while True:
-        try:
-            print(f'\n\nlemma lm1 p1 p2 p3 : ((p1→p2)→p3).')
-            print(f'lemma lm1 p1 p2 : ((p1→p2)→p3).')
-            print(f'lemma lm1 p1 p2 p3 : (p1→p2).')
-            print(f'lemma lm1 p1 p2 p3 : ¬p1.\n\n')
-            s = input('Enter expression: ')
-
-
-            result = parser.parse(s)
-
-            if result:
-
-                analyzer = SemanticAnalyzer()
-                analyzer.analyze(result)
-
-                print(f'Sucess: {result}')
-            else:
-                print('Error')
-
-        except EOFError:
-            break
-"""
-
-if __name__ == '__main__':
-    try:
-        with open('teste', 'r') as file:
-            s = file.read()
-
-        print(C_GREEN + f'Parsing content from teste:\n\n' + C_END + f'{s}\n')
-
-        ast = Parser.parse(s, debug=False)
-
-        if not ast:
-            print('')
-            raise ValueError(C_RED + f'Parse error' + C_END)
-
-        print(C_GREEN + f'Parsing success\n' + C_END)
-
-        print(C_GREEN + f'Analyzing...\n' + C_END)
-        ast = SemanticAnalyzer().analyze(ast)
-        print(C_GREEN + f'Semantic Analyzing success\n' + C_END)
-
-        print(C_GREEN + f'Generating code ...\n' + C_END)
-        code = CodeGenerator().generate_code(ast)
-        print(code)
-        print(C_GREEN + f'Generating code success\n' + C_END)
-
-
-    except Exception as e:
-        print(C_RED + f'An error occurred: {e}' + C_END)
