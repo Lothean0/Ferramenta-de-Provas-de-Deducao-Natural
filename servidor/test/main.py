@@ -16,10 +16,10 @@ def apply_axiom_rule(
         available_hypothesis: set[str],
         problem: str
 ) -> Optional[str]:
-    scanner = input('Select hypothesis: ')
+    scanner = input('Select hypothesis index: ')
     res = myparser.parse(scanner)
     for kb_key, kb_value in knowledge_base.items():
-        if kb_value == res:
+        if kb_key == res:
             if kb_key in available_hypothesis and logical_expr == kb_value:
                 del problems[problem]
                 return 'boo'
