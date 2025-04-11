@@ -12,16 +12,16 @@ function Home() {
 
                 <Card
                     image={landscape1}
-                    altText="Propositional Logic Calculator"
-                    description="Calculator"
+                    altText="Propositional Logic"
+                    description="Propositional Logic"
                     title="Propositional Logic"
                     link="/Propositional-Logic"
                 />
 
                 <Card
                     image={landscape2}
-                    altText="Truth Table Generator"
-                    description="Generator"
+                    altText="Truth Table"
+                    description="Truth Table"
                     title="Truth Table"
                     link="/Truth-Table"
                 />

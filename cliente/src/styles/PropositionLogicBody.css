@@ -111,3 +111,33 @@
 */
 
 /* ---------------------------------- */
+
+.proofbox {
+  display: flex;
+  flex-direction: column-reverse; /* Root at bottom */
+  align-items: center;
+  padding: 20px;
+}
+
+.tree-level {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px; /* Space between levels */
+}
+
+.tree-node {
+  display: flex;
+  flex-direction: column-reverse; /* Flip child above parent */
+  align-items: center;
+  margin: 0 20px;
+}
+
+.node-label {
+  padding: 8px 12px;
+  background-color: #716be1;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
