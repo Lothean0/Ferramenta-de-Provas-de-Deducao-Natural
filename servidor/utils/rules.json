@@ -1,0 +1,67 @@
+[
+    {
+        "name": "II",
+        "other_names": ["Introduction: Implication"],
+        "apply": "apply_Implication_Introduction"
+    },
+    {
+        "name": "EI",
+        "other_names": ["Elimination: Implication"],
+        "apply": "apply_Implication_Elimination"
+    },
+    {
+        "name": "A",
+        "other_names": ["Axiom"],
+        "apply": "apply_axiom_rule"
+    },
+    {
+        "name": "IC",
+        "other_names": ["Introduction: Conjunction"],
+        "apply": "apply_Conjunction_Introduction"
+    },
+    {
+        "name": "EC_1",
+        "other_names": ["Elimination: Conjunction_1"],
+        "apply": "apply_Conjunction_Elimination_1"
+    },
+    {
+        "name": "EC_2",
+        "other_names": ["Elimination: Conjunction_2"],
+        "apply": "apply_Conjunction_Elimination_2"
+    },
+    {
+        "name": "ID_1",
+        "other_names": ["Introduction: Disjunction_1"],
+        "apply": "apply_Disjunction_Introduction_1"
+    },
+    {
+        "name": "ID_2",
+        "other_names": ["Introduction: Disjunction_2"],
+        "apply": "apply_Disjunction_Introduction_2"
+    },
+    {
+        "name": "ED",
+        "other_names": ["Elimination: Disjunction"],
+        "apply": "apply_Disjunction_Elimination"
+    },
+    {
+        "name": "IN",
+        "other_names": ["Introduction: Negation"],
+        "apply": "apply_Negation_Introduction"
+    },
+    {
+        "name": "EIF_1",
+        "other_names": ["Elimination: IF_1"],
+        "apply": "apply_IfAndOnlyIf_Elimination_1"
+    },
+    {
+        "name": "EIF_2",
+        "other_names": ["Elimination: IF_2"],
+        "apply": "apply_IfAndOnlyIf_Elimination_2"
+    },
+    {
+        "name": "IIF",
+        "other_names": ["Introduction: IF"],
+        "apply": "apply_IfAndOnlyIf_Introduction"
+    }
+]
