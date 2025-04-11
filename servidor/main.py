@@ -1,158 +1,470 @@
+import os
+import json
 import re
-from typing import List, Optional, Dict
 
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from importlib.abc import Traversable
+from typing import Optional, Tuple, Dict, Callable
+from importlib.resources import files, as_file
 
-app = Flask(__name__)
-CORS(app, origins="*")
+from propositional_logic.propositional_logic_parser import Parser
+from propositional_logic.propositional_logic_semantic import SemanticAnalyzer
+from propositional_logic.propositional_logic_codegen import CodeGenerator
+from utils.my_utils import split_expression, remove_outer_parentheses
+from utils.data_class import Rule, RuleRegistry
 
-
-class Rule:
-    def __init__(self, name: str, other_names: List[str], description: str, apply):
-        self.name = name
-        self.other_names = other_names
-        self.description = description
-        self.apply = apply
-
-
-class RuleRegistry:
-    def __init__(self):
-        self.rules: Dict[str, Rule] = {}
-
-    def register_rule(self, rule: Rule) -> None:
-        self.rules[rule.name] = rule
-
-    def get_rule(self, rule_name: str) -> Optional[Rule]:
-        return self.rules.get(rule_name)
+C_RED = '\033[91m'
+C_GREEN = '\033[92m'
+C_YELLOW = '\033[93m'
+C_BLUE = '\033[94m'
+C_END = '\033[0m'
 
 
-knowledge_base: List[str] = []
-problems: List[str] = []
-rule_registry = RuleRegistry()
+n_hypothesis = 0
 
 
-def check_knowledge_base(premise_expr: str, knowledge_base: List[str]) -> bool:
-    return premise_expr in knowledge_base
+# --- AXIOM ------------------------------------------------------------------------------------------------------------
+
+def apply_axiom_rule(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    scanner = input('Select hypothesis index: ')
+    res = scanner
+    for kb_key, kb_value in knowledge_base.items():
+        if kb_key == res:
+            if kb_key in available_hypothesis and logical_expr == kb_value:
+                del problems[problem]
+                return 'boo'
+    return 'foo'
 
 
-def split_expression(logical_expr: str) -> List[str]:
-    pattern = r"([A-Za-z]+)\((.*)\)"
-    match = re.match(pattern, logical_expr)
-    if not match:
-        raise ValueError(f"Invalid expression: {logical_expr}")
+# --- IMPLICATION ------------------------------------------------------------------------------------------------------
 
-    content = match.group(2)
-    balance = 0
-    args: List[str] = []
-    current_arg: List[str] = []
-
-    for char in content:
-        if char == "(":
-            balance += 1
-        elif char == ")":
-            balance -= 1
-        if char == "," and balance == 0:
-            args.append("".join(current_arg).strip())
-            current_arg = []
-        else:
-            current_arg.append(char)
-
-    if current_arg:
-        args.append("".join(current_arg).strip())
-
-    return args
-
-
-def apply_axiom_rule(logical_expr: str, knowledge_base: List[str]) -> Optional[str]:
-    return "foo" if logical_expr in knowledge_base else "boo"
-
-
-def apply_Implication_Introduction(
-    logical_expr: str, knowledge_base: List[str]
+def apply_implication_introduction(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
 ) -> Optional[str]:
     arguments = split_expression(logical_expr)
-    if len(arguments) < 3:
-        return None
+
+    if len(arguments) != 3 or arguments[0] != '->':
+        raise ValueError('Implication introduction requires 3 arguments or symbol not ->')
 
     antecedent, consequent = arguments[1], arguments[2]
-    if not check_knowledge_base(antecedent, knowledge_base):
-        knowledge_base.append(antecedent)
 
-    problems.append(consequent)
+    """print(C_YELLOW + f'[DEBUG] ' + C_END + f'Arguments = {arguments}')
+    print(C_YELLOW + f'[DEBUG] ' + C_END + f'Antecedent = {antecedent}')
+    print(C_YELLOW + f'[DEBUG] ' + C_END + f'Consequent = {consequent}\n')"""
+
+    global n_hypothesis
+
+    tmp = f'X{n_hypothesis}'
+    knowledge_base[tmp] = antecedent
+    n_hypothesis += 1
+
+    available_hypothesis_new = available_hypothesis.copy()
+    available_hypothesis_new.add(tmp)
+
+    del problems[problem]
+
+    problems[problem + '1'] = (consequent, available_hypothesis_new)
+
     return consequent
 
-# ISTO DEVE ESTAR MAL
-# DEPOIS CORRIGIR ISTO
-def apply_Implication_Elimination(
-    logical_expr: str, knowledge_base: List[str]
-) -> Optional[str]:
-    if logical_expr in knowledge_base:
-        problems.append(logical_expr)
-        return logical_expr
-    return None
 
+"""
+Modus Ponens (MP):
+Also know as: Implication Elimination, Affirming the Antecedent
+
+Modus Ponens is a valid rule of inference that states if you have a 
+conditional statement (p->q) and the antecedent (p) is true, then you 
+can infer that the consequent (q) is also true
+"""
+
+"""
+Verificar esta regra!! temos de aplicar para qualquer hipotese. por exemplo (p1->p0)->p0 = II p0 = EI(p1->p0) (p1-p0)->p0, p0
+"""
+
+
+def apply_implication_elimination(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Enter an Auxiliar Formula: ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(->, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = Parser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(->, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'boo'
+
+
+# --- CONJUNCTION ------------------------------------------------------------------------------------------------------
+
+def apply_conjunction_introduction(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) != 3 or arguments[0] != '∧':
+        raise ValueError('Conjunction introduction requires 3 arguments or symbol not ->')
+
+    antecedent, consequent = arguments[1], arguments[2]
+    del problems[problem]
+    problems[problem + '1'] = (antecedent, available_hypothesis)
+    problems[problem + '2'] = (consequent, available_hypothesis)
+    return 'boo'
+
+
+def apply_conjunction_elimination_1(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (f"EBinOp(∧, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = Parser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (f"EBinOp(∧, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'boo'
+
+
+def apply_conjunction_elimination_2(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (f"EBinOp(∧, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = Parser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (f"EBinOp(∧, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'boo'
+
+
+# --- DISJUNCTION ------------------------------------------------------------------------------------------------------
+
+def apply_disjunction_introduction_1(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) != 3 or arguments[0] != '∨':
+        raise ValueError('Disjunction introduction requires 3 arguments or symbol not ->')
+
+    antecedent = arguments[1]
+
+    del problems[problem]
+    problems[problem + '1'] = (antecedent, available_hypothesis)
+    return antecedent
+
+
+def apply_disjunction_introduction_2(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) != 3 or arguments[0] != '∨':
+        raise ValueError('Disjunction introduction requires 3 arguments or symbol not ->')
+
+    consequent = arguments[2]
+
+    del problems[problem]
+    problems[problem + '1'] = (consequent, available_hypothesis)
+    return consequent
+
+
+# --- DISJUNCTION ELIMINATION ------------------------------------------------------------------------------------------
+
+def apply_disjunction_elimination(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Main Disjunction (from kb or enter new expression): ')
+    res = Parser.parse(res)
+    expr = split_expression(res)
+
+    global n_hypothesis
+    if len(expr) != 3 or expr[0] != '∨':
+        raise ValueError('Disjunction elimination requires 3 arguments or symbol ∨')
+
+    available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
+    antecedent, consequent = expr[1], expr[2]
+
+    for kb_key, kb_value in knowledge_base.items():
+        if kb_value == antecedent:
+            available_hypothesis_new1.add(kb_key)
+        if kb_value == consequent:
+            available_hypothesis_new2.add(kb_key)
+
+    knowledge_base[f'X{n_hypothesis}'] = antecedent
+    available_hypothesis_new1.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+
+    knowledge_base[f'X{n_hypothesis}'] = consequent
+    available_hypothesis_new2.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+
+    del problems[problem]
+    problems[problem + '1'] = (f"EBinOp(∨, {antecedent}, {consequent})", available_hypothesis)
+    problems[problem + '2'] = (f"{logical_expr}", available_hypothesis_new1)
+    problems[problem + '3'] = (f"{logical_expr}", available_hypothesis_new2)
+    return 'foo'
+
+
+# --- NEGATION ---------------------------------------------------------------------------------------------------------
+
+def apply_negation_introduction(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    # logical_expr: EUnOp(~, EVar(p0))
+    # content = expr.split("~,")[1].strip() or
+    content = None
+    match = re.search(r"EUnOp\(~, (.+)\)", logical_expr)
+
+    if match:
+        content = match.group(1)
+
+    del problems[problem]
+    problems[problem + '1'] = ('ABSOLUTO', available_hypothesis)
+    global n_hypothesis
+    if content:
+        knowledge_base[f'X{n_hypothesis}'] = content
+        n_hypothesis += 1
+    return 'boo'
+
+
+# --- IF AND ONLY IF ---------------------------------------------------------------------------------------------------
+
+
+def apply_ifandonlyif_introduction(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    arguments = split_expression(logical_expr)
+
+    if len(arguments) != 3 or arguments[0] != '⟺':
+        raise ValueError('if and only if introduction requires 3 arguments or symbol ⟺')
+
+    available_hypothesis_new1, available_hypothesis_new2 = available_hypothesis.copy(), available_hypothesis.copy()
+    antecedent, consequent = arguments[1], arguments[2]
+
+    global n_hypothesis
+    del problems[problem]
+    knowledge_base[f'X{n_hypothesis}'] = consequent
+    available_hypothesis_new1.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+    knowledge_base[f'X{n_hypothesis}'] = antecedent
+    available_hypothesis_new2.add(f'X{n_hypothesis}')
+    n_hypothesis += 1
+    problems[problem + '1'] = (antecedent, available_hypothesis_new1)
+    problems[problem + '2'] = (consequent, available_hypothesis_new2)
+    return 'boo'
+
+
+def apply_ifandonlyif_elimination_1(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = Parser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {aux_formula}, {logical_expr})", available_hypothesis)
+        return 'boo'
+
+
+def apply_ifandonlyif_elimination_2(
+        logical_expr: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[str]:
+    print(knowledge_base)
+    res = input('Aux Formula (from kb or enter new expression): ')
+    if res in knowledge_base:
+        aux_formula = knowledge_base.get(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'foo'
+    else:
+        aux_formula = Parser.parse(res)
+        del problems[problem]
+        problems[problem + '1'] = (aux_formula, available_hypothesis)
+        problems[problem + '2'] = (f"EBinOp(⟺, {logical_expr}, {aux_formula})", available_hypothesis)
+        return 'boo'
+
+
+# --- OTHERS -----------------------------------------------------------------------------------------------------------
 
 def apply_rule(
-    logical_expr: str, rule_name: str, knowledge_base: List[str]
-) -> Optional[str]:
+        logical_expr: str,
+        rule_name: str,
+        available_hypothesis: set[str],
+        problem: str
+) -> Optional[Tuple[Optional[str], str]]:
     rule = rule_registry.get_rule(rule_name)
     if rule:
-        return rule.apply(logical_expr, knowledge_base)
-    return None
+        return rule.apply(logical_expr, available_hypothesis, problem), 'Ok'
+    print(C_RED + f'[ERROR] ' + C_END + f'Rule not found')
+    return None, 'Err'
 
 
-@app.route("/api/checkExpression", methods=["POST"])
-def check_expression():
-    """data = request.get_json()
-    expression = data.get("expression", "")
-    rule = data.get("rule", "")
-
-    if not expression or not rule:
-        return jsonify({"error": "Missing expression or rule"}), 400
-
-    problems.append(expression)
-    result = apply_rule(expression, rule, knowledge_base)
-
-    return jsonify(
-        {"EXPRESSION": expression, "status": "Rule applied", "result": result}
-
-    )"""
-    data = request.json
-    print("Received:", data)  # Debugging
-    return jsonify({"message": "Data received successfully", "received": data}), 400
+def get_function_map() -> Dict[str, Callable[[str, set[str], str], Optional[str]]]:
+    return {
+        "apply_Implication_Introduction": apply_implication_introduction,
+        "apply_Implication_Elimination": apply_implication_elimination,
+        "apply_axiom_rule": apply_axiom_rule,
+        "apply_Conjunction_Introduction": apply_conjunction_introduction,
+        "apply_Conjunction_Elimination_1": apply_conjunction_elimination_1,
+        "apply_Conjunction_Elimination_2": apply_conjunction_elimination_2,
+        "apply_Disjunction_Introduction_1": apply_disjunction_introduction_1,
+        "apply_Disjunction_Introduction_2": apply_disjunction_introduction_2,
+        "apply_Disjunction_Elimination": apply_disjunction_elimination,
+        "apply_Negation_Introduction": apply_negation_introduction,
+        "apply_IfAndOnlyIf_Introduction": apply_ifandonlyif_introduction,
+        "apply_IfAndOnlyIf_Elimination_1": apply_ifandonlyif_elimination_1,
+        "apply_IfAndOnlyIf_Elimination_2": apply_ifandonlyif_elimination_2
+    }
 
 
-@app.route("/api/users", methods=["GET"])
-def users():
-    return jsonify({"users": ["daniel", "pedro", "simao"]})
+def load_rules_from_file(file_path: Traversable, rr: RuleRegistry) -> None:
+    function_map = get_function_map()
+    with open(file_path, 'r') as f:
+        rules_data = json.load(f)
+
+        for rule_data in rules_data:
+            function_name = rule_data['apply']
+
+            if function_name not in function_map:
+                raise ValueError(f"Unknown function name in JSON: {function_name}")
+
+            new_rule = Rule(
+                name=rule_data['name'],
+                other_names=rule_data.get('other_names', []),
+                apply=function_map[function_name]
+            )
+            rr.register_rule(new_rule)
 
 
-rule_registry.register_rule(
-    Rule(
-        name="II",
-        other_names=["Introduction: Implication"],
-        description="Introduction of implication",
-        apply=apply_Implication_Introduction,
-    )
-)
-rule_registry.register_rule(
-    Rule(
-        name="EI",
-        other_names=["Elimination: Implication"],
-        description="If A -> B and A is known, then infer B.",
-        apply=apply_Implication_Elimination,
-    )
-)
-rule_registry.register_rule(
-    Rule(
-        name="A",
-        other_names=["Axiom: Implication"],
-        description="Axiom application rule",
-        apply=apply_axiom_rule,
-    )
-)
+if __name__ == '__main__':
 
+    rule_registry = RuleRegistry()
 
-if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    rules_path = files("utils").joinpath("rules.json")
+    load_rules_from_file(rules_path, rule_registry)
+
+    knowledge_base = {}
+    while True:
+        res = input(C_BLUE + f'\n[ADD] ' + C_END + f'Add Hypothesis? (Yes/No) ').strip()
+        print()
+        if res.__eq__('Yes'):
+            hypothesis = Parser.parse(input(C_BLUE + f'Hypothesis: ' + C_END).strip())
+            knowledge_base[f'X{n_hypothesis}'] = hypothesis
+            n_hypothesis += 1
+        elif res.__eq__('No'):
+            break
+        else:
+            raise ValueError(C_RED + f'[ERROR] ' + C_END + f'Incorrect input')
+
+    problems = {}
+    user_input = input('Enter logical expression: ')
+
+    print(C_YELLOW + f'\nParsing content: ' + C_END + f'{user_input}\n')
+
+    ast = Parser.parse(user_input, debug=False)
+
+    if not ast:
+        print('')
+        raise ValueError(C_RED + f'Parse error' + C_END)
+
+    ast = SemanticAnalyzer().analyze(ast)
+    parsed_expression = CodeGenerator().generate_code(ast)
+
+    if parsed_expression:
+        print(f'Parsed Expression: {parsed_expression}\n')
+        problems['P1'] = (parsed_expression, set([x for x in knowledge_base.keys() if x is not None]))
+
+    else:
+        print('Error parsing expression')
+
+    while problems:
+        print(C_GREEN + f'[INFO] ' + C_END + f'Problems List: {problems}')
+
+        print()
+
+        print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base Before Applying Rule')
+        if not knowledge_base:
+            print(C_YELLOW + f'Empty knowledge base' + C_END)
+        else:
+            print(C_YELLOW + f'{"Hypotesis"}: ' + C_END)
+            for key, value in knowledge_base.items():
+                print(C_YELLOW + f'{key}: ' + C_END + f'{Parser.parse(value)}')
+        if len(problems) == 1:
+            idx = list(problems.keys())[0]
+        else:
+            idx = input('Enter Problem index: ')
+        if idx in problems.keys():
+            rule = input('Rule: ')
+            apply_rule(problems[idx][0], rule_name=rule, available_hypothesis=problems[idx][1], problem=idx)
+        else:
+            print(C_RED + '[ERROR] ' + C_END + 'Index out of range')
+            continue
+
+        print(C_GREEN + f'[INFO] ' + C_END + f'knowledge Base After Applying Rule')
+        if not knowledge_base:
+            print(C_YELLOW + f'Empty knowledge base' + C_END)
+        else:
+            print(C_YELLOW + f'{"Hypotesis"}: ' + C_END)
+            for key, value in knowledge_base.items():
+                print(C_YELLOW + f'{key}: ' + C_END + f'{Parser.parse(value)}')
+
+        if not problems:
+            print(C_GREEN + f'[INFO] ' + C_END + f'All problems solved')
+            break
+        else:
+            print(C_YELLOW + f'{"Problems"}: ' + C_END)
+            for key, value in problems.items():
+                print(C_YELLOW + f'{key}: ' + C_END + f'{remove_outer_parentheses(Parser.parse(value[0]))}')
+
