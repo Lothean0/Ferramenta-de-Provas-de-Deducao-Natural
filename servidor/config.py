@@ -1,0 +1,9 @@
+knowledge_base = {}
+problems = {}
+n_hypothesis = 0
+
+C_RED = '\033[91m'
+C_GREEN = '\033[92m'
+C_YELLOW = '\033[93m'
+C_BLUE = '\033[94m'
+C_END = '\033[0m'
