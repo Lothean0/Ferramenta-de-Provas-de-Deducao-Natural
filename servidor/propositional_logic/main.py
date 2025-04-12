@@ -2,11 +2,7 @@ from propositional_logic_parser import Parser
 from propositional_logic_semantic import SemanticAnalyzer
 from propositional_logic_codegen import CodeGenerator
 
-C_RED = '\033[91m'
-C_GREEN = '\033[92m'
-C_YELLOW = '\033[93m'
-C_BLUE = '\033[94m'
-C_END = '\033[0m'
+from config import C_RED, C_GREEN, C_YELLOW, C_BLUE, C_END
 
 if __name__ == '__main__':
     try:
