@@ -56,7 +56,7 @@ function PropositionLogicBody() {
 
     // Fetch data on component mount
     useEffect(() => {
-      axios.get("http://127.0.0.1:3000/api/rule_result")
+      axios.get("http://127.0.0.1:3000/api/result")
       .then(response => {
 
         console.log('API RESPONDE\n', response.data)
