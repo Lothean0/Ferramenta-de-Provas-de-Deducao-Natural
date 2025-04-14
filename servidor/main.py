@@ -1,4 +1,5 @@
 import ast
+from typing import Any
 
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -13,7 +14,7 @@ app = Flask(__name__)
 CORS(app, origins="*")
 
 
-@app.route("/api/rule_result", methods=["GET"])
+@app.route("/api/result", methods=["GET"])
 def validate_expression():
 
     request = {
@@ -54,45 +55,19 @@ def validate_expression():
             response.append({
                 "name": Parser.parse(request["expression"]),
                 "parentId": "",
-                "child": []
+                "child": [],
+                "hypothesis" : []
             })
 
         if isinstance(result, list):
+            for item in result:
+                if isinstance(item.get("parentId"), str):
+                    item["parentId"] = request["id"]
             response.extend(result)
         else:
+            if isinstance(result.get("parentId"), str):
+                result["parentId"] = request["id"]
             response.append(result)
-
-        """
-        result_expression_1 = "(p0->p1)->p1"
-        result_expression_2 = "p1",
-        result_expression_3 = "p0",
-        result_expression_4 = "p0->p1",
-
-
-        response.append({
-            "name": result_expression_1,
-            "parentId": request["id"],
-            "child": []
-        })
-
-        response.append({
-            "name": result_expression_2,
-            "parentId": 2,
-            "child": []
-        })
-
-        response.append({
-            "name": result_expression_3,
-            "parentId": 3,
-            "child": []
-        })
-
-        response.append({
-            "name": result_expression_4,
-            "parentId": 3,
-            "child": []
-        })
-        """
 
     except Exception as e:
         return jsonify({"error": "Function call failed", "details": str(e)}), 500

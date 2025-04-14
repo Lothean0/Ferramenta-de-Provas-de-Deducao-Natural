@@ -36,13 +36,15 @@ def apply_implication_introduction(
     result = [
         {
             "name": "(p0->p1)->p1",
-            "parentId": 1,
-            "child": []
+            "parentId": "",
+            "child": [],
+            "hypothesis": [],
         },
         {
             "name": "p0->p1",
-            "parentId": 1,
-            "child": []
+            "parentId": "",
+            "child": [],
+            "hypothesis": [],
         }
     ]
 
