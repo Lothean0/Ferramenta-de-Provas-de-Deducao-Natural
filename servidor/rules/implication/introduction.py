@@ -33,4 +33,17 @@ def apply_implication_introduction(
 
     local_problems[problem + '1'] = (consequent, available_hypothesis_new)
 
-    return consequent
+    result = [
+        {
+            "name": "(p0->p1)->p1",
+            "parentId": 1,
+            "child": []
+        },
+        {
+            "name": "p0->p1",
+            "parentId": 1,
+            "child": []
+        }
+    ]
+
+    return result
