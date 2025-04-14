@@ -56,15 +56,19 @@ def validate_expression():
                 "name": Parser.parse(request["expression"]),
                 "parentId": "",
                 "child": [],
-                "hypothesis" : []
+                "knowledge_base" : []
             })
 
         if isinstance(result, list):
             for item in result:
+                if isinstance(item.get("name"), str):
+                    item["name"] = Parser.parse(item.get("name"))
                 if isinstance(item.get("parentId"), str):
                     item["parentId"] = request["id"]
             response.extend(result)
         else:
+            if isinstance(result.get("name"), str):
+                result["name"] = Parser.parse(result.get("name"))
             if isinstance(result.get("parentId"), str):
                 result["parentId"] = request["id"]
             response.append(result)

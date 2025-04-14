@@ -23,7 +23,7 @@ def apply_implication_introduction(
     # print(f'{antecedent} -> {consequent}')
 
     tmp = f'X{local_n_hypothesis}'
-    knowledge_base[tmp] = antecedent
+    local_knowledge_base[tmp] = antecedent
     local_n_hypothesis += 1
 
     available_hypothesis_new = available_hypothesis.copy()
@@ -35,17 +35,11 @@ def apply_implication_introduction(
 
     result = [
         {
-            "name": "(p0->p1)->p1",
+            "name": consequent,
             "parentId": "",
             "child": [],
-            "hypothesis": [],
+            "knowledge_base": local_knowledge_base,
         },
-        {
-            "name": "p0->p1",
-            "parentId": "",
-            "child": [],
-            "hypothesis": [],
-        }
     ]
 
     return result
