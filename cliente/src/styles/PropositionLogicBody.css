@@ -112,24 +112,30 @@
 
 /* ---------------------------------- */
 
-.proofbox {
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
   display: flex;
-  flex-direction: column-reverse; /* Root at bottom */
+  justify-content: center; 
   align-items: center;
-  padding: 20px;
+  margin-top: 200px;
+  background-color: transparent;
 }
+
 
 .tree-level {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px; /* Space between levels */
+  margin-bottom: 30px; 
 }
 
 .tree-node {
   display: flex;
-  flex-direction: column-reverse; /* Flip child above parent */
+  flex-direction: column-reverse;
   align-items: center;
   margin: 0 20px;
+  position: relative;
 }
 
 .node-label {
@@ -138,6 +144,19 @@
   border: 1px solid #000000;
   border-radius: 8px;
   font-size: 14px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+.node-label:hover {
+  background: red;;
+}
+
+.line {
+  height: 2px;
+  background-color: #C4C4C4;
+  margin: 10px 0;
+  width: 100%;
 }

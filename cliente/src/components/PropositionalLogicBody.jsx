@@ -1,102 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 
 function PropositionLogicBody() {
-    const [proofSteps] = useState([
-        {
-            "status": null,
-            "name": "Woman",
-            "accOrder": 0,
-            "parentId": null,
-            "child": [
-                {
-                    "status": null,
-                    "name": "Shoes",
-                    "accOrder": 0,
-                    "parentId": 1,
-                    "child": [
-                        {
-                            "createdBy": null,
-                            "status": null,
-                            "name": "Good Sneckers",
-                            "accOrder": 1,
-                            "parentId": 5,
-                            "child": []
-                        },
-                        {
-                            "status": null,
-                            "name": "Sneckers",
-                            "accOrder": 1,
-                            "parentId": 3,
-                            "child": [
-                                {
-                                    "createdBy": null,
-                                    "status": null,
-                                    "name": "Good Sneckers",
-                                    "accOrder": 1,
-                                    "parentId": 5,
-                                    "child": []
-                                },
-                                {
-                                    "status": null,
-                                    "name": "Bad Snackers",
-                                    "accOrder": 2,
-                                    "parentId": 5,
-                                    "child": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "status": null,
-                    "name": "Bijoux",
-                    "accOrder": 1,
-                    "parentId": 1,
-                    "child": [
-                        {
-                            "status": null,
-                            "name": "Sneckers_2",
-                            "accOrder": 1,
-                            "parentId": 3,
-                            "child": [
-                                {
-                                    "createdBy": null,
-                                    "status": null,
-                                    "name": "Good Sneckers_2",
-                                    "accOrder": 1,
-                                    "parentId": 5,
-                                    "child": []
-                                },
-                                {
-                                    "status": null,
-                                    "name": "Bad Snackers_2",
-                                    "accOrder": 2,
-                                    "parentId": 5,
-                                    "child": []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]);
+    const [collapsed, setCollapsed] = useState({});
+    const [proofSteps, setProofSteps] = useState([]);
+
+    const toggleNode = (nodeId) => {
+        setCollapsed(prev => ({
+            ...prev,
+            [nodeId]: !prev[nodeId]
+        }));
+    };
 
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
 
         return (
             <div className="tree-level">
-                {nodes.map((node, index) => (
-                    <div key={index} className="tree-node" style={{ fontSize: '1.2em', color: 'black', fontWeight: 'bold', margin: '0 20px' }}>
-                        <div className="node-label">{node.name}</div>
-                        {renderTree(node.child)}
-                    </div>
-                ))}
+                {nodes.map((node, index) => {
+                    const isCollapsed = collapsed[node.id];
+                    const hasChildren = node.child && node.child.length > 0;
+
+                    return (
+                        <div key={index} className="tree-node">
+                            <button className="node-label" onClick={() => toggleNode(node.id)}>
+                              {isCollapsed ? '▶ ' : '▼ '} {node.id}: {node.name}
+                            </button>
+
+                            {!isCollapsed && hasChildren && <div className="line"></div>}
+
+                            {!isCollapsed && renderTree(node.child)}
+                        </div>
+                    );
+                })}
             </div>
         );
     };
+
+    // Tree builder logic
+    const createTreeCategoriesByParent = (categories, parentId = "") => {
+      const siblings = [];
+  
+      categories.forEach(category => {
+          if (category.parentId === parentId) {
+              const children = createTreeCategoriesByParent(categories, category.id);
+              category.child = children;
+              siblings.push(category);
+          }
+      });
+  
+      return siblings;
+  };
+  
+
+    // Fetch data on component mount
+    useEffect(() => {
+      axios.get("http://127.0.0.1:3000/api/rule_result")
+      .then(response => {
+
+        console.log('API RESPONDE\n', response.data)
+
+        const flatData = response.data.map((item, index) => ({
+          ...item,
+          id: index + 1 
+        }));
+
+        const treeData = createTreeCategoriesByParent(flatData);
+        setProofSteps(treeData);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    }, []);
 
     return (
         <div className="proofbox">
