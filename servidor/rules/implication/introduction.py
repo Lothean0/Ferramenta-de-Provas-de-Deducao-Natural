@@ -2,7 +2,7 @@ from typing import Optional
 
 from servidor.utils.my_utils import split_expression
 
-from config import n_hypothesis, knowledge_base, problems
+from servidor.config import n_hypothesis, knowledge_base, problems
 
 def apply_implication_introduction(
         logical_expr: str,
