@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 
-const instance = axios.create({
-  baseURL: "http://130.0.0.1:3000/api", 
-  timeout: 1000
-});
-
 function PropositionLogicBody() {
     const [collapsed, setCollapsed] = useState({});
     const [proofSteps, setProofSteps] = useState([]);
@@ -26,7 +21,6 @@ function PropositionLogicBody() {
                 {nodes.map((node, index) => {
                     const isCollapsed = collapsed[node.id];
                     const hasChildren = node.child && node.child.length > 0;
-
                     return (
                         <div key={index} className="tree-node">
                             <button className="node-label" onClick={() => toggleNode(node.id)}>
@@ -57,55 +51,38 @@ function PropositionLogicBody() {
   
       return siblings;
     };
-  
-    useEffect(() => {
-      axios.get("http://130.0.0.1:3000/api/result")
-      .then(response => {
+    
+    const fetchData = () => {
+        axios
+            .get("http://127.0.0.1:3000/api/result", {
+                params: {
+                    expression: "p0->((p0->p1)->p1)", // Replace with the desired expression
+                    rule: "implication_introduction", // Replace with the rule you want to apply
+                    knowledge_base: [], // Replace with the knowledge base if needed
+                    id: 1, // Replace with the problem ID if applicable
+                    child: [],
+                },
+            })
+            .then((response) => {
+                console.log("API Response\n", response.data);
 
-        console.log('API RESPONDE\n', response.data)
+                const flatData = response.data.map((item, index) => ({
+                    ...item,
+                    id: index + 1,
+                }));
 
-        const flatData = response.data.map((item, index) => ({
-          ...item,
-          id: index + 1 
-        }));
-
-        const treeData = createTreeCategoriesByParent(flatData);
-        setProofSteps(treeData);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-    }, []);
-
-    const postData = async () => {
-        try {
-          const { data } = await axios.post("http://localhost:3000/api/data", 
-            {
-              "id": 1,
-              "expression": "p0->((p0->p1)->p1)",
-              "rule": "implication_introduction",
-              "knowledge_base": "[]",
-              "child": [],
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          console.log('Posted data:', data);
-        } catch (error) {
-          console.error('Post error:', error);
-        }
-      };
-      
+                const treeData = createTreeCategoriesByParent(flatData);
+                setProofSteps(treeData);
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    };
 
     return (
         <>
-          <button onClick={() => postData()}></button>
-          <div className="proofbox">
-              {renderTree(proofSteps)}
-          </div>
+            <button className='botao' onClick={fetchData}>Fetch Data</button>
+            <div className="proofbox">{renderTree(proofSteps)}</div>
         </>
     );
 }
