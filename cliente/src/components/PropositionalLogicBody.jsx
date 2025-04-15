@@ -51,10 +51,8 @@ function PropositionLogicBody() {
       });
   
       return siblings;
-  };
+    };
   
-
-    // Fetch data on component mount
     useEffect(() => {
       axios.get("http://127.0.0.1:3000/api/result")
       .then(response => {
@@ -74,10 +72,36 @@ function PropositionLogicBody() {
       });
     }, []);
 
+    const postData = async () => {
+        try {
+          const { data } = await axios.post("http://localhost:3000/api/data", 
+            {
+              "id": 1,
+              "expression": "p0->((p0->p1)->p1)",
+              "rule": "implication_introduction",
+              "knowledge_base": "[]",
+              "child": [],
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          console.log('Posted data:', data);
+        } catch (error) {
+          console.error('Post error:', error);
+        }
+      };
+      
+
     return (
-        <div className="proofbox">
-            {renderTree(proofSteps)}
-        </div>
+        <>
+          <button onClick={() => postData()}></button>
+          <div className="proofbox">
+              {renderTree(proofSteps)}
+          </div>
+        </>
     );
 }
 
