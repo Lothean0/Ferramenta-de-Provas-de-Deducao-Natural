@@ -1,5 +1,4 @@
 __version__ = "2025.04.11"
-__author__ = "Daniel Andrade (a100057@alunos.uminho.pt)"
 
 from servidor.config import C_RED, C_GREEN, C_YELLOW, C_BLUE, C_END
 

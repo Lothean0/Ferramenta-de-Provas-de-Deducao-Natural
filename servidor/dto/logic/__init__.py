@@ -1,5 +1,5 @@
 __version__ = "2025.04.11"
-__author__ = "Daniel Andrade (a100057@alunos.uminho.pt)"
+
 
 C_RED = '\033[91m'
 C_GREEN = '\033[92m'
