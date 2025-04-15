@@ -4,7 +4,7 @@ from typing import Any
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from rules.implication.introduction import apply_implication_introduction
+from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
