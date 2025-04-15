@@ -1,7 +1,7 @@
 __version__ = "2025.04.12"
 __author__ = "Daniel Andrade (a100057@alunos.uminho.pt)"
 
-from config import knowledge_base, problems, n_hypothesis, C_RED, C_GREEN, C_YELLOW, C_BLUE, C_END
+from servidor.config import knowledge_base, problems, n_hypothesis, C_RED, C_GREEN, C_YELLOW, C_BLUE, C_END
 
 try:
     from .introduction import apply_implication_introduction, n_hypothesis, knowledge_base
