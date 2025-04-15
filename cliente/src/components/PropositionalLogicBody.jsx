@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 
+const instance = axios.create({
+  baseURL: "http://130.0.0.1:3000/api", 
+  timeout: 1000
+});
+
 function PropositionLogicBody() {
     const [collapsed, setCollapsed] = useState({});
     const [proofSteps, setProofSteps] = useState([]);
@@ -54,7 +59,7 @@ function PropositionLogicBody() {
     };
   
     useEffect(() => {
-      axios.get("http://127.0.0.1:3000/api/result")
+      axios.get("http://130.0.0.1:3000/api/result")
       .then(response => {
 
         console.log('API RESPONDE\n', response.data)
