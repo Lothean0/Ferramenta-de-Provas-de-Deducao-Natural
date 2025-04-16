@@ -3,82 +3,111 @@ from typing import Any
 
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask import request
 
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 
-
 app = Flask(__name__)
-CORS(app, origins="*")
+CORS(app, resources={r"/*": {"origins": "*"}})
 
+"""
+@app.route("/api/data", methods=["POST"])
+def handle_post_data():
+    try:
+        # Parse the incoming JSON payload
+        data = request.get_json()
+
+        # Log the received data for debugging
+        print("Received data:", data)
+
+        # Example: Access specific fields from the payload
+        expression = data.get("expression")
+        rule = data.get("rule")
+        knowledge_base = data.get("knowledge_base")
+
+        # Perform any processing or validation here
+        response = {
+            "message": "Data received successfully",
+            "received_expression": expression,
+            "received_rule": rule,
+            "received_knowledge_base": knowledge_base,
+        }
+
+        # Return a JSON response
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to process data", "details": str(e)}), 400
+"""    
 
 @app.route("/api/result", methods=["GET"])
 def validate_expression():
+    try:
+        # Retrieve the expression from the request
+        expression = request.args.get("expression")
+        if not expression:
+            return jsonify({"error": "Missing 'expression' parameter"}), 400
 
-    request = {
-        "id": 1,
-        "expression": "p0->((p0->p1)->p1)",
-        "rule": "implication_introduction",
-        "knowledge_base": "[]",
-        "child": [],
-    }
-
-    parsed_expression = CodeGenerator().generate_code(
-        ast_2 := SemanticAnalyzer().analyze(
-            ast_1 := Parser.parse(
-                user_input := request['expression'], debug=False
+        # Parse the expression
+        parsed_expression = CodeGenerator().generate_code(
+            ast_2 := SemanticAnalyzer().analyze(
+                ast_1 := Parser.parse(expression, debug=False)
             )
         )
-    )
 
-    request['expression'] = f"{parsed_expression}"
-    print(request['expression'])
+        print(f"{parsed_expression}")
 
-    try:
-        hypothesis_list = ast.literal_eval(request["knowledge_base"])
-        hypothesis_set = set(hypothesis_list) if isinstance(hypothesis_list, list) else set()
+        # Process the knowledge base
+        try:
+            hypothesis_list = ast.literal_eval(request.args.get("knowledge_base", "[]"))
+            hypothesis_set = set(hypothesis_list) if isinstance(hypothesis_list, list) else set()
+        except Exception as e:
+            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
+
+        problem_id = request.args.get("id", "0")
+
+        # Apply the rule
+        try:
+            function = globals()['apply_' + request.args.get("rule")]
+            result = function(parsed_expression, hypothesis_set, problem_id)
+            print(f'Worked')
+            problem_id = int(problem_id)
+
+            response = []
+            if not response:
+                response.append({
+                    "name": Parser.parse(parsed_expression),
+                    "parentId": "",
+                    "child": [],
+                    "knowledge_base": []
+                })
+
+            if isinstance(result, list):
+                for _,item in enumerate(result, start=2):
+                    response.append({
+                        "name": str(Parser.parse(item.get("name"))),
+                        "parentId": problem_id,
+                        "child": [],
+                        "knowledge_base": item.get("knowledge_base", [])
+                    })
+            else:
+                response.append({
+                    "name": str(Parser.parse(result.get("name"))),
+                    "parentId": problem_id,
+                    "child": [],
+                    "knowledge_base": result.get("knowledge_base", [])
+                })
+
+            print("Formatted Response:", response)
+        except Exception as e:
+            return jsonify({"error": "Function call failed", "details": str(e)}), 500
+
+        return jsonify(response), 200
+
     except Exception as e:
-        return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
-
-    problem_id = str(request["id"])
-
-    try:
-        function = globals()['apply_' + request['rule']]
-        result = function(request['expression'], hypothesis_set, problem_id)
-        print(f'Worked')
-
-        response = []
-
-        if not response:
-            response.append({
-                "name": Parser.parse(request["expression"]),
-                "parentId": "",
-                "child": [],
-                "knowledge_base" : []
-            })
-
-        if isinstance(result, list):
-            for item in result:
-                if isinstance(item.get("name"), str):
-                    item["name"] = Parser.parse(item.get("name"))
-                if isinstance(item.get("parentId"), str):
-                    item["parentId"] = request["id"]
-            response.extend(result)
-        else:
-            if isinstance(result.get("name"), str):
-                result["name"] = Parser.parse(result.get("name"))
-            if isinstance(result.get("parentId"), str):
-                result["parentId"] = request["id"]
-            response.append(result)
-
-    except Exception as e:
-        return jsonify({"error": "Function call failed", "details": str(e)}), 500
-
-    return jsonify(
-        response
-    ), 200
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
 
 

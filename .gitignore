@@ -1,3 +1,6 @@
 .idea/*
 .vscode/*
 **/__pycache__
+
+servidor/propositional_logic/propositional_logic_parser/parser.out
+servidor/propositional_logic/propositional_logic_parser/parsetab.py
