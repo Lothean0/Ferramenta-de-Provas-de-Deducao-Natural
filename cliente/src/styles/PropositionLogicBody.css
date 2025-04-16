@@ -112,17 +112,79 @@
 
 /* ---------------------------------- */
 
-body {
-  margin: 0;
-  padding: 0;
+
+.left-side-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100vh;
-  display: flex;
-  justify-content: center; 
-  align-items: center;
-  margin-top: 200px;
-  background-color: transparent;
+  width: 300px;
+  background: red;
 }
 
+.main-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+}
+
+.expression-input {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a; 
+  color: white;
+  cursor: pointer; 
+  transition: border-color 0.25s;
+  text-align: center;
+}
+
+
+.expression-input:hover {
+  border-color: #646cff;
+}
+.expression-input:focus,
+.expression-input:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+.expression-input:focus {
+  background-color: #1a1a1a;
+  outline: none;
+}
+
+
+
+.left-side-bar.collapsed {
+  display: none; 
+}
+
+
+.fetch-data-bttn {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.render-tree-container {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  transform: translate(-50%, -50%);
+}
 
 .tree-level {
   display: flex;
@@ -159,10 +221,4 @@ body {
   background-color: #C4C4C4;
   margin: 10px 0;
   width: 100%;
-}
-
-.botao {
-  position: absolute;
-  top: 25%;
-  left: 50%;
 }

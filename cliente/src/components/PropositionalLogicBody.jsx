@@ -2,15 +2,26 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 
+import Warning from './Warning';
+
 function PropositionLogicBody() {
-    const [collapsed, setCollapsed] = useState({});
+    const [collapsed, setCollapsed] = useState(false);
     const [proofSteps, setProofSteps] = useState([]);
+
+    const [screen, setScreen] = useState(0)
+    const [expression, setExpression] = useState('')
+    const [warning, setWarning] = useState('');
+
 
     const toggleNode = (nodeId) => {
         setCollapsed(prev => ({
             ...prev,
             [nodeId]: !prev[nodeId]
         }));
+    };
+
+    const nextScreen = () => {
+        setScreen((prevScreen) => (prevScreen === 0 ? 1 : 0)); 
     };
 
     const renderTree = (nodes) => {
@@ -54,12 +65,12 @@ function PropositionLogicBody() {
     
     const fetchData = () => {
         axios
-            .get("http://127.0.0.1:3000/api/result", {
+            .get("/api/result", {
                 params: {
-                    expression: "p0->((p0->p1)->p1)", // Replace with the desired expression
-                    rule: "implication_introduction", // Replace with the rule you want to apply
-                    knowledge_base: [], // Replace with the knowledge base if needed
-                    id: 1, // Replace with the problem ID if applicable
+                    expression: expression,
+                    rule: "implication_introduction",
+                    knowledge_base: [], 
+                    id: 1, 
                     child: [],
                 },
             })
@@ -75,14 +86,59 @@ function PropositionLogicBody() {
                 setProofSteps(treeData);
             })
             .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
+                console.log(error)
+                    if (error.response.status === 501 || error.response.status === 502) {
+                        const message = `⚠️ Error: ${error.response.data.details}`;
+                        setWarning(message)
+                    } else {
+                        console.error("Error fetching data:", error);
+                    }
+                });
     };
+
 
     return (
         <>
-            <button className='botao' onClick={fetchData}>Fetch Data</button>
-            <div className="proofbox">{renderTree(proofSteps)}</div>
+            <div className='main-container'>
+                {screen === 0 ? (
+                    // <FullTree/> 
+                    <>  
+                        <input
+                            type="text"
+                            value={expression}
+                            onChange={(e) => setExpression(e.target.value)}
+                            placeholder='Enter your expression'
+                            className='expression-input'
+                        />
+                        <button className='fetch-data-bttn' onClick={fetchData}>Fetch Data</button>
+                        <div className="render-tree-container">{renderTree(proofSteps)}</div>
+                    </>
+                ) : screen === 1 ? (
+                    // <CurrentTree/> 
+                    <h1>Hello world_4</h1>
+                ) : null}
+            </div>
+
+            {/*
+            <div className={`left-side-bar ${collapsed ? 'collapsed' : ''}`}>
+                {screen === 0 ? (
+                    <h1>Hello world_1</h1>
+                ) : screen === 1 ? (
+                    <h1>Hello world_2</h1>
+                ) : null}
+            </div>
+            */}
+
+            {warning && (
+                <Warning 
+                    message={warning} 
+                    onClose={() => setWarning('')} 
+                    autoDismiss={true} 
+                    duration={2000}
+                />
+            )}
+
+
         </>
     );
 }
