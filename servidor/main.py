@@ -11,7 +11,8 @@ from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, origins="*")
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
 """
 @app.route("/api/data", methods=["POST"])
@@ -40,7 +41,7 @@ def handle_post_data():
         return jsonify(response), 200
     except Exception as e:
         return jsonify({"error": "Failed to process data", "details": str(e)}), 400
-"""    
+"""
 
 @app.route("/api/result", methods=["GET"])
 def validate_expression():
@@ -48,7 +49,9 @@ def validate_expression():
         # Retrieve the expression from the request
         expression = request.args.get("expression")
         if not expression:
-            return jsonify({"error": "Missing 'expression' parameter"}), 400
+            return jsonify({"error": "Missing 'expression' parameter"}), 401
+
+        print(request.args.get("knowledge_base"))
 
         # Parse the expression
         parsed_expression = CodeGenerator().generate_code(
@@ -64,7 +67,7 @@ def validate_expression():
             hypothesis_list = ast.literal_eval(request.args.get("knowledge_base", "[]"))
             hypothesis_set = set(hypothesis_list) if isinstance(hypothesis_list, list) else set()
         except Exception as e:
-            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
+            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 402
 
         problem_id = request.args.get("id", "0")
 
@@ -81,7 +84,7 @@ def validate_expression():
                     "name": Parser.parse(parsed_expression),
                     "parentId": "",
                     "child": [],
-                    "knowledge_base": []
+                    "knowledge_base": request.args.get("knowledge_base", "[]"),
                 })
 
             if isinstance(result, list):
@@ -102,18 +105,18 @@ def validate_expression():
 
             print("Formatted Response:", response)
         except Exception as e:
-            return jsonify({"error": "Function call failed", "details": str(e)}), 500
+            return jsonify({"error": "Function call failed", "details": str(e)}), 501
 
         return jsonify(response), 200
 
     except Exception as e:
-        return jsonify({"error": "Failed to process request", "details": str(e)}), 500
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 502
 
 
 
 
 
-"""
+
 @app.route("/api/teste", methods=["GET"])
 def send_data():
 
@@ -143,12 +146,16 @@ def send_data():
             "parentId": 3,
             "child": []
         },
+        {
+            "name": "p0->p1->p12333",
+            "parentId": 3,
+            "child": []
+        },
     ]
 
     return jsonify(
         data
     ), 200
-"""
 
 
 if __name__ == "__main__":
