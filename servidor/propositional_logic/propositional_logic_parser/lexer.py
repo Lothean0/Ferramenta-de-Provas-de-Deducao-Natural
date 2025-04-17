@@ -48,9 +48,9 @@ def t_newline(t: Any):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-def t_error(t: Any):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+def t_error(t):
+    raise SyntaxError(f"Illegal character '{t.value[0]}'")
+
 
 t_ignore = ' \t'
 
