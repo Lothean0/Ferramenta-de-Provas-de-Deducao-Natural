@@ -19,19 +19,19 @@ function PropositionLogicBody() {
     const [expressionvisibility, setExpressionVisibility] = useState(true)
 
     const ruleOptions = {
-        implication_introduction: "Introdução da Implicação",
-        implication_eliminations: "Eliminação da Implicação",
         axiom_rule: "Axioma",
-        conjunction_introduction: "Introdução da Conjunção",
-        conjunction_eliminations_1: "Eliminação da Conjunção_1",
-        conjunction_eliminations_2: "Eliminação da Conjunção_2",
-        disjunction_introduction_1: "Introdução da Disjunção_1",
-        disjunction_introduction_2: "Introdução da Disjunção_2",
-        disjunction_eliminations: "Eliminação da Disjunção",
-        negation_introduction: "Introdução da Negação",
-        ifAndOnlyIf_introduction: "Introdução da Bicondicional",
-        ifAndOnlyIf_eliminations_1: "Eliminação da Bicondicional_1",
-        ifAndOnlyIf_eliminations_2: "Eliminação da Bicondicional_2",
+        implication_introduction: "Intro. Implicação",
+        implication_eliminations: "Elim. Implicação",
+        conjunction_introduction: "Intro. Conjunção",
+        conjunction_eliminations_1: "Elim. Conjunção_1",
+        conjunction_eliminations_2: "Elim. Conjunção_2",
+        disjunction_introduction_1: "Intro. Disjunção_1",
+        disjunction_introduction_2: "Introdução Disjunção_2",
+        disjunction_eliminations: "Elim. Disjunção",
+        negation_introduction: "Intro. Negação",
+        ifAndOnlyIf_introduction: "Intro. Bicondicional",
+        ifAndOnlyIf_eliminations_1: "Elim. Bicondicional_1",
+        ifAndOnlyIf_eliminations_2: "Elim. Bicondicional_2",
     };
 
     const toggleNode = (nodeId) => {
@@ -99,6 +99,7 @@ function PropositionLogicBody() {
         const nodeexpression = selectedNode?.name || expressionInput
 
         const knowledgeBase = selectedNode?.knowledge_base || [];
+        console.log(knowledgeBase)
 
         axios
             .get("/api/result", {
@@ -179,7 +180,7 @@ function PropositionLogicBody() {
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
-                            placeholder='Enter your expression'
+                            placeholder='p0->p1'
                             className={`expression-input ${expressionvisibility ? 'show' : 'hidden'}`}
                             />
 
@@ -216,7 +217,7 @@ function PropositionLogicBody() {
                     message={warning} 
                     onClose={() => setWarning('')} 
                     autoDismiss={true} 
-                    duration={2000}
+                    duration={10000}
                 />
             )}
         </>
