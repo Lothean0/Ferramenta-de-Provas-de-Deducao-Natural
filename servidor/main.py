@@ -47,6 +47,7 @@ def handle_post_data():
 def validate_expression():
     try:
         # Retrieve the expression from the request
+
         expression = request.args.get("expression")
         if not expression:
             return jsonify({"error": "Missing 'expression' parameter"}), 401
@@ -54,11 +55,14 @@ def validate_expression():
         print(request.args.get("knowledge_base"))
 
         # Parse the expression
-        parsed_expression = CodeGenerator().generate_code(
-            ast_2 := SemanticAnalyzer().analyze(
-                ast_1 := Parser.parse(expression, debug=False)
+        try:
+            parsed_expression = CodeGenerator().generate_code(
+                ast_2 := SemanticAnalyzer().analyze(
+                    ast_1 := Parser.parse(expression, debug=False)
+                )
             )
-        )
+        except SyntaxError as e:
+            return jsonify({"error": "Parsing failed", "details": str(e)}), 501
 
         print(f"{parsed_expression}")
 
@@ -87,6 +91,7 @@ def validate_expression():
                     "knowledge_base": request.args.get("knowledge_base", "[]"),
                 })
 
+
             if isinstance(result, list):
                 for _,item in enumerate(result, start=2):
                     response.append({
@@ -105,13 +110,12 @@ def validate_expression():
 
             print("Formatted Response:", response)
         except Exception as e:
-            return jsonify({"error": "Function call failed", "details": str(e)}), 501
+            return jsonify({"error": "Function call failed", "details": str(e)}), 502
 
         return jsonify(response), 200
 
     except Exception as e:
-        return jsonify({"error": "Failed to process request", "details": str(e)}), 502
-
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 503
 
 
 
