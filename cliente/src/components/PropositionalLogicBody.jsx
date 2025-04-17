@@ -2,17 +2,38 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 
+import NodeTreeRender from './NodeTreeRender';
 import Warning from './Warning';
 
 function PropositionLogicBody() {
     const [collapsed, setCollapsed] = useState(false);
-    const [proofSteps, setProofSteps] = useState([]);
+    const [tree, setTree] = useState([]);
 
     const [screen, setScreen] = useState(0)
-    const [expression, setExpression] = useState('')
+    const [expressionInput, setExpressionInput] = useState('')
+    const [ruleInput, setRuleInput] = useState('')
+    const [id, setId] = useState(1)
+
+
+    const [selectedNodeId, setSelectedNodeId] = useState(null);
     const [warning, setWarning] = useState('');
 
-
+    const ruleOptions = {
+        implication_introduction: "Introdução da Implicação",
+        implication_eliminations: "Eliminação da Implicação",
+        axiom_rule: "Axioma",
+        conjunction_introduction: "Introdução da Conjunção",
+        conjunction_eliminations_1: "Eliminação da Conjunção_1",
+        conjunction_eliminations_2: "Eliminação da Conjunção_2",
+        disjunction_introduction_1: "Introdução da Disjunção_1",
+        disjunction_introduction_2: "Introdução da Disjunção_2",
+        disjunction_eliminations: "Eliminação da Disjunção",
+        negation_introduction: "Introdução da Negação",
+        ifAndOnlyIf_introduction: "Introdução da Bicondicional",
+        ifAndOnlyIf_eliminations_1: "Eliminação da Bicondicional_1",
+        ifAndOnlyIf_eliminations_2: "Eliminação da Bicondicional_2",
+    };
+    
     const toggleNode = (nodeId) => {
         setCollapsed(prev => ({
             ...prev,
@@ -30,20 +51,19 @@ function PropositionLogicBody() {
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => {
-                    const isCollapsed = collapsed[node.id];
-                    const hasChildren = node.child && node.child.length > 0;
-                    return (
-                        <div key={index} className="tree-node">
-                            <button className="node-label" onClick={() => toggleNode(node.id)}>
-                              {isCollapsed ? '▶ ' : '▼ '} {node.id}: {node.name}
-                            </button>
+                return (
+                    <NodeTreeRender
+                        key={index}
+                        node={node}
+                        toggleNode={toggleNode}
+                        renderTree={renderTree}
+                        selectedNodeId={selectedNodeId}
+                        setSelectedNodeId={setSelectedNodeId}
+                    />
 
-                            {!isCollapsed && hasChildren && <div className="line"></div>}
+                );
+            })}
 
-                            {!isCollapsed && renderTree(node.child)}
-                        </div>
-                    );
-                })}
             </div>
         );
     };
@@ -61,14 +81,14 @@ function PropositionLogicBody() {
       });
   
       return siblings;
-    };
+    };    
     
     const fetchData = () => {
         axios
             .get("/api/result", {
                 params: {
-                    expression: expression,
-                    rule: "implication_introduction",
+                    expression: expressionInput,
+                    rule: ruleInput,
                     knowledge_base: [], 
                     id: 1, 
                     child: [],
@@ -83,18 +103,68 @@ function PropositionLogicBody() {
                 }));
 
                 const treeData = createTreeCategoriesByParent(flatData);
-                setProofSteps(treeData);
+                setTree(treeData);
+                setRuleInput('')
+                setExpressionInput('')
             })
             .catch((error) => {
                 console.log(error)
                     if (error.response.status === 501 || error.response.status === 502) {
                         const message = `⚠️ Error: ${error.response.data.details}`;
                         setWarning(message)
+                    } else if (error.response.status === 401) {
+                        const message = `⚠️ Error: ${error.response.data.error}`;
+                        setWarning(message)
                     } else {
                         console.error("Error fetching data:", error);
                     }
                 });
     };
+
+    const renderSelectedNodeAndChildren = () => {
+        if (!selectedNodeId) return <p>Selecione um nó.</p>;
+    
+        const findNodeById = (nodes, id) => {
+            for (const node of nodes) {
+                if (node.id === id) return node;
+                if (node.child) {
+                    const result = findNodeById(node.child, id);
+                    if (result) return result;
+                }
+            }
+            return null;
+        };
+    
+        const selectedNode = findNodeById(tree, selectedNodeId);
+    
+        if (!selectedNode) return <p>Nó não encontrado.</p>;
+    
+        return (
+            <div className="tree-level">
+                <NodeTreeRender
+                    node={selectedNode}
+                    toggleNode={toggleNode}
+                    renderTree={(nodes) => (
+                        <div className="tree-level">
+                            {nodes.map((node, index) => (
+                                <NodeTreeRender
+                                    key={index}
+                                    node={node}
+                                    toggleNode={toggleNode}
+                                    renderTree={() => null} // Only direct children
+                                    selectedNodeId={selectedNodeId}
+                                    setSelectedNodeId={setSelectedNodeId}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    selectedNodeId={selectedNodeId}
+                    setSelectedNodeId={setSelectedNodeId}
+                />
+            </div>
+        );
+    };
+    
 
 
     return (
@@ -105,19 +175,42 @@ function PropositionLogicBody() {
                     <>  
                         <input
                             type="text"
-                            value={expression}
-                            onChange={(e) => setExpression(e.target.value)}
+                            value={expressionInput}
+                            onChange={(e) => setExpressionInput(e.target.value)}
                             placeholder='Enter your expression'
                             className='expression-input'
                         />
+
+                        <select
+                            value={ruleInput}
+                            onChange={(e) => setRuleInput(e.target.value)}
+                            className='rule-input'
+                        >
+                            <option value="">Select a rule</option>
+                            {Object.entries(ruleOptions).map(([key, label]) => (
+                                <option key={key} value={key}>
+                                    {label}
+                                </option>
+                            ))}
+                        </select>
+
                         <button className='fetch-data-bttn' onClick={fetchData}>Fetch Data</button>
-                        <div className="render-tree-container">{renderTree(proofSteps)}</div>
+                        <div className="render-tree-container">{renderTree(tree)}</div>
                     </>
                 ) : screen === 1 ? (
-                    // <CurrentTree/> 
-                    <h1>Hello world_4</h1>
+                    <div className="render-tree-container">
+                        {renderSelectedNodeAndChildren()}
+                    </div>
                 ) : null}
             </div>
+
+            <div className='change-screen'>
+                <button className='screen-1-bttn' onClick={() => setScreen(0)}>
+                </button>
+                <button className='screen-2-bttn' onClick={() => setScreen(1)}>
+                </button>
+            </div>
+
 
             {/*
             <div className={`left-side-bar ${collapsed ? 'collapsed' : ''}`}>

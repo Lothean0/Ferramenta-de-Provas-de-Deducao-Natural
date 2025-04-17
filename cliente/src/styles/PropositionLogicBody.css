@@ -126,14 +126,38 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: calc(100vh - 50px);
   width: 100vw;
   background: transparent;
 }
 
-.expression-input {
+.change-screen {
   position: absolute;
-  top: 150px;
+  top: calc(100vh - 50px);;
+  left: 0;
+  height:50px;
+  width: 100vw;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.screen-1-bttn,
+.screen-2-bttn {
+  width: 105px;
+  height: 10px !important;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  line-height: 1;
+}
+
+
+.expression-input,
+.rule-input {
+  position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 250px;
@@ -150,32 +174,48 @@
   text-align: center;
 }
 
+.expression-input:nth-child(1) {
+  top: 100px;
+}
 
-.expression-input:hover {
+.rule-input:nth-child(2) {
+  top: 150px;
+  width:290px;
+}
+
+.expression-input:hover,
+.rule-input:hover {
   border-color: #646cff;
 }
+
 .expression-input:focus,
-.expression-input:focus-visible {
+.expression-input:focus-visible,
+.rule-input:focus,
+.rule-input:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-
-.expression-input:focus {
+.expression-input:focus,
+.rule-input:focus {
   background-color: #1a1a1a;
   outline: none;
 }
-
-
 
 .left-side-bar.collapsed {
   display: none; 
 }
 
+.add-node-bttn {
+  position: absolute;
+  top: 200px;
+  left: 39.5%;
+  transform: translate(-50%, -50%);
+}
 
 .fetch-data-bttn {
   position: absolute;
   top: 200px;
-  left: 50%;
+  left: 60%;
   transform: translate(-50%, -50%);
 }
 
@@ -184,41 +224,4 @@
   left: 50%;
   bottom: 1%;
   transform: translate(-50%, -50%);
-}
-
-.tree-level {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px; 
-}
-
-.tree-node {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  margin: 0 20px;
-  position: relative;
-}
-
-.node-label {
-  padding: 8px 12px;
-  background-color: #716be1;
-  border: 1px solid #000000;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 10px;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-}
-
-.node-label:hover {
-  background: red;;
-}
-
-.line {
-  height: 2px;
-  background-color: #C4C4C4;
-  margin: 10px 0;
-  width: 100%;
 }
