@@ -17,7 +17,7 @@ function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelec
             </button>
 
 
-            {hasChildren && <div className="line"></div>}
+            <div className="line"></div>
 
             {renderTree(node.child)}
         </div>

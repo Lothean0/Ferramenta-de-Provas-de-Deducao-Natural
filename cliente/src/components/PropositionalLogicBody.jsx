@@ -9,7 +9,7 @@ function PropositionLogicBody() {
     const [collapsed, setCollapsed] = useState(false);
     const [tree, setTree] = useState([]);
 
-    const [screen, setScreen] = useState(0)
+    const [screen, setScreen] = useState(1)
     const [expressionInput, setExpressionInput] = useState('')
     const [ruleInput, setRuleInput] = useState('')
 
@@ -79,7 +79,6 @@ function PropositionLogicBody() {
         return siblings;
     };
 
-    // Helper to find node by ID
     const findNodeById = (nodes, id) => {
         for (const node of nodes) {
             if (node.id === id) return node;
@@ -91,18 +90,18 @@ function PropositionLogicBody() {
         return null;
     };
 
-    const fetchData = () => {
+    const fetchData = (url) => {
 
         setExpressionVisibility(false)
 
         const selectedNode = findNodeById(tree, selectedNodeId);
         const nodeexpression = selectedNode?.name || expressionInput
 
-        const knowledgeBase = selectedNode?.knowledge_base || [];
+        const knowledgeBase = selectedNode?.knowledge_base || "[]";
         console.log(knowledgeBase)
 
         axios
-            .get("/api/result", {
+            .get(url, {
                 params: {
                     expression: nodeexpression,
                     rule: ruleInput,
@@ -143,7 +142,7 @@ function PropositionLogicBody() {
 
         const selectedNode = findNodeById(tree, selectedNodeId);
 
-        if (!selectedNode) return <p>Nó não encontrado.</p>;
+        if (!selectedNode) return <></>;
 
         return (
             <div className="tree-level">
@@ -157,7 +156,7 @@ function PropositionLogicBody() {
                                     key={index}
                                     node={node}
                                     toggleNode={toggleNode}
-                                    renderTree={() => null} // Only direct children
+                                    renderTree={() => null} 
                                     selectedNodeId={selectedNodeId}
                                     setSelectedNodeId={setSelectedNodeId}
                                 />
@@ -176,11 +175,15 @@ function PropositionLogicBody() {
             <div className='main-container'>
                 {screen === 0 ? (
                     <>
+                        <div className="render-tree-container">{renderTree(tree)}</div>
+                    </>
+                ) : (
+                    <>        
                         <input
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
-                            placeholder='p0->p1'
+                            placeholder='p0 -> (p1->(p2 -> (p3 ->p4)))'
                             className={`expression-input ${expressionvisibility ? 'show' : 'hidden'}`}
                             />
 
@@ -196,14 +199,12 @@ function PropositionLogicBody() {
                                 </option>
                             ))}
                         </select>
-
-                        <button className='fetch-data-bttn' onClick={fetchData}>Fetch Data</button>
-                        <div className="render-tree-container">{renderTree(tree)}</div>
+                        <button className={`add-node-bttn ${expressionvisibility ? 'show' : 'hidden'}`} onClick={() => fetchData("/api/node")}>Add Node</button>
+                        <button className='fetch-data-bttn' onClick={() => fetchData("/api/result")}>Fetch Data</button>            
+                        <div className="render-tree-container">
+                            {renderSelectedNodeAndChildren()}
+                        </div>
                     </>
-                ) : (
-                    <div className="render-tree-container">
-                        {renderSelectedNodeAndChildren()}
-                    </div>
                 )}
             </div>
 

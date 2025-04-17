@@ -204,11 +204,12 @@
   outline: none;
 }
 
-.left-side-bar.collapsed {
+.left-side-bar.collapsed,
+.add-node-bttn.hidden {
   display: none; 
 }
 
-.add-node-bttn {
+.add-node-bttn.show {
   position: absolute;
   top: 200px;
   left: 39.5%;
