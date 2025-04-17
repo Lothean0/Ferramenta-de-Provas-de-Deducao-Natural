@@ -82,7 +82,6 @@ def validate_expression():
             print(f'Worked')
             problem_id = int(problem_id)
 
-            response = []
             if not response:
                 response.append({
                     "name": Parser.parse(parsed_expression),
@@ -163,5 +162,7 @@ def send_data():
 
 
 if __name__ == "__main__":
+
+    response = []
 
     app.run(debug=True, port=3000)
