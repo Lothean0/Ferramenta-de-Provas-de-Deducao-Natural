@@ -1,4 +1,6 @@
 import ast
+import json
+
 from typing import Any
 
 from flask import Flask, jsonify
@@ -9,6 +11,7 @@ from servidor.rules.implication.introduction import apply_implication_introducti
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
+
 
 app = Flask(__name__)
 CORS(app, origins="*")
@@ -42,6 +45,47 @@ def handle_post_data():
     except Exception as e:
         return jsonify({"error": "Failed to process data", "details": str(e)}), 400
 """
+
+@app.route("/api/node", methods=["GET"])
+def add_node():
+    try:
+        data = {
+            "expression": request.args.get("expression"),
+            "rule": request.args.get("rule"),
+            "knowledge_base": request.args.get("knowledge_base"),
+            "id": request.args.get("id"),
+            "child": [],
+        }
+
+
+        if not data.get("expression"):
+            return jsonify({"error": "Missing 'expression' parameter"}), 401
+
+        # Parse the expression
+        try:
+            parsed_expression = CodeGenerator().generate_code(
+                ast_2 := SemanticAnalyzer().analyze(
+                    ast_1 := Parser.parse(data.get("expression"), debug=False)
+                )
+            )
+        except SyntaxError as e:
+            return jsonify({"error": "Parsing failed", "details": str(e)}), 501
+
+        # Process the knowledge base
+
+        if not response:
+            response.append({
+                "name": Parser.parse(parsed_expression),
+                "parentId": "",
+                "child": [],
+                "knowledge_base": request.args.get("knowledge_base", "[]"),
+            })
+
+        return jsonify(response), 200
+
+
+    except Exception as e:
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 503
 
 @app.route("/api/result", methods=["GET"])
 def validate_expression():
