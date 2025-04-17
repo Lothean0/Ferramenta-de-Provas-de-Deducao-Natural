@@ -154,8 +154,11 @@
   line-height: 1;
 }
 
+.expression-input.hidden {
+  display: none;
+}
 
-.expression-input,
+.expression-input.show,
 .rule-input {
   position: absolute;
   left: 50%;
@@ -174,28 +177,28 @@
   text-align: center;
 }
 
-.expression-input:nth-child(1) {
+.expression-input.show {
   top: 100px;
 }
 
-.rule-input:nth-child(2) {
+.rule-input {
   top: 150px;
   width:290px;
 }
 
-.expression-input:hover,
+.expression-input.show:hover,
 .rule-input:hover {
   border-color: #646cff;
 }
 
-.expression-input:focus,
-.expression-input:focus-visible,
+.expression-input.show:focus,
+.expression-input.show:focus-visible,
 .rule-input:focus,
 .rule-input:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.expression-input:focus,
+.expression-input.show:focus,
 .rule-input:focus {
   background-color: #1a1a1a;
   outline: none;

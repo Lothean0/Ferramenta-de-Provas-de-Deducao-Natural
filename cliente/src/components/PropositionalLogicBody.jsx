@@ -12,11 +12,11 @@ function PropositionLogicBody() {
     const [screen, setScreen] = useState(0)
     const [expressionInput, setExpressionInput] = useState('')
     const [ruleInput, setRuleInput] = useState('')
-    const [id, setId] = useState(1)
 
-
-    const [selectedNodeId, setSelectedNodeId] = useState(null);
+    const [selectedNodeId, setSelectedNodeId] = useState(1);
     const [warning, setWarning] = useState('');
+
+    const [expressionvisibility, setExpressionVisibility] = useState(true)
 
     const ruleOptions = {
         implication_introduction: "Introdução da Implicação",
@@ -33,7 +33,7 @@ function PropositionLogicBody() {
         ifAndOnlyIf_eliminations_1: "Eliminação da Bicondicional_1",
         ifAndOnlyIf_eliminations_2: "Eliminação da Bicondicional_2",
     };
-    
+
     const toggleNode = (nodeId) => {
         setCollapsed(prev => ({
             ...prev,
@@ -50,8 +50,7 @@ function PropositionLogicBody() {
 
         return (
             <div className="tree-level">
-                {nodes.map((node, index) => {
-                return (
+                {nodes.map((node, index) => (
                     <NodeTreeRender
                         key={index}
                         node={node}
@@ -60,37 +59,54 @@ function PropositionLogicBody() {
                         selectedNodeId={selectedNodeId}
                         setSelectedNodeId={setSelectedNodeId}
                     />
-
-                );
-            })}
-
+                ))}
             </div>
         );
     };
 
     // Tree builder logic
     const createTreeCategoriesByParent = (categories, parentId = "") => {
-      const siblings = [];
-  
-      categories.forEach(category => {
-          if (category.parentId === parentId) {
-              const children = createTreeCategoriesByParent(categories, category.id);
-              category.child = children;
-              siblings.push(category);
-          }
-      });
-  
-      return siblings;
-    };    
-    
+        const siblings = [];
+
+        categories.forEach(category => {
+            if (category.parentId === parentId) {
+                const children = createTreeCategoriesByParent(categories, category.id);
+                category.child = children;
+                siblings.push(category);
+            }
+        });
+
+        return siblings;
+    };
+
+    // Helper to find node by ID
+    const findNodeById = (nodes, id) => {
+        for (const node of nodes) {
+            if (node.id === id) return node;
+            if (node.child) {
+                const result = findNodeById(node.child, id);
+                if (result) return result;
+            }
+        }
+        return null;
+    };
+
     const fetchData = () => {
+
+        setExpressionVisibility(false)
+
+        const selectedNode = findNodeById(tree, selectedNodeId);
+        const nodeexpression = selectedNode?.name || expressionInput
+
+        const knowledgeBase = selectedNode?.knowledge_base || [];
+
         axios
             .get("/api/result", {
                 params: {
-                    expression: expressionInput,
+                    expression: nodeexpression,
                     rule: ruleInput,
-                    knowledge_base: [], 
-                    id: 1, 
+                    knowledge_base: knowledgeBase,
+                    id: selectedNodeId,
                     child: [],
                 },
             })
@@ -104,41 +120,30 @@ function PropositionLogicBody() {
 
                 const treeData = createTreeCategoriesByParent(flatData);
                 setTree(treeData);
-                setRuleInput('')
-                setExpressionInput('')
+                setRuleInput('');
+                setExpressionInput('');
             })
             .catch((error) => {
-                console.log(error)
-                    if (error.response.status === 501 || error.response.status === 502) {
-                        const message = `⚠️ Error: ${error.response.data.details}`;
-                        setWarning(message)
-                    } else if (error.response.status === 401) {
-                        const message = `⚠️ Error: ${error.response.data.error}`;
-                        setWarning(message)
-                    } else {
-                        console.error("Error fetching data:", error);
-                    }
-                });
+                console.log(error);
+                if (error.response?.status === 501 || error.response?.status === 502) {
+                    const message = `⚠️ Error: ${error.response.data.details}`;
+                    setWarning(message);
+                } else if (error.response?.status === 401) {
+                    const message = `⚠️ Error: ${error.response.data.error}`;
+                    setWarning(message);
+                } else {
+                    console.error("Error fetching data:", error);
+                }
+            });
     };
 
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNodeId) return <p>Selecione um nó.</p>;
-    
-        const findNodeById = (nodes, id) => {
-            for (const node of nodes) {
-                if (node.id === id) return node;
-                if (node.child) {
-                    const result = findNodeById(node.child, id);
-                    if (result) return result;
-                }
-            }
-            return null;
-        };
-    
+
         const selectedNode = findNodeById(tree, selectedNodeId);
-    
+
         if (!selectedNode) return <p>Nó não encontrado.</p>;
-    
+
         return (
             <div className="tree-level">
                 <NodeTreeRender
@@ -164,22 +169,19 @@ function PropositionLogicBody() {
             </div>
         );
     };
-    
-
 
     return (
         <>
             <div className='main-container'>
                 {screen === 0 ? (
-                    // <FullTree/> 
-                    <>  
+                    <>
                         <input
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
                             placeholder='Enter your expression'
-                            className='expression-input'
-                        />
+                            className={`expression-input ${expressionvisibility ? 'show' : 'hidden'}`}
+                            />
 
                         <select
                             value={ruleInput}
@@ -197,30 +199,17 @@ function PropositionLogicBody() {
                         <button className='fetch-data-bttn' onClick={fetchData}>Fetch Data</button>
                         <div className="render-tree-container">{renderTree(tree)}</div>
                     </>
-                ) : screen === 1 ? (
+                ) : (
                     <div className="render-tree-container">
                         {renderSelectedNodeAndChildren()}
                     </div>
-                ) : null}
+                )}
             </div>
 
             <div className='change-screen'>
-                <button className='screen-1-bttn' onClick={() => setScreen(0)}>
-                </button>
-                <button className='screen-2-bttn' onClick={() => setScreen(1)}>
-                </button>
+                <button className='screen-1-bttn' onClick={() => setScreen(0)} />
+                <button className='screen-2-bttn' onClick={() => setScreen(1)} />
             </div>
-
-
-            {/*
-            <div className={`left-side-bar ${collapsed ? 'collapsed' : ''}`}>
-                {screen === 0 ? (
-                    <h1>Hello world_1</h1>
-                ) : screen === 1 ? (
-                    <h1>Hello world_2</h1>
-                ) : null}
-            </div>
-            */}
 
             {warning && (
                 <Warning 
@@ -230,8 +219,6 @@ function PropositionLogicBody() {
                     duration={2000}
                 />
             )}
-
-
         </>
     );
 }
