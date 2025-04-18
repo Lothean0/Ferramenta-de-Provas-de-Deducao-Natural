@@ -1,8 +1,3 @@
-import ast
-import json
-
-from typing import Any
-
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask import request
@@ -16,6 +11,8 @@ from servidor.propositional_logic.propositional_logic_semantic import SemanticAn
 app = Flask(__name__)
 CORS(app, origins="*")
 # CORS(app, resources={r"/*": {"origins": "*"}})
+
+response = []
 
 """
 @app.route("/api/data", methods=["POST"])
@@ -46,20 +43,15 @@ def handle_post_data():
         return jsonify({"error": "Failed to process data", "details": str(e)}), 400
 """
 
-@app.route("/api/node", methods=["GET"])
+@app.route("/api/node", methods=["POST"])
 def add_node():
     try:
-        data = {
-            "expression": request.args.get("expression"),
-            "rule": request.args.get("rule"),
-            "knowledge_base": request.args.get("knowledge_base"),
-            "id": request.args.get("id"),
-            "child": [],
-        }
+        data = request.get_json()
+        print("Received data:", data)
 
 
         if not data.get("expression"):
-            return jsonify({"error": "Missing 'expression' parameter"}), 401
+            return jsonify({"error": "Missing 'expression' parameter"}), 400
 
         # Parse the expression
         try:
@@ -69,7 +61,7 @@ def add_node():
                 )
             )
         except SyntaxError as e:
-            return jsonify({"error": "Parsing failed", "details": str(e)}), 501
+            return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
         # Process the knowledge base
 
@@ -85,18 +77,19 @@ def add_node():
 
 
     except Exception as e:
-        return jsonify({"error": "Failed to process request", "details": str(e)}), 503
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
-@app.route("/api/result", methods=["GET"])
+@app.route("/api/result", methods=["POST"])
 def validate_expression():
     try:
-        # Retrieve the expression from the request
+        data = request.get_json()
+        print("Received data:", data)
 
-        expression = request.args.get("expression")
+        expression = data.get("expression")
         if not expression:
-            return jsonify({"error": "Missing 'expression' parameter"}), 401
+            return jsonify({"error": "Missing 'expression' parameter"}), 400
 
-        print(request.args.get("knowledge_base"))
+        print(data.get("knowledge_base"))
 
         # Parse the expression
         try:
@@ -106,22 +99,22 @@ def validate_expression():
                 )
             )
         except SyntaxError as e:
-            return jsonify({"error": "Parsing failed", "details": str(e)}), 501
+            return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
         print(f"{parsed_expression}")
 
         # Process the knowledge base
         try:
-            hypothesis_list = ast.literal_eval(request.args.get("knowledge_base", "[]"))
-            hypothesis_set = set(hypothesis_list) if isinstance(hypothesis_list, list) else set()
+            hypothesis_set = set(data["knowledge_base"]) if isinstance(data["knowledge_base"], list) else set()
         except Exception as e:
-            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 402
+            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
 
-        problem_id = request.args.get("id", "0")
+        problem_id = data.get("id", "0")
 
         # Apply the rule
         try:
-            function = globals()['apply_' + request.args.get("rule")]
+            function = globals()['apply_' + data.get("rule")]
+            # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
             result = function(parsed_expression, hypothesis_set, problem_id)
             print(f'Worked')
             problem_id = int(problem_id)
@@ -131,7 +124,7 @@ def validate_expression():
                     "name": Parser.parse(parsed_expression),
                     "parentId": "",
                     "child": [],
-                    "knowledge_base": request.args.get("knowledge_base", "[]"),
+                    "knowledge_base": data.get("knowledge_base", "[]"),
                 })
 
 
@@ -153,15 +146,19 @@ def validate_expression():
 
             print("Formatted Response:", response)
         except Exception as e:
-            return jsonify({"error": "Function call failed", "details": str(e)}), 502
+            return jsonify({"error": "Function call failed", "details": str(e)}), 500
 
         return jsonify(response), 200
 
     except Exception as e:
-        return jsonify({"error": "Failed to process request", "details": str(e)}), 503
+        return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
 
 
+@app.route("/api/reset", methods=["POST"])
+def reset_data():
+    response.clear()
+    return jsonify(response), 200
 
 
 @app.route("/api/teste", methods=["GET"])
@@ -206,7 +203,5 @@ def send_data():
 
 
 if __name__ == "__main__":
-
-    response = []
 
     app.run(debug=True, port=3000)

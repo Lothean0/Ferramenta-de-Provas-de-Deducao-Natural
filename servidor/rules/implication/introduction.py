@@ -1,14 +1,14 @@
-from typing import Optional
+from typing import Any
 
 from servidor.utils.my_utils import split_expression
 
 from servidor.config import n_hypothesis, knowledge_base, problems
 
 def apply_implication_introduction(
-        logical_expr: str,
-        available_hypothesis: set[str],
-        problem: str
-) -> Optional[str]:
+        logical_expr: str, # (p0 ->p1)
+        available_hypothesis: set[str], # []
+        problem: str #1
+) -> list[dict[str, str | list[Any] | Any]]:
 
     local_n_hypothesis = n_hypothesis
     local_knowledge_base = knowledge_base
@@ -29,9 +29,18 @@ def apply_implication_introduction(
     available_hypothesis_new = available_hypothesis.copy()
     available_hypothesis_new.add(tmp)
 
+    print(f"Before remove{local_problems}")
     local_problems.pop(problem, None)
+    print(f"After remove{local_problems}")
 
-    local_problems[problem + '1'] = (consequent, available_hypothesis_new)
+    print("Here 1")
+    print(consequent)
+    print(available_hypothesis_new)
+
+    local_key = str(problem) + '1'
+
+    local_problems[local_key] = (consequent, available_hypothesis_new)
+    print("Here 2")
 
     result = [
         {
