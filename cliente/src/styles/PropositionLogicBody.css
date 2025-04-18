@@ -112,16 +112,6 @@
 
 /* ---------------------------------- */
 
-
-.left-side-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 300px;
-  background: red;
-}
-
 .main-container {
   position: absolute;
   top: 0;
@@ -150,15 +140,11 @@
   height: 10px !important;
   padding: 0;
   border: none;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgb(194, 205, 215);
   line-height: 1;
 }
 
-.expression-input.hidden {
-  display: none;
-}
-
-.expression-input.show,
+.expression-input,
 .rule-input {
   position: absolute;
   left: 50%;
@@ -177,12 +163,18 @@
   text-align: center;
 }
 
+.expression-input.hidden {
+  position: absolute;
+  top: 30px;
+  background-color: red;
+}
+
 .expression-input.show {
-  top: 100px;
+  top: 30px;
 }
 
 .rule-input {
-  top: 150px;
+  top: 80px;
   width:290px;
 }
 
@@ -204,22 +196,33 @@
   outline: none;
 }
 
-.left-side-bar.collapsed,
-.add-node-bttn.hidden {
-  display: none; 
+.reset-bttn {
+  position: absolute;
+  top: 30px;
+  left: 3%;
+  transform: translate(-50%, -50%);
 }
 
 .add-node-bttn.show {
   position: absolute;
-  top: 200px;
-  left: 39.5%;
+  top: 30px;
+  left: 9.5%;
   transform: translate(-50%, -50%);
 }
 
-.fetch-data-bttn {
+.add-node-bttn.hidden {
   position: absolute;
-  top: 200px;
-  left: 60%;
+  top: 30px;
+  left: 9.5%;
+  transform: translate(-50%, -50%);
+  background: red;  
+}
+
+
+.apply-rule-bttn {
+  position: absolute;
+  top: 30px;
+  left: 17.1%;
   transform: translate(-50%, -50%);
 }
 
@@ -229,3 +232,122 @@
   bottom: 1%;
   transform: translate(-50%, -50%);
 }
+
+.upload-file-bttn {
+  position: absolute;
+  top: 30px;
+  left: 25.4%;
+  transform: translate(-50%, -50%);
+  min-width: 140px;
+  max-width: 150px;
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.drop-area {
+  position: absolute;
+  top: 43px;
+  left: 21.28%;
+  border: 2px dashed #aaa;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+  width: 100px;
+}
+
+.save-bttn {
+  position: absolute;
+  top: 30px;
+  left: 32.5%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 844px) {
+
+  .reset-bttn {
+    position: absolute;
+    top: 30px;
+    left: 6%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .add-node-bttn.show {
+    position: absolute;
+    top: 80px;
+    left: 8.1%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .add-node-bttn.hidden {
+    position: absolute;
+    top: 80px;
+    left: 8.1%;
+    transform: translate(-50%, -50%);
+    background: red;  
+  }
+  
+  
+  .apply-rule-bttn {
+    position: absolute;
+    top: 131px;
+    left: 8.3%;
+    transform: translate(-50%, -50%);
+  }
+
+  .upload-file-bttn {
+    position: absolute;
+    top: 180px;
+    left: 9.6%;
+    transform: translate(-50%, -50%);
+    min-width: 140px;
+    max-width: 150px;
+    max-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .drop-area {
+    position: absolute;
+    top: 190px;
+    left: 1.4%;
+    border: 2px dashed #aaa;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    width: 100px;
+  }
+  
+}
+
+.drop-area:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+.drop-area p {
+  font-size: 16px;
+  color: #333;
+}
+
+.drop-area p:hover {
+  color: #007bff;
+}
+
+.drop-area .uploaded-file {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+
+
+

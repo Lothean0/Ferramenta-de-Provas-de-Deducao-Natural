@@ -8,15 +8,15 @@ import Warning from './Warning';
 function PropositionLogicBody() {
     const [collapsed, setCollapsed] = useState(false);
     const [tree, setTree] = useState([]);
-
-    const [screen, setScreen] = useState(1)
-    const [expressionInput, setExpressionInput] = useState('')
-    const [ruleInput, setRuleInput] = useState('')
-
+    const [screen, setScreen] = useState(1);
+    const [expressionInput, setExpressionInput] = useState('');
+    const [ruleInput, setRuleInput] = useState('');
     const [selectedNodeId, setSelectedNodeId] = useState(1);
     const [warning, setWarning] = useState('');
+    const [expressionvisibility, setExpressionVisibility] = useState(true);
 
-    const [expressionvisibility, setExpressionVisibility] = useState(true)
+    const [showUploadArea, setShowUploadArea] = useState(false);
+    const [uploadedFileName, setUploadedFileName] = useState('');
 
     const ruleOptions = {
         axiom_rule: "Axioma",
@@ -64,7 +64,6 @@ function PropositionLogicBody() {
         );
     };
 
-    // Tree builder logic
     const createTreeCategoriesByParent = (categories, parentId = "") => {
         const siblings = [];
 
@@ -91,36 +90,24 @@ function PropositionLogicBody() {
     };
 
     const fetchData = (url) => {
-
-        setExpressionVisibility(false)
+        setExpressionVisibility(false);
 
         const selectedNode = findNodeById(tree, selectedNodeId);
-        const nodeexpression = selectedNode?.name || expressionInput
-
+        const nodeexpression = selectedNode?.name || expressionInput;
         const knowledgeBase = selectedNode?.knowledge_base || "[]";
-        console.log(knowledgeBase)
 
         axios
-            /*.get(url, {
-                params: {
-                    expression: nodeexpression,
-                    rule: ruleInput,
-                    knowledge_base: knowledgeBase,
-                    id: selectedNodeId,
-                    child: [],
-                },
-            })*/
             .post(url, {
-                    expression: nodeexpression,
-                    rule: ruleInput,
-                    knowledge_base: knowledgeBase,
-                    id: selectedNodeId,
-                    child: [],
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                expression: nodeexpression,
+                rule: ruleInput,
+                knowledge_base: knowledgeBase,
+                id: selectedNodeId,
+                child: [],
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             .then((response) => {
                 console.log("API Response\n", response.data);
 
@@ -153,20 +140,67 @@ function PropositionLogicBody() {
             .post(url)
             .then((response) => {
                 console.log("API Response\n", response.data);
-                setExpressionVisibility(true) 
+                setExpressionVisibility(true);
 
                 const flatData = response.data.map((item, index) => ({
                     ...item,
                     id: index + 1,
                 }));
-                const treeData = createTreeCategoriesByParent(flatData)
-                setTree(treeData)
+
+                const treeData = createTreeCategoriesByParent(flatData);
+                setTree(treeData);
                 setRuleInput('');
                 setExpressionInput('');
-                })
+            })
             .catch((error) => {
-               console.error("API Error\n", error)
+                console.error("API Error\n", error);
             });
+    };
+
+    const saveData = (url) => {
+        axios
+            .post(url, {
+                tree
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                console.log(tree)
+                console.log("API Response\n", response.data)
+            })
+            .catch((error) => {
+                console.error("API Error\n", error)
+            })
+    }
+
+    const handleFileDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        axios.post('api/file', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        .then((res) => {
+            setUploadedFileName(res.data.filename || 'Upload successful');
+            setShowUploadArea(false);
+
+            console.log(res)
+            setTree(createTreeCategoriesByParent(res.data.tree));
+        })
+        .catch((err) => {
+            console.error("File upload error:", err);
+            setUploadedFileName('Upload failed');
+        });
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
     };
 
     const renderSelectedNodeAndChildren = () => {
@@ -205,8 +239,29 @@ function PropositionLogicBody() {
     return (
         <>
             <div className='main-container'>
-                <button className={`reset-bttn ${expressionvisibility ? 'show' : 'hidden'}`} onClick={() => resetData("/api/reset")}>Reset</button>
-                       
+                <button className='reset-bttn' onClick={() => resetData("/api/reset")}>Reset</button>
+                <button className={`add-node-bttn ${expressionvisibility ? 'show' : 'hidden'}`} onClick={() => fetchData("/api/node")}>Add Node</button>
+                <button className='apply-rule-bttn' onClick={() => fetchData("/api/rules")}>Apply Rule</button>            
+
+                <button className='upload-file-bttn' onClick={() => setShowUploadArea(!showUploadArea)}>
+                    {showUploadArea ? "Close Upload" : "Upload File"}
+                </button>
+
+                {showUploadArea && (
+                    <div 
+                        className="drop-area" 
+                        onDrop={handleFileDrop} 
+                        onDragOver={handleDragOver}
+                    >
+                        {uploadedFileName ? (
+                            <p>{uploadedFileName}</p>
+                        ) : (
+                            <p>Drag and drop a file here</p>
+                        )}
+                    </div>
+                )}
+
+                <button className='save-bttn' onClick={() => saveData("/api/save")}>Save</button>
 
                 {screen === 0 ? (
                     <>
@@ -234,8 +289,6 @@ function PropositionLogicBody() {
                                 </option>
                             ))}
                         </select>
-                        <button className={`add-node-bttn ${expressionvisibility ? 'show' : 'hidden'}`} onClick={() => fetchData("/api/node")}>Add Node</button>
-                        <button className='fetch-data-bttn' onClick={() => fetchData("/api/result")}>Fetch Data</button>            
                         <div className="render-tree-container">
                             {renderSelectedNodeAndChildren()}
                         </div>
