@@ -101,7 +101,7 @@ function PropositionLogicBody() {
         console.log(knowledgeBase)
 
         axios
-            .get(url, {
+            /*.get(url, {
                 params: {
                     expression: nodeexpression,
                     rule: ruleInput,
@@ -109,7 +109,18 @@ function PropositionLogicBody() {
                     id: selectedNodeId,
                     child: [],
                 },
-            })
+            })*/
+            .post(url, {
+                    expression: nodeexpression,
+                    rule: ruleInput,
+                    knowledge_base: knowledgeBase,
+                    id: selectedNodeId,
+                    child: [],
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
             .then((response) => {
                 console.log("API Response\n", response.data);
 
@@ -134,6 +145,27 @@ function PropositionLogicBody() {
                 } else {
                     console.error("Error fetching data:", error);
                 }
+            });
+    };
+
+    const resetData = (url) => {
+        axios
+            .post(url)
+            .then((response) => {
+                console.log("API Response\n", response.data);
+                setExpressionVisibility(true) 
+
+                const flatData = response.data.map((item, index) => ({
+                    ...item,
+                    id: index + 1,
+                }));
+                const treeData = createTreeCategoriesByParent(flatData)
+                setTree(treeData)
+                setRuleInput('');
+                setExpressionInput('');
+                })
+            .catch((error) => {
+               console.error("API Error\n", error)
             });
     };
 
@@ -173,6 +205,9 @@ function PropositionLogicBody() {
     return (
         <>
             <div className='main-container'>
+                <button className={`reset-bttn ${expressionvisibility ? 'show' : 'hidden'}`} onClick={() => resetData("/api/reset")}>Reset</button>
+                       
+
                 {screen === 0 ? (
                     <>
                         <div className="render-tree-container">{renderTree(tree)}</div>
