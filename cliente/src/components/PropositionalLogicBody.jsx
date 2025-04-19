@@ -167,8 +167,22 @@ function PropositionLogicBody() {
                 }
             })
             .then((response) => {
-                console.log(tree)
                 console.log("API Response\n", response.data)
+
+                const fileNumber = response.data.number;
+                const fileName = `tree-data-${fileNumber}.json`
+
+                const jsonString = JSON.stringify({tree}, null, 2);
+                const blob = new Blob([jsonString], {type: 'application/json'});
+                const urlBlob = URL.createObjectURL(blob);
+                const link = document.createElement('a')
+                
+                link.href = urlBlob;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(urlBlob);
             })
             .catch((error) => {
                 console.error("API Error\n", error)
@@ -190,8 +204,20 @@ function PropositionLogicBody() {
             setUploadedFileName(res.data.filename || 'Upload successful');
             setShowUploadArea(false);
 
-            console.log(res)
-            setTree(createTreeCategoriesByParent(res.data.tree));
+            try {
+                // Step 1: Parse first layer
+                const parsed = JSON.parse(res.data.filename);
+    
+                // Step 2: Get tree data
+                const uploadedTree = parsed.tree;
+    
+                setTree(uploadedTree);
+                setSelectedNodeId(uploadedTree[0]?.id || 1); 
+                setUploadedFileName('')
+            } catch (err) {
+                console.error("Parsing uploaded file failed:", err);
+                setWarning("⚠️ Invalid file format.");
+            }
         })
         .catch((err) => {
             console.error("File upload error:", err);
@@ -204,7 +230,7 @@ function PropositionLogicBody() {
     };
 
     const renderSelectedNodeAndChildren = () => {
-        if (!selectedNodeId) return <p>Selecione um nó.</p>;
+        if (!selectedNodeId) return <p>Selecione um no.</p>;
 
         const selectedNode = findNodeById(tree, selectedNodeId);
 
@@ -261,7 +287,7 @@ function PropositionLogicBody() {
                     </div>
                 )}
 
-                <button className='save-bttn' onClick={() => saveData("/api/save")}>Save</button>
+                <button className='save-bttn' onClick={() => saveData("/api/save")}>Downlad</button>
 
                 {screen === 0 ? (
                     <>
