@@ -13,45 +13,34 @@ from servidor.propositional_logic.propositional_logic_semantic import SemanticAn
 
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'txt'}
+DOWNLOAD_FOLDER = 'downloads'
+ALLOWED_EXTENSIONS = {'json'}
 
+# old
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+CORS(app, origins="*")
+
+"""
+new 
+app = Flask(__name__, static_folder='dist')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
-# CORS(app, resources={r"/*": {"origins": "*"}})
+@app.route('/')
+def index():
+    return send_from_directory('dist', 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory('dist', path)
+"""
 
 response = []
-
-"""
-@app.route("/api/data", methods=["POST"])
-def handle_post_data():
-    try:
-        # Parse the incoming JSON payload
-        data = request.get_json()
-
-        # Log the received data for debugging
-        print("Received data:", data)
-
-        # Example: Access specific fields from the payload
-        expression = data.get("expression")
-        rule = data.get("rule")
-        knowledge_base = data.get("knowledge_base")
-
-        # Perform any processing or validation here
-        response = {
-            "message": "Data received successfully",
-            "received_expression": expression,
-            "received_rule": rule,
-            "received_knowledge_base": knowledge_base,
-        }
-
-        # Return a JSON response
-        return jsonify(response), 200
-    except Exception as e:
-        return jsonify({"error": "Failed to process data", "details": str(e)}), 400
-"""
+counter = 0
 
 @app.route("/api/node", methods=["POST"])
 def add_node():
@@ -173,20 +162,27 @@ def reset_data():
 
 @app.route("/api/save", methods=["POST"])
 def save_file():
-    data = request.get_json()  # Get the data from the request
+    data = request.get_json()
     print("Received data:", data)
 
-    # Define the path where the file will be saved
-    file_path = 'tree_structure.txt'
+    global counter
+    counter += 1
 
-    # Convert the received data into a string format
-    tree_data_str = json.dumps(data, indent=2)  # Pretty-print the JSON data
+    filename = f'tree-data-{counter}.json'
 
-    # Write the string data to a .txt file
+    if not allowed_file(filename):
+        return jsonify({"error": "Invalid file type"}), 400
+
+    tree_data_str = json.dumps(data, indent=2)
+
     try:
-        with open(file_path, 'w') as file:
-            file.write(tree_data_str)
-        return jsonify({"message": "Data saved to file successfully!"}), 200
+        with open(os.path.join(app.config['DOWNLOAD_FOLDER'], filename), 'w') as file:
+            file.writelines(tree_data_str)
+
+        return jsonify(
+            {"message": "Data saved to file successfully!",
+             "number": counter
+        }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -203,7 +199,7 @@ def upload_file():
             flash('No file part')
             return jsonify({"error": "No file part"}), 400
         file = request.files['file']
-        # If the user does not select a file, the browser submits an
+        # If ithe user does not select a file, the browser submits an
         # empty file without a filename.
         if file.filename == '':
             flash('No selected file')
@@ -219,9 +215,7 @@ def upload_file():
     return jsonify({"error": "File not allowed"}), 400
 
 
-@app.route('/uploads/<name>')
-def download_file(name):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], name)
+
 
 @app.route("/api/teste", methods=["GET"])
 def send_data():
