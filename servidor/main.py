@@ -4,8 +4,10 @@ import os
 from flask import Flask, jsonify, flash, redirect, url_for, send_from_directory
 from flask_cors import CORS
 from flask import request
+from networkx.algorithms.lowest_common_ancestors import lowest_common_ancestor
 from werkzeug.utils import secure_filename
 
+from servidor.config import knowledge_base
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
@@ -45,6 +47,11 @@ counter = 0
 @app.route("/api/node", methods=["POST"])
 def add_node():
     try:
+        local_counter = 1
+        local_knowledge_base = {}
+        if response:
+            return jsonify({"error": "Reset first", "details": str(response)}), 400
+
         data = request.get_json()
         print("Received data:", data)
 
@@ -63,15 +70,48 @@ def add_node():
         except SyntaxError as e:
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
-        # Process the knowledge base
+        print("Here_1")
+
+        try:
+            for item in data.get("knowledge_base", []):
+                print(item[1])
+                key = f"Y{local_counter}"
+                parsed_expr = CodeGenerator().generate_code(
+                    ast_2 := SemanticAnalyzer().analyze(
+                        ast_1 := Parser.parse(item[1], debug=False)
+                    )
+                )
+                local_knowledge_base[key] = parsed_expr
+                local_counter += 1
+        except Exception as e:
+            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
+
+        # print(local_knowledge_base)
+        print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
 
         if not response:
             response.append({
                 "name": Parser.parse(parsed_expression),
                 "parentId": "",
                 "child": [],
-                "knowledge_base": data.get("knowledge_base", "[]"),
+                "knowledge_base": local_knowledge_base
             })
+
+        """
+        knowledge_base: {Y1: 'p0'}
+        knowledge_base:
+            Y1: "p0"
+          > [[Prototype]] : Obejct
+          
+          
+          
+        knowledge_base: {X0: 'EVar(p0)'}
+        knoledge_base:
+            X0: EVar(p0)
+            > [[Prototype]] : Obejct
+        """
+
+        print("Here_3")
 
         return jsonify(response), 200
 
@@ -101,13 +141,42 @@ def apply_rules():
         except SyntaxError as e:
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
-        print(f"{parsed_expression}")
+        print(f"Parsed Expression: {parsed_expression}")
 
         # Process the knowledge base
+        knowledge_base_data = data.get("knowledge_base", [])
+        knowledge_base_data_dict = {}
+
+        if isinstance(knowledge_base_data, list):
+            try:
+                knowledge_base_data_dict = dict(knowledge_base_data)
+            except (ValueError, TypeError) as e:
+                return jsonify({
+                    "error": "Invalid knowledge_base format",
+                    "details": f"Expected list of key-value pairs. Error: {str(e)}"
+                }), 400
+        elif isinstance(knowledge_base_data, dict):
+            knowledge_base_data_dict = knowledge_base_data
+        else:
+            return jsonify({
+                "error": "Invalid knowledge_base format",
+                "details": "Expected a list of key-value pairs or a dictionary."
+            }), 400
+
+        print(f"Type of knowledge_base: {type(data['knowledge_base'])}")
+        print(f"Content of knowledge_base: {data['knowledge_base']}")
+
+        # Convert knowledge_base_data to a set of tuples for hypothesis_set
         try:
-            hypothesis_set = set(data["knowledge_base"]) if isinstance(data["knowledge_base"], list) else set()
+            if isinstance(knowledge_base_data_dict, dict):
+                hypothesis_set = set(knowledge_base_data_dict.items())
+            else:
+                hypothesis_set = set()
         except Exception as e:
-            return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
+            return jsonify({
+                "error": "Failed to process knowledge_base for hypothesis_set",
+                "details": str(e)
+            }), 400
 
         problem_id = data.get("id", "0")
 
@@ -119,30 +188,48 @@ def apply_rules():
             print(f'Worked')
             problem_id = int(problem_id)
 
+            print(knowledge_base_data_dict)
             if not response:
+                print("true")
                 response.append({
                     "name": Parser.parse(parsed_expression),
                     "parentId": "",
                     "child": [],
-                    "knowledge_base": data.get("knowledge_base", "[]"),
+                    "knowledge_base": knowledge_base_data_dict,
                 })
 
-
+            # Process the result list
             if isinstance(result, list):
-                for _,item in enumerate(result, start=2):
+                for _, item in enumerate(result, start=2):
+                    knowledge_base_item = item.get("knowledge_base", {})
+
+                    # Ensure knowledge_base_item is a dictionary
+                    if isinstance(knowledge_base_item, list):
+                        try:
+                            knowledge_base_item = dict(knowledge_base_item)
+                        except (ValueError, TypeError) as e:
+                            return jsonify({
+                                "error": "Invalid knowledge_base format in item",
+                                 "details": f"Expected list of key-value pairs. Error: {str(e)}"
+                            }), 400
+                    elif not isinstance(knowledge_base_item, dict):
+                        return jsonify({
+                            "error": "Invalid knowledge_base format in item",
+                            "details": "Expected a list of key-value pairs or a dictionary."
+                    }), 400
+
+                    # Merge the dictionaries
+                    new_dict = {**knowledge_base_data_dict, **knowledge_base_item}
+                    print(f"Merged knowledge_base: {new_dict}")
+
                     response.append({
                         "name": str(Parser.parse(item.get("name"))),
                         "parentId": problem_id,
                         "child": [],
-                        "knowledge_base": item.get("knowledge_base", [])
+                        "knowledge_base": new_dict,
                     })
-            else:
-                response.append({
-                    "name": str(Parser.parse(result.get("name"))),
-                    "parentId": problem_id,
-                    "child": [],
-                    "knowledge_base": result.get("knowledge_base", [])
-                })
+
+
 
             print("Formatted Response:", response)
         except Exception as e:
