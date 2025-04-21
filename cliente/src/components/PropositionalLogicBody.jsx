@@ -1,16 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
+import { FiCheck } from "react-icons/fi";
+
 
 import NodeTreeRender from './NodeTreeRender';
 import Warning from './Warning';
 
 function PropositionLogicBody() {
-    const [collapsed, setCollapsed] = useState(false);
+
+    const [collapsed, setCollapsed] = useState(false)
     const [tree, setTree] = useState([]);
     const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
     const [ruleInput, setRuleInput] = useState('');
+    const [knowledgebaseInput, setKnowledgebaseInput] = useState('')
+    const [knowledgebaseArray, setKnowledgebaseArray] = useState([]);
+
     const [selectedNodeId, setSelectedNodeId] = useState(1);
     const [warning, setWarning] = useState('');
     const [expressionvisibility, setExpressionVisibility] = useState(true);
@@ -94,13 +100,13 @@ function PropositionLogicBody() {
 
         const selectedNode = findNodeById(tree, selectedNodeId);
         const nodeexpression = selectedNode?.name || expressionInput;
-        const knowledgeBase = selectedNode?.knowledge_base || "[]";
+        const knowledgeBase = Object.entries(selectedNode?.knowledge_base || knowledgebaseArray);
 
         axios
             .post(url, {
                 expression: nodeexpression,
                 rule: ruleInput,
-                knowledge_base: knowledgeBase,
+                knowledge_base: [...knowledgeBase],
                 id: selectedNodeId,
                 child: [],
             }, {
@@ -109,6 +115,7 @@ function PropositionLogicBody() {
                 }
             })
             .then((response) => {
+                setKnowledgebaseArray([])
                 console.log("API Response\n", response.data);
 
                 const flatData = response.data.map((item, index) => ({
@@ -123,14 +130,11 @@ function PropositionLogicBody() {
             })
             .catch((error) => {
                 console.log(error);
-                if (error.response?.status === 501 || error.response?.status === 502) {
-                    const message = `⚠️ Error: ${error.response.data.details}`;
-                    setWarning(message);
-                } else if (error.response?.status === 401) {
+                if (error.response?.status === 400 || error.response?.status === 422 || error.response?.status === 500) {
                     const message = `⚠️ Error: ${error.response.data.error}`;
-                    setWarning(message);
+                    setWarning(message)
                 } else {
-                    console.error("Error fetching data:", error);
+                    console.log("Error fetching data: ", error)
                 }
             });
     };
@@ -151,6 +155,7 @@ function PropositionLogicBody() {
                 setTree(treeData);
                 setRuleInput('');
                 setExpressionInput('');
+                setKnowledgebaseArray([])
             })
             .catch((error) => {
                 console.error("API Error\n", error);
@@ -262,6 +267,17 @@ function PropositionLogicBody() {
         );
     };
 
+    const addToArray = () => {
+        if (knowledgebaseInput.trim() !== '') {
+            const trimmedInput = knowledgebaseInput.trim();
+            const newArray = [...knowledgebaseArray, trimmedInput];
+            console.log(newArray);
+            setKnowledgebaseArray(newArray);
+            setKnowledgebaseInput('');
+        }
+    };
+    
+
     return (
         <>
             <div className='main-container'>
@@ -295,13 +311,28 @@ function PropositionLogicBody() {
                     </>
                 ) : (
                     <>        
+                        
                         <input
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
                             placeholder='p0 -> (p1->(p2 -> (p3 ->p4)))'
                             className={`expression-input ${expressionvisibility ? 'show' : 'hidden'}`}
+                        />
+                        
+
+                        <div className='knowledgebase-container'>
+                            <input
+                                type="text"
+                                value={knowledgebaseInput}
+                                onChange={(e) => setKnowledgebaseInput(e.target.value)}
+                                placeholder='p0'
+                                className='knowledgebase-input'
                             />
+                            <button className='add-knowledgebase-bttn' onClick={addToArray}>
+                                <FiCheck size={20} />
+                            </button>
+                        </div>
 
                         <select
                             value={ruleInput}

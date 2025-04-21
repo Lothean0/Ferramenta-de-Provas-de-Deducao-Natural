@@ -144,8 +144,21 @@
   line-height: 1;
 }
 
+.knowledgebase-container {
+  position: absolute;
+  height: 40px;
+  width: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 80px;
+  display: flex;
+  gap: 10px;
+  border-radius: 8px;
+}
+
 .expression-input,
-.rule-input {
+.rule-input,
+.knowledgebase-input {
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -163,10 +176,13 @@
   text-align: center;
 }
 
+.knowledgebase-input {
+  top: 20px
+}
+
 .expression-input.hidden {
   position: absolute;
   top: 30px;
-  background-color: red;
 }
 
 .expression-input.show {
@@ -174,26 +190,53 @@
 }
 
 .rule-input {
-  top: 80px;
+  top: 131.5px;
   width:290px;
 }
 
+
 .expression-input.show:hover,
-.rule-input:hover {
-  border-color: #646cff;
+.rule-input:hover,
+.knowledgebase-input:hover {
+  border-color: #000dff;
 }
 
 .expression-input.show:focus,
 .expression-input.show:focus-visible,
 .rule-input:focus,
-.rule-input:focus-visible {
+.rule-input:focus-visible,
+.knowledgebase-input:focus,
+.knowledgebase-input:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
 .expression-input.show:focus,
-.rule-input:focus {
+.rule-input:focus,
+.knowledgebase-input:focus {
   background-color: #1a1a1a;
   outline: none;
+}
+
+.add-knowledgebase-bttn {
+  margin-left: 154px ;
+  background: rgba(0, 0, 0, 0.552);
+  width: 50px;
+  height: 40px;
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 8px;
+  border: none;
+  outline: none;
+}
+
+.add-knowledgebase-bttn:focus,
+.add-knowledgebase-bttn:hover {
+  outline: none;            
+  border: none;             
+  background: rgba(0, 0, 0, 0.552);
 }
 
 .reset-bttn {
@@ -215,7 +258,6 @@
   top: 30px;
   left: 9.5%;
   transform: translate(-50%, -50%);
-  background: red;  
 }
 
 
@@ -288,9 +330,7 @@
     top: 80px;
     left: 8.1%;
     transform: translate(-50%, -50%);
-    background: red;  
   }
-  
   
   .apply-rule-bttn {
     position: absolute;
@@ -355,6 +395,14 @@
   font-size: 14px;
   color: #555;
 }
+
+
+.drop-area.hover {
+  border: 2px dashed #0d6efd;
+  background-color: #f0f8ff;
+  transition: all 0.2s ease;
+}
+
 
 
 
