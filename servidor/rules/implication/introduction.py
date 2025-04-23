@@ -5,7 +5,8 @@ from servidor.utils.my_utils import split_expression
 def apply_implication_introduction(
         logical_expr: str, # (p0 ->p1)
         available_hypothesis: set[str], # []
-        problem: str #1
+        problem_id: str, #1
+        auxiliar_formula : str
 ) -> list[dict[str, str | list[Any] | Any]]:
 
     arguments = split_expression(logical_expr)
@@ -17,7 +18,7 @@ def apply_implication_introduction(
     # print(f'{antecedent} -> {consequent}')
 
     local_knowledge_base = {}
-    tmp = f'X{problem}'
+    tmp = f'X{problem_id}'
     local_knowledge_base[tmp] = antecedent
 
     result = [

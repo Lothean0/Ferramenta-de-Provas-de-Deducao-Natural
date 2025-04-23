@@ -1,18 +1,25 @@
+"""
+Em Intro Elimination estou apenas a usar como formula auxiliar X1, X2, ...
+Ainda não implementei caso o user insira p1, p2->p3, ...
+"""
+
 import json
 import os
 
-from flask import Flask, jsonify, flash, redirect, url_for, send_from_directory
+from flask import Flask, jsonify, flash, send_from_directory
 from flask_cors import CORS
 from flask import request
-from networkx.algorithms.lowest_common_ancestors import lowest_common_ancestor
 from werkzeug.utils import secure_filename
 
-from servidor.config import knowledge_base
 from servidor.rules.implication.introduction import apply_implication_introduction
+from servidor.rules.implication.elimination import apply_implication_elimination
+from servidor.rules.axiom import axiom
+
+
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
-
+from servidor.utils.my_utils import remove_outer_parentheses
 
 UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
@@ -26,7 +33,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
 """
-new 
+THIS WORKS -> CLIENT BUILD new 
 app = Flask(__name__, static_folder='dist')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
@@ -179,12 +186,24 @@ def apply_rules():
             }), 400
 
         problem_id = data.get("id", "0")
+        auxiliar_formula = data.get("auxiliar_formula", "")
+
+
+        print(f"\n\nParsed expression: {parsed_expression}\n")
+        print(f"Hypothesis set: {hypothesis_set}\n")
+        print(f"Problem ID: {problem_id}\n")
+        print(f"Auxiliar formula: {auxiliar_formula}\n")
+        print(f"Rule: {data['rule']}\n")
 
         # Apply the rule
         try:
-            function = globals()['apply_' + data.get("rule")]
+            rule_name = data.get("rule")
+            function_name = 'apply_' + rule_name
+            if function_name not in globals():
+                return jsonify({"error": f"Rule function '{function_name}' not implemented"}), 400
+            function = globals()[function_name]
             # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
-            result = function(parsed_expression, hypothesis_set, problem_id)
+            result = function(parsed_expression, hypothesis_set, problem_id, auxiliar_formula)
             print(f'Worked')
             problem_id = int(problem_id)
 
@@ -223,7 +242,7 @@ def apply_rules():
                     print(f"Merged knowledge_base: {new_dict}")
 
                     response.append({
-                        "name": str(Parser.parse(item.get("name"))),
+                        "name": str(remove_outer_parentheses(Parser.parse(item.get("name")))),
                         "parentId": problem_id,
                         "child": [],
                         "knowledge_base": new_dict,
