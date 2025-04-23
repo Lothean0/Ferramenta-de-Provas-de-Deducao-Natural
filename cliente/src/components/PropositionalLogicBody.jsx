@@ -14,6 +14,7 @@ function PropositionLogicBody() {
     const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
     const [ruleInput, setRuleInput] = useState('');
+    const [auxiliarInput, setAuxiliarInput] = useState('Y1')
     const [knowledgebaseInput, setKnowledgebaseInput] = useState('')
     const [knowledgebaseArray, setKnowledgebaseArray] = useState([]);
 
@@ -25,20 +26,23 @@ function PropositionLogicBody() {
     const [uploadedFileName, setUploadedFileName] = useState('');
 
     const ruleOptions = {
-        axiom_rule: "Axioma",
+        axiom: "Axioma",
         implication_introduction: "Intro. Implicação",
-        implication_eliminations: "Elim. Implicação",
-        conjunction_introduction: "Intro. Conjunção",
-        conjunction_eliminations_1: "Elim. Conjunção_1",
-        conjunction_eliminations_2: "Elim. Conjunção_2",
-        disjunction_introduction_1: "Intro. Disjunção_1",
+        implication_elimination: "Elim. Implicação",
+    };
+
+    const toBeImplemented = {
+        text1: "Intro. Conjunção",
+        text1: "Elim. Conjunção_1",
+        text1: "Elim. Conjunção_2",
+        text1: "Intro. Disjunção_1",
         disjunction_introduction_2: "Introdução Disjunção_2",
         disjunction_eliminations: "Elim. Disjunção",
         negation_introduction: "Intro. Negação",
         ifAndOnlyIf_introduction: "Intro. Bicondicional",
         ifAndOnlyIf_eliminations_1: "Elim. Bicondicional_1",
         ifAndOnlyIf_eliminations_2: "Elim. Bicondicional_2",
-    };
+    }
 
     const toggleNode = (nodeId) => {
         setCollapsed(prev => ({
@@ -109,6 +113,7 @@ function PropositionLogicBody() {
                 knowledge_base: [...knowledgeBase],
                 id: selectedNodeId,
                 child: [],
+                auxiliar_formula: auxiliarInput,
             }, {
                 headers: {
                     'Content-Type': 'application/json'

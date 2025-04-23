@@ -40,7 +40,7 @@ function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelec
                         toggleNode(node.id);
                         setSelectedNodeId(node.id);
                     }}
-                > {node.id} : {node.name}
+                > {node.name}
                 </button>
 
                 <div className="line"></div>
