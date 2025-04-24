@@ -28,7 +28,7 @@ function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelec
 */
 
 
-function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelectedNodeId }) {
+function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId }) {
     const hasChildren = node.child && node.child.length > 0;
 
     return (
@@ -37,13 +37,12 @@ function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelec
                 <button
                     className={`node-label ${selectedNodeId === node.id ? 'selected' : ''}`}
                     onClick={() => {
-                        toggleNode(node.id);
                         setSelectedNodeId(node.id);
                     }}
-                > {node.name}
+                > {node.id} : {node.name}
                 </button>
 
-                <div className="line"></div>
+                <div className="line"/>
 
                 {renderTree(node.child)}
 
