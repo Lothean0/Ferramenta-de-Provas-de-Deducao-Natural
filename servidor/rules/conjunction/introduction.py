@@ -3,7 +3,7 @@ from typing import Any
 from servidor.utils.my_utils import split_expression
 
 def apply_conjunction_introduction(
-        logical_expr: str, # (p0 \/ p1)
+        logical_expr: str, # (p0 /\ p1)
         available_hypothesis: set[str], # []
         problem_id: str, #1
         auxiliar_formula : str

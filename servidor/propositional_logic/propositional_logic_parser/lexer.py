@@ -27,7 +27,6 @@ t_CONJ = r'∧'
 t_DISJ = r'∨'
 t_NOT = r'~'
 t_LONG = r'⟺'
-t_ABSURD = r'⊥'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r','
@@ -38,6 +37,10 @@ identifier = r'[a-zA-Z][a-zA-Z0-9_]*'
 reserved_map = {}
 for r in reserved:
     reserved_map[r.lower()] = r
+
+def t_ABSURD(t):
+    r'⊥'
+    return t 
 
 @TOKEN(identifier)
 def t_ID(t):

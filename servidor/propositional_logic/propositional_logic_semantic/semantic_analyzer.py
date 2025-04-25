@@ -6,6 +6,7 @@ from servidor.propositional_logic.propositional_logic_ast import (
     EUnOpDeclaration,
     BinOpDeclaration,
     ExpressionDeclaration,
+    AbsurdDeclaration
 )
 from servidor.propositional_logic.propositional_logic_semantic.symbol_table import SymbolTable
 
@@ -58,6 +59,11 @@ class SemanticAnalyzer:
         # print(f'This is the expression:\n{node.body}\n')
         self.visit(node.body)
 
+    def visit_AbsurdDeclaration(self, node: AbsurdDeclaration) -> Any:
+        # print(f"Visiting Absurd Declaration: {node.name}")
+        if not self.symbol_table.is_declared(node.name):
+            self.symbol_table.add(node.name)
+
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:
         # print(f"Visiting Binary Operation: {node.operation}")
         # print(f'\n\nThis is a BinOpDeclaration:\n{node}')
@@ -74,8 +80,9 @@ class SemanticAnalyzer:
             self.symbol_table.add(node.name)
 
     def visit_EUnOpDeclaration(self, node: EUnOpDeclaration) -> Any:
-        if node.operation not in ('¬'):
+        if node.operation not in ('~'):
             raise SemanticError('Operation not supported')
 
         if node.body is not None:
             self.visit(node.body)
+

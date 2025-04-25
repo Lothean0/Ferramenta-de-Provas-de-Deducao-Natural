@@ -20,7 +20,13 @@ from servidor.rules.conjunction.introduction import apply_conjunction_introducti
 from servidor.rules.conjunction.elimination import apply_conjunction_elimination_1, apply_conjunction_elimination_2
 
 from servidor.rules.disjunction.introduction import apply_disjunction_introduction_1, apply_disjunction_introduction_2
+from servidor.rules.disjunction.elimination import apply_disjunction_elimination
 
+from servidor.rules.negation.introduction import apply_negation_introduction
+from servidor.rules.negation.elimination import apply_negation_elimination
+
+from servidor.rules.equivalence.introduction import apply_equivalence_introduction
+from servidor.rules.equivalence.elimination import apply_equivalence_elimination_1, apply_equivalence_elimination_2
 
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
@@ -101,7 +107,9 @@ def add_node():
 
         # print(local_knowledge_base)
         print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
-
+        
+        print(parsed_expression)
+        print(Parser.parse(parsed_expression))
         if not response:
             response.append({
                 "name": Parser.parse(parsed_expression),
@@ -130,6 +138,7 @@ def add_node():
 
 
     except Exception as e:
+        print(e)
         return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
 @app.route("/api/rules", methods=["POST"])

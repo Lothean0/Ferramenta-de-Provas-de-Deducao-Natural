@@ -8,7 +8,8 @@ from servidor.propositional_logic.propositional_logic_ast.ast_nodes import (
     EVarDeclaration,
     ExpressionDeclaration,
     EUnOpDeclaration,
-    BinOpDeclaration
+    BinOpDeclaration,
+    AbsurdDeclaration
 )
 
 def p_Program_1(p:Any) -> None:
@@ -17,7 +18,6 @@ def p_Program_1(p:Any) -> None:
         declarations=p[1],
         lineno=p.lineno(1),
     )
-
 
 def p_ExpressionList_1(p:Any) -> None:
     '''ExpressionList : Expression'''
@@ -72,6 +72,13 @@ def p_Expression_5(p:Any) -> None:
         lineno=p.lineno(1)
     )
 
+def p_Expression_6(p:Any) -> None:
+    '''Expression : ABSURD'''
+    p[0] = AbsurdDeclaration(
+        name=p[1],
+        lineno=p.lineno(1),
+    )
+
 
 def p_Program_2(p:Any) -> None:
     '''Program : EExpressionList'''
@@ -101,6 +108,10 @@ def p_EBinOp(p:Any) -> None:
 def p_EUnOp(p:Any) -> None:
     '''EExpression : EUNOP LPAREN UnaryOp COMMA EExpression RPAREN'''
     p[0] = p[3] + p[5]
+
+def p_Absurd(p:Any) -> None:
+    '''EExpression : ABSURD'''
+    p[0] = "⊥"
 
 
 def p_BinaryOp_1(p:Any) -> None:

@@ -34,3 +34,8 @@ class BinOpDeclaration:
     left: Any
     right: Any
     lineno: int
+
+@dataclass
+class AbsurdDeclaration:
+    name: str
+    lineno: int

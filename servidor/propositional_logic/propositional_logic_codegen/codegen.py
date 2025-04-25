@@ -4,7 +4,8 @@ from servidor.propositional_logic.propositional_logic_ast import (
     EVarDeclaration,
     EUnOpDeclaration,
     ExpressionDeclaration,
-    BinOpDeclaration
+    BinOpDeclaration,
+    AbsurdDeclaration
 )
 
 C_RED = '\033[91m'
@@ -42,6 +43,9 @@ class CodeGenerator:
 
     def visit_ExpressionDeclaration(self, node: ExpressionDeclaration) -> Any:
         return self.visit(node.body)
+    
+    def visit_AbsurdDeclaration(self, node: AbsurdDeclaration) -> Any:
+        return f"ABSURD"
 
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:
         left = self.visit(node.left)

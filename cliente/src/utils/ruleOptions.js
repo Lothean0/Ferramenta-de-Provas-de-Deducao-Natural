@@ -9,7 +9,13 @@ export const ruleOptions = {
     conjunction_elimination_2 : "Elim. Implicação 2",
 
     disjunction_introduction_1: "Intro. Disjunção 1", 
-    disjunction_introduction_2: "Intro. Disjunção 2", 
-    
+    disjunction_introduction_2: "Intro. Disjunção 2",
+    disjunction_elimination: "Elim. Disjunção",
 
+    negation_introduction: "Intro. Negação",
+    negation_elimination: "Elim. Negação",
+    
+    equivalence_introduction: "Intro. Equivalência",
+    equivalence_elimination_1: "Elim. Equivalência 1",
+    equivalence_elimination_2: "Elim. Equivalência 2",
 };
