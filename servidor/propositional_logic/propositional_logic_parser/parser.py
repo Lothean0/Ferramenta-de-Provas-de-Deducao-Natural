@@ -110,7 +110,7 @@ def p_EUnOp(p:Any) -> None:
     p[0] = p[3] + p[5]
 
 def p_Absurd(p:Any) -> None:
-    '''EExpression : ABSURD'''
+    '''EExpression : ABSURD_LITERAL'''
     p[0] = "⊥"
 
 

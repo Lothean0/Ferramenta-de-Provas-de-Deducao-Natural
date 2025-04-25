@@ -45,7 +45,7 @@ class CodeGenerator:
         return self.visit(node.body)
     
     def visit_AbsurdDeclaration(self, node: AbsurdDeclaration) -> Any:
-        return f"ABSURD"
+        return f"ABSURD_LITERAL"
 
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:
         left = self.visit(node.left)
