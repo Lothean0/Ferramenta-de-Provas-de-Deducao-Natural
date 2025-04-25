@@ -1,42 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 import { FiCheck } from "react-icons/fi";
 
 import NodeTreeRender from './NodeTreeRender';
 import Warning from './Warning';
+import ActionButton from './ActionButton';
+import UploadArea from './UploadArea';
+import SelectedNodeDetails from './SelectedNodeDetails';
+
+import { translations } from '../utils/translations';
+import { ruleOptions } from '../utils/ruleOptions';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
-    const translations = {
-        EN: {
-            reset: "Reset",
-            addNode: "Add Node",
-            applyRule: "Apply Rule",
-            uploadOpen: "Open Upload",
-            uploadClose: "Close Upload",
-            download: "Download",
-            selectRule: "Select a rule",
-            dragDrop: "Drag and drop a file here",
-            expressionPlaceholder: "Enter expression: p0 -> (p1 -> p2)",
-            knowledgePlaceholder: "Enter Gamma values: p1, p5",
-            language: "EN"
-        },
-        PT: {
-            reset: "Reiniciar",
-            addNode: "Adicionar Nó",
-            applyRule: "Aplicar Regra",
-            uploadOpen: "Abrir Upload",
-            uploadClose: "Fechar Upload",
-            download: "Baixar",
-            selectRule: "Selecione uma regra",
-            dragDrop: "Arraste e solte um arquivo aqui",
-            expressionPlaceholder: "Insira expressão: p0 -> (p1 -> p2)",
-            knowledgePlaceholder: "Insira valores Gamma: p0, p5",
-            language: "PT"
-        }
-    };
-
     const [tree, setTree] = useState([]);
     const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
@@ -49,11 +26,8 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
-    const ruleOptions = {
-        axiom: "Axioma",
-        implication_introduction: "Intro. Implicação",
-        implication_elimination: "Elim. Implicação",
-    };
+    const t = useMemo(() => (key) => translations[language][key] || key);
+
 
     
     useEffect(() => {
@@ -201,6 +175,9 @@ function PropositionLogicBody() {
         return null;
     };
 
+    const selectedNode = useMemo(() => findNodeById(tree, selectedNodeId), [tree, selectedNodeId]);
+
+
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
         return (
@@ -219,9 +196,7 @@ function PropositionLogicBody() {
     };
 
     const renderSelectedNodeAndChildren = () => {
-        if (!selectedNodeId) return <p>Selecione um no.</p>;
-        const selectedNode = findNodeById(tree, selectedNodeId);
-        if (!selectedNode) return <></>;
+        if (!selectedNode) return <p>Selecione um no.</p>;
 
         return (
             <div className="tree-level">
@@ -250,82 +225,100 @@ function PropositionLogicBody() {
     const handleLanguageToggle = () => {
         setLanguage(prev => {
             const newLanguage = prev === 'EN' ? 'PT' : 'EN';
-            console.log('Toggled to:', newLanguage);  // Check language toggling
             return newLanguage;
         });
     };
+    
 
     return (
         <>
             <div className='main-container'>
-                <button className='language-bttn' onClick={handleLanguageToggle }>
-                    {translations[language].language}
-                </button>
 
+                <ActionButton
+                            className='language-bttn'
+                            onClick={handleLanguageToggle}
+                            label={t("language")}
+                />
 
-                <button className='reset-bttn' onClick={() => resetData("/api/reset")}>
-                    {translations[language].reset}
-                </button>
-
-                <button className='add-node-bttn' onClick={() => fetchData("/api/node")}>
-                    {translations[language].addNode}
-                </button>
-
-                <button className='apply-rule-bttn' onClick={() => fetchData("/api/rules")}>
-                    {translations[language].applyRule}
-                </button>
-
-                <button className='upload-file-bttn' onClick={() => setShowUploadArea(!showUploadArea)}>
-                    {showUploadArea ? translations[language].uploadClose : translations[language].uploadOpen}
-                </button>
-
-                {showUploadArea && (
-                    <div className="drop-area" onDrop={handleFileDrop} onDragOver={handleDragOver}>
-                        <p>{uploadedFileName || translations[language].dragDrop}</p>
-                    </div>
-                )}
-
-                <button className='save-bttn' onClick={() => saveData("/api/save")}>
-                    {translations[language].download}
-                </button>
-
-                <div className='general-information-container'>
-                    {(() => {
-                        const selectedNode = findNodeById(tree, selectedNodeId);
-                        const nodeId = selectedNode?.id || null
-                        const nodeName = selectedNode?.name || null
-                        const nodeParentId = selectedNode?.parentId || null
-                        const nodeKnowledgeBase = Object.entries(selectedNode?.knowledge_base || knowledgebaseArray);
-                        return selectedNode ? (
-                            <>
-                                <p><strong>ID:</strong> {nodeId}</p>
-                                <p><strong>Name:</strong> {nodeName}</p>
-                                <p><strong>Parent ID:</strong>{nodeParentId}</p>
-                                <p><strong>Knowledge Base:</strong></p>
-                                <ul style={{ listStyleType: 'none', paddingLeft: 50 }}>
-                                    {nodeKnowledgeBase.map(([key, value], index) => (
-                                        <li key={index}>
-                                        <strong>{key}:</strong> {value}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        ) : (
-                            null
-                        );
-                    })()}
-                </div>
 
                 {screen === 0 ? (
-                    <div className="render-tree-container">{renderTree(tree)}</div>
+                    <>
+                        <div className="general-information-container">
+                            {selectedNodeId && (() => {
+                                const selectedNode = findNodeById(tree, selectedNodeId);
+                                return (
+                                    <SelectedNodeDetails 
+                                        node={selectedNode} 
+                                        language={language} 
+                                        translations={t}
+                                        fallbackArray={knowledgebaseArray}
+                                    />
+                                );
+                            })()}
+                        </div>
+
+                        <div className="render-tree-container">{renderTree(tree)}</div>
+                    </>
                 ) : screen === 1 ? (
                     <>
+
+                        <ActionButton
+                            className='reset-bttn'
+                            onClick={() => resetData("/api/reset")}
+                            label={t("reset")}
+                        />
+
+                        <ActionButton 
+                            className='add-node-bttn' 
+                            onClick={() => fetchData("/api/node")} 
+                            label={t("addNode")} 
+                        />
+
+                        <ActionButton 
+                            className='apply-rule-bttn' 
+                            onClick={() => fetchData("/api/rules")} 
+                            label={t("applyRule")} 
+                        />
+
+                        <ActionButton 
+                            className='upload-file-bttn' 
+                            onClick={() => setShowUploadArea(!showUploadArea)} 
+                            label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                        />
+
+                        <UploadArea
+                            show={showUploadArea}
+                            onDrop={handleFileDrop}
+                            onDragOver={handleDragOver}
+                            fileName={uploadedFileName}
+                            message={t("dragDrop")}
+                        />
+
+                        <ActionButton 
+                            className='save-bttn' 
+                            onClick={() => saveData("/api/save")} 
+                            label={t("download")} 
+                        />
+
+                        <div className="general-information-container">
+                            {selectedNodeId && (() => {
+                                const selectedNode = findNodeById(tree, selectedNodeId);
+                                return (
+                                    <SelectedNodeDetails 
+                                        node={selectedNode} 
+                                        language={language} 
+                                        translations={t}
+                                        fallbackArray={knowledgebaseArray}
+                                    />
+                                );
+                            })()}
+                        </div>
                         
                         <input
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
-                            placeholder={translations[language].expressionPlaceholder}
+                            placeholder={t("expressionPlaceholder")}
                             className='expression-input'
                         />
 
@@ -334,7 +327,7 @@ function PropositionLogicBody() {
                                 type="text"
                                 value={knowledgebaseInput}
                                 onChange={(e) => setKnowledgebaseInput(e.target.value)}
-                                placeholder={translations[language].knowledgePlaceholder}
+                                placeholder={t("knowledgePlaceholder")}
                                 className='knowledgebase-input'
                             />
                             <button className='add-knowledgebase-bttn' onClick={addToArray}>
@@ -347,7 +340,7 @@ function PropositionLogicBody() {
                             onChange={(e) => setRuleInput(e.target.value)}
                             className='rule-input'
                         >
-                            <option value="">{translations[language].selectRule}</option>
+                            <option value="">{t("selectRule")}</option>
                             {Object.entries(ruleOptions).map(([key, label]) => (
                                 <option key={key} value={key}>
                                     {label}
@@ -360,7 +353,10 @@ function PropositionLogicBody() {
                         </div>
                     </>
                 ) : (
-                    null
+                    <>
+                    </>
+
+
                 )}
             </div>
 

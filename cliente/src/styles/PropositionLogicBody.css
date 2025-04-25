@@ -1,3 +1,18 @@
+
+@font-face {
+  font-family: 'CaveatBrush';
+  src: url('../assets/fonts/CaveatBrush/CaveatBrush-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'GochiHand';
+    src: url('../assets/fonts/GochiHand/GochiHand-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .main-container {
   position: absolute;
   top: 0;
@@ -67,7 +82,7 @@
   border: 1px solid transparent;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
+  font-family: 'CaveatBrush', sans-serif;
   background-color: #1a1a1a; 
   color: white;
   cursor: pointer; 
@@ -140,6 +155,7 @@
   left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .reset-bttn {
@@ -148,6 +164,7 @@
   left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .add-node-bttn {
@@ -156,6 +173,7 @@
   left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 
@@ -165,32 +183,36 @@
   left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .save-bttn {
   position: absolute;
-  top: 30px;
-  right: -3.5%;
+  top: 230px;
+  left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .upload-file-bttn {
   position: absolute;
-  top: 80px;
-  right: -3.5%;
+  top: 280px;
+  left: 5%;
   transform: translate(-50%, -50%);
   width: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .drop-area {
   position: absolute;
-  top: 90px;
-  right: 1%;
+  width: 115px !important;
+  top: 295px;
+  left: 0.6%;
   border: 2px dashed #aaa;
   width: 1px;
   padding: 15px;
@@ -198,116 +220,7 @@
   text-align: center;
   border-radius: 10px;
   transition: background-color 0.3s;
-}
-
-.render-tree-container {
-  position: absolute;
-  left: 50%;
-  bottom: 1%;
-  transform: translate(-50%, -50%);
-}
-
-
-.general-information-container {
-  position: absolute;
-  top: 500px;
-  left: 12.5%;
-  height: 400px;
-  width: 400px;
-  background: red;
-  transform: translate(-50%, -50%);
-}
-
-.general-information-container.span {
-  color: black;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 844px) {
-
-  .language-bttn {
-    position: absolute;
-    top: 30px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-  }
-
-  .reset-bttn {
-    position: absolute;
-    top: 80px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-  }
-  
-  .add-node-bttn {
-    position: absolute;
-    top: 131px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-  }
-  
-  .apply-rule-bttn {
-    position: absolute;
-    top: 180px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-  }
-
-  .save-bttn {
-    position: absolute;
-    top: 229px;
-    left: 10.1%;
-    min-width: 140px;
-    max-width: 150px;
-    max-height: 50px;    
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .upload-file-bttn {
-    position: absolute;
-    top: 279px;
-    left: 10.1%;
-    min-width: 140px;
-    max-width: 150px;
-    max-height: 50px;    
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .drop-area {
-    position: absolute;
-    top: 288px;
-    left: 1.4%;
-    border: 2px dashed #aaa;
-    padding: 15px;
-    margin: 20px 0;
-    text-align: center;
-    border-radius: 10px;
-    transition: background-color 0.3s;
-    width: 115px;
-  }
-  
+  font-family: 'CaveatBrush', sans-serif;
 }
 
 .drop-area:hover {
@@ -337,6 +250,196 @@
   transition: all 0.2s ease;
 }
 
+
+.render-tree-container {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  transform: translate(-50%, -50%);
+}
+
+
+.general-information-container {
+  position: absolute;
+  top: 410px;
+  right: -3.8%;
+  width: 105px;
+  height: calc(100vh - 75px);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transform: translate(-50%, -50%);
+  font-family: 'GochiHand', sans-serif;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.node-details p {
+  margin: 0.5rem 0;
+}
+
+.node-details p strong {
+  font-weight: 600;
+  color: #0263ff;
+  margin-right: 4px;
+  font-family: 'GochiHand', sans-serif;
+  text-decoration: underline;
+}
+
+.knowledge-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.knowledge-list li {
+  margin-bottom: 0.4rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #e5e7eb;
+}
+
+.knowledge-list li strong {
+  font-weight: 600;
+  color: #4b5563;
+  margin-right: 4px;
+}  
+
+
+
+
+
+@media (max-width: 844px) {
+
+  .language-bttn {
+    position: absolute;
+    top: 30px;
+    left: 10.1%;
+    width: 150px;
+    transform: translate(-50%, -50%);
+    font-family: 'CaveatBrush', sans-serif;
+  }
+
+  .reset-bttn {
+    position: absolute;
+    top: 80px;
+    left: 10.1%;
+    width: 150px;
+    transform: translate(-50%, -50%);
+    font-family: 'CaveatBrush', sans-serif;
+  }
+  
+  .add-node-bttn {
+    position: absolute;
+    top: 131px;
+    left: 10.1%;
+    width: 150px;
+    transform: translate(-50%, -50%);
+    font-family: 'CaveatBrush', sans-serif;
+  }
+  
+  .apply-rule-bttn {
+    position: absolute;
+    top: 180px;
+    left: 10.1%;
+    width: 150px;
+    transform: translate(-50%, -50%);
+    font-family: 'CaveatBrush', sans-serif;
+  }
+
+  .save-bttn {
+    position: absolute;
+    top: 229px;
+    left: 10.1%;
+    min-width: 140px;
+    max-width: 150px;
+    max-height: 50px;    
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'CaveatBrush', sans-serif;
+  }
+
+  .upload-file-bttn {
+    position: absolute;
+    top: 279px;
+    left: 10.1%;
+    min-width: 140px;
+    max-width: 150px;
+    max-height: 50px;    
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'CaveatBrush', sans-serif;
+  }
+
+  .drop-area {
+    position: absolute;
+    top: 288px;
+    left: 1.4%;
+    border: 2px dashed #aaa;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    width: 115px;
+    font-family: 'CaveatBrush', sans-serif;
+  }
+  
+  .general-information-container {
+    position: absolute;
+    top: 405px;
+    right: -8.4%;
+    width: 105px;
+    height: calc(100vh - 75px);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transform: translate(-50%, -50%);
+    font-family: 'GochiHand', sans-serif;
+    color: #111827;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .node-details p {
+    margin: 0.5rem 0;
+  }
+  
+  .node-details p strong {
+    font-weight: 600;
+    color: #0263ff;
+    margin-right: 4px;
+    font-family: 'GochiHand', sans-serif;
+    text-decoration: underline;
+  }
+  
+  .knowledge-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .knowledge-list li {
+    margin-bottom: 0.4rem;
+    padding-left: 0.5rem;
+    border-left: 3px solid #e5e7eb;
+  }
+  
+  .knowledge-list li strong {
+    font-weight: 600;
+    color: #4b5563;
+    margin-right: 4px;
+  }  
+  
+}
 
 
 
