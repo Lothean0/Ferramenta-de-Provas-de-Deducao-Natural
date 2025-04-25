@@ -18,13 +18,13 @@ def apply_implication_elimination(
                     "name": f"EBinOp(->, {new_problem}, {logical_expr})",
                     "parentId": "",
                     "child": [],
-                    "knowledge_base": available_hypothesis_dict,
+                    "knowledge_base": [],
                 },
                 {
                     "name": new_problem,
                     "parentId": "",
                     "child": [],
-                    "knowledge_base": available_hypothesis_dict,
+                    "knowledge_base": [],
                 },
             ]
 
