@@ -11,9 +11,15 @@ from flask_cors import CORS
 from flask import request
 from werkzeug.utils import secure_filename
 
+from servidor.rules.axiom import axiom
+
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.rules.implication.elimination import apply_implication_elimination
-from servidor.rules.axiom import axiom
+
+from servidor.rules.conjunction.introduction import apply_conjunction_introduction
+from servidor.rules.conjunction.elimination import apply_conjunction_elimination_1, apply_conjunction_elimination_2
+
+from servidor.rules.disjunction.introduction import apply_disjunction_introduction_1, apply_disjunction_introduction_2
 
 
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
@@ -208,6 +214,7 @@ def apply_rules():
             problem_id = int(problem_id)
 
             print(knowledge_base_data_dict)
+
             if not response:
                 print("true")
                 response.append({
