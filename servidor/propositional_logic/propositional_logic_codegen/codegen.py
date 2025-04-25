@@ -56,5 +56,8 @@ class CodeGenerator:
         return f"EVar({node.name})"
 
     def visit_EUnOpDeclaration(self, node: EUnOpDeclaration) -> Any:
-        body = self.visit(node.body)
-        return f"EUnOp({node.operation}, {body})"
+        if node.name == None:
+            body = self.visit(node.body)
+            return f"EUnOp({node.operation}, {body})"
+        name = self.visit(node.name)
+        return f"EUnOp({node.operation}, {name})"

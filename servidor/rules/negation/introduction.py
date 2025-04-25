@@ -22,7 +22,7 @@ def apply_negation_introduction(
     
     result = [
         {
-            "name": "⊥",
+            "name": "ABSURD_LITERAL",
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,

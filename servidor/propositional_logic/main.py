@@ -10,10 +10,12 @@ if __name__ == '__main__':
         s_3 = "⊥"
         s_4 = "ABSURD_LITERAL"
         s_5 = "p1"
+        s_6 = "~p0"
+        s_7 = "EUnOp(~, EVar(p0))"
 
         print(f'\nParsing content: {s_4}\n')
 
-        ast = Parser.parse(s_4, debug=False)
+        ast = Parser.parse(s_7, debug=False)
 
         if not ast:
             print('')

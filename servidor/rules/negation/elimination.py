@@ -10,7 +10,7 @@ def apply_negation_elimination(
         auxiliar_formula : str
 ) -> list[dict[str, str | list[Any] | Any]]:
 
-    if logical_expr != "⊥":
+    if logical_expr != "ABSURD_LITERAL":
         raise ValueError("Logical expression must be ⊥")
     
 
