@@ -39,7 +39,7 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                     onClick={() => {
                         setSelectedNodeId(node.id);
                     }}
-                > {node.id} : {node.name}
+                > <span style={{ color: 'black' }}>{node.name}</span>
                 </button>
 
                 <div className="line"/>
