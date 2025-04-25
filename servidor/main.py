@@ -28,6 +28,9 @@ from servidor.rules.negation.elimination import apply_negation_elimination
 from servidor.rules.equivalence.introduction import apply_equivalence_introduction
 from servidor.rules.equivalence.elimination import apply_equivalence_elimination_1, apply_equivalence_elimination_2
 
+from servidor.rules.absurd.introduction import apply_RAA
+from servidor.rules.absurd.elimination import apply_absurd_elimination
+
 from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer

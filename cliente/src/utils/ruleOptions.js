@@ -18,4 +18,7 @@ export const ruleOptions = {
     equivalence_introduction: "Intro. Equivalência",
     equivalence_elimination_1: "Elim. Equivalência 1",
     equivalence_elimination_2: "Elim. Equivalência 2",
+
+    RAA: "RAA",
+    absurd_elimination: "Elim. Absurdo"
 };
