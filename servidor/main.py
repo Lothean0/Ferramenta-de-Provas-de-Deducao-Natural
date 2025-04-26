@@ -11,7 +11,7 @@ from flask_cors import CORS
 from flask import request
 from werkzeug.utils import secure_filename
 
-from servidor.rules.axiom import axiom
+from servidor.rules.axiom import apply_axiom
 
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.rules.implication.elimination import apply_implication_elimination

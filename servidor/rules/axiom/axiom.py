@@ -1,5 +1,7 @@
 from typing import Any
 
+from servidor.utils.my_utils import matches_any_order
+
 def apply_axiom(
         logical_expr: str,
         available_hypothesis: set[tuple[str, Any]],  # Corrected type hint
@@ -8,13 +10,22 @@ def apply_axiom(
 ) -> list[dict[str, str | list[Any] | Any]]:
 
     available_hypothesis_dict = dict(available_hypothesis)
-    print("got inside axiom")
 
     try:
         if auxiliar_formula in available_hypothesis_dict:
             new_problem = available_hypothesis_dict[auxiliar_formula]
-            if new_problem == logical_expr:
-                result = []
+            print(f'THis is the problem{new_problem}')
+            print(type(new_problem))
+
+            if new_problem == logical_expr or matches_any_order(new_problem, logical_expr):
+                result = [
+                    {
+                        "name": "",
+                        "parentId": "",
+                        "child": [],
+                        "knowledge_base": [],
+                    }
+                ]
 
                 return result
 

@@ -5,9 +5,25 @@ from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import remove_outer_parentheses
 
+from servidor.rules.axiom import apply_axiom
+
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.rules.implication.elimination import apply_implication_elimination
-from servidor.rules.axiom import apply_axiom
+
+from servidor.rules.conjunction.introduction import apply_conjunction_introduction
+from servidor.rules.conjunction.elimination import apply_conjunction_elimination_1, apply_conjunction_elimination_2
+
+from servidor.rules.disjunction.introduction import apply_disjunction_introduction_1, apply_disjunction_introduction_2
+from servidor.rules.disjunction.elimination import apply_disjunction_elimination
+
+from servidor.rules.negation.introduction import apply_negation_introduction
+from servidor.rules.negation.elimination import apply_negation_elimination
+
+from servidor.rules.equivalence.introduction import apply_equivalence_introduction
+from servidor.rules.equivalence.elimination import apply_equivalence_elimination_1, apply_equivalence_elimination_2
+
+from servidor.rules.absurd.introduction import apply_RAA
+from servidor.rules.absurd.elimination import apply_absurd_elimination
 
 
 rules_bp = Blueprint("rules", __name__)
