@@ -4,9 +4,9 @@ from servidor.utils.my_utils import split_expression
 import re
 
 def apply_negation_introduction(
-        logical_expr: str,
-        available_hypothesis: set[str],
-        problem_id: str,
+        logical_expr: str, # (p0 /\ p1)
+        available_hypothesis: set[str], # []
+        problem_id: str, #1
         auxiliar_formula : str
 ) -> list[dict[str, str | list[Any] | Any]]:
 
