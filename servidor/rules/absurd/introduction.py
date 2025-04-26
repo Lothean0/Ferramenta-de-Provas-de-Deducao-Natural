@@ -1,24 +1,15 @@
 from typing import Any
 
-from servidor.utils.my_utils import split_expression
-import re
-
-def apply_negation_introduction(
+def apply_RAA(
         logical_expr: str,
         available_hypothesis: set[str],
         problem_id: str,
         auxiliar_formula : str
 ) -> list[dict[str, str | list[Any] | Any]]:
 
-    content = None
-    match = re.search(r"EUnOp\(~, (.+)\)", logical_expr)
-
-    if match:
-        content = match.group(1)
-
     local_knowledge_base = {}
     tmp = f'X{problem_id}'
-    local_knowledge_base[tmp] = content
+    local_knowledge_base[tmp] = f'EUnOp(~, {logical_expr})'
     
     result = [
         {
