@@ -47,7 +47,8 @@ def generate_truth_table(
         print(C_GREEN + f'[INFO] ' + C_END + f'{logical_expr}: {result}\n')
         table_data.append([values_dict[var] for var in variables] + [result])
 
-    # print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
-expression = input("Enter expression: ")  # Example: EBinOp(->, EVar(p0), EBinOp(->, EVar(p1), EVar(p2)))
-generate_truth_table(expression)
+if __name__ == '__main__':
+    expression = input("Enter expression: ")  # Example: EBinOp(->, EVar(p0), EBinOp(->, EVar(p1), EVar(p2)))
+    generate_truth_table(expression)
