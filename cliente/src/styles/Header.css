@@ -26,6 +26,7 @@
     src: url('../assets/fonts/CaveatBrush/CaveatBrush-Regular.ttf');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;    
 }
 
 .header-container {

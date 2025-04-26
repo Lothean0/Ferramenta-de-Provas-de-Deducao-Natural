@@ -3,6 +3,7 @@
     src: url('../assets/fonts/GochiHand/GochiHand-Regular.ttf');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 :root {

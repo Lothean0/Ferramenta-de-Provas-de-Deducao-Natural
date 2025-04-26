@@ -11,6 +11,7 @@ import SelectedNodeDetails from './SelectedNodeDetails';
 
 import { translations } from '../utils/translations';
 import { ruleOptions } from '../utils/ruleOptions';
+import SegmentedControl from './SegmentedControl';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
@@ -222,22 +223,35 @@ function PropositionLogicBody() {
         );
     };
 
-    const handleLanguageToggle = () => {
+    {/*
+        const handleLanguageToggle = () => {
         setLanguage(prev => {
             const newLanguage = prev === 'EN' ? 'PT' : 'EN';
             return newLanguage;
         });
     };
+    */}
+
+    const handleLanguageToggle = (selectedLanguage) => {
+        setLanguage(selectedLanguage);
+    };
+      
     
 
     return (
         <>
             <div className='main-container'>
 
+                {/*
                 <ActionButton
-                            className='language-bttn'
-                            onClick={handleLanguageToggle}
-                            label={t("language")}
+                    className='language-bttn'
+                    onClick={handleLanguageToggle}
+                    label={t("language")}
+                />
+                */}
+
+                <SegmentedControl
+                    onChange={handleLanguageToggle}
                 />
 
 
@@ -330,23 +344,31 @@ function PropositionLogicBody() {
                                 placeholder={t("knowledgePlaceholder")}
                                 className='knowledgebase-input'
                             />
-                            <button className='add-knowledgebase-bttn' onClick={addToArray}>
+                            <button 
+                                className='add-knowledgebase-bttn' 
+                                aria-label='Add to knowledge base'
+                                onClick={addToArray}
+                            >
                                 <FiCheck size={20} />
                             </button>
                         </div>
 
-                        <select
-                            value={ruleInput}
-                            onChange={(e) => setRuleInput(e.target.value)}
-                            className='rule-input'
-                        >
-                            <option value="">{t("selectRule")}</option>
-                            {Object.entries(ruleOptions).map(([key, label]) => (
+                        <label className='rule-label'>
+                            {t("selectRuleLabel")}
+                            <select
+                                value={ruleInput}
+                                onChange={(e) => setRuleInput(e.target.value)}
+                                className='rule-input'
+                            >
+                                <option value="">{t("selectRule")}</option>
+                                {Object.entries(ruleOptions).map(([key, label]) => (
                                 <option key={key} value={key}>
                                     {label}
                                 </option>
-                            ))}
-                        </select>
+                                ))}
+                            </select>
+                        </label>
+
 
                         <div className="render-tree-container">
                             {renderSelectedNodeAndChildren()}
@@ -361,9 +383,21 @@ function PropositionLogicBody() {
             </div>
 
             <div className='change-screen'>
-                <button className='screen-0-bttn' onClick={() => setScreen(0)} />
-                <button className='screen-1-bttn' onClick={() => setScreen(1)} />
-                <button className='screen-2-bttn' onClick={() => setScreen(2)} />
+                <button 
+                    className='full-tree-screen-bttn' 
+                    aria-label='Switch to full tree view'
+                    onClick={() => setScreen(0)} 
+                />
+                <button 
+                    className='small-tree-screen-bttn' 
+                    aria-label='Switch to small tree view'
+                    onClick={() => setScreen(1)} 
+                    />
+                <button 
+                    className='help-screen-bttn' 
+                    aria-label='Open help screen'
+                    onClick={() => setScreen(2)}
+                />
             </div>
 
             {warning && (

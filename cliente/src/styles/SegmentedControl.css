@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'CaveatBrush';
+    src: url('../assets/fonts/CaveatBrush/CaveatBrush-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.segmented-control {
+    position: absolute;
+    top: 30px;
+    left: 5%;
+    width: 150px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+}
+  
+.segmented-control input[type="radio"] {
+    display: none;
+}
+  
+.segmented-control label {
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #cccccc;
+    transition: color 0.3s ease;
+    font-family: 'CaveatBrush',CaveatBrush sans-serif;
+}
+  
+.segmented-control__color {
+    content: "";
+    position: absolute;
+    height: 40px;
+    width: 50%;
+    background: #1a1a1a;
+    border-radius: 8px;
+    top: 4px;
+    left: 4px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+  
+input#tab-1:checked ~ .segmented-control__color {
+    left: 0px;
+}
+  
+input#tab-2:checked ~ .segmented-control__color {
+    left: 50%;
+}
+  
+input#tab-1:checked + label,
+input#tab-2:checked + label {
+    color: white;
+}
+
+input#tab-1:checked + label,
+input#tab-2:checked + label {
+    color: white
+;}
+
+@media (max-width: 844px) {
+
+    .segmented-control {
+        left: 10.1%;
+    }
+}

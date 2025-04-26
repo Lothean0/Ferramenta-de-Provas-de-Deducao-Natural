@@ -4,6 +4,7 @@
   src: url('../assets/fonts/CaveatBrush/CaveatBrush-Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -11,6 +12,7 @@
     src: url('../assets/fonts/GochiHand/GochiHand-Regular.ttf');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 .main-container {
@@ -35,9 +37,9 @@
   gap: 25px;
 }
 
-.screen-0-bttn,
-.screen-1-bttn,
-.screen-2-bttn {
+.full-tree-screen-bttn,
+.small-tree-screen-bttn,
+.help-screen-bttn {
   width: 105px;
   height: 10px !important;
   padding: 0;
@@ -46,15 +48,15 @@
   line-height: 1;
 }
 
-.screen-0-bttn {
+.full-tree-screen-bttn {
   background: red;
 }
 
-.screen-1-bttn {
+.small-tree-screen-bttn {
   background: green;
 }
 
-.screen-2-bttn {
+.help-screen-bttn {
   background: blue;
 }
 
@@ -148,15 +150,6 @@
   background: rgba(0, 0, 0, 0.552);
 }
 
-
-.language-bttn {
-  position: absolute;
-  top: 30px;
-  left: 5%;
-  width: 150px;
-  transform: translate(-50%, -50%);
-  font-family: 'CaveatBrush', sans-serif;
-}
 
 .reset-bttn {
   position: absolute;
@@ -311,15 +304,6 @@
 
 
 @media (max-width: 844px) {
-
-  .language-bttn {
-    position: absolute;
-    top: 30px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-    font-family: 'CaveatBrush', sans-serif;
-  }
 
   .reset-bttn {
     position: absolute;
