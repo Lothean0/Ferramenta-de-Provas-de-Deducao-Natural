@@ -1,6 +1,6 @@
 __version__ = "2025.04.11"
 
-from servidor.config import C_RED, C_GREEN, C_YELLOW, C_BLUE, C_END
+from servidor.config import C_YELLOW, C_END
 
 try:
     from .semantic_analyzer import SemanticError, SemanticAnalyzer
