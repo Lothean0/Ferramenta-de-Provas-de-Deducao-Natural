@@ -10,6 +10,7 @@ from flask import Flask, jsonify, flash, send_from_directory
 from flask_cors import CORS
 from flask import request
 from werkzeug.utils import secure_filename
+from uuid import uuid4
 
 from servidor.rules.axiom import apply_axiom
 
@@ -66,6 +67,26 @@ def serve_static(path):
 response = []
 counter = 0
 
+
+def filter_recursive_children(parent_id):
+    global response
+
+    nodes_to_remove = set()
+
+    def collect_descendants(node_id):
+        for item in response:
+            if item.get("parentId") == node_id:
+                nodes_to_remove.add(item["uuid"])
+                collect_descendants(item["uuid"])
+
+    collect_descendants(parent_id)
+    print(f"NODES TO REMOVE {nodes_to_remove}")
+
+    filtered_tree = [item for item in response if item["uuid"] not in nodes_to_remove]
+
+    return filtered_tree
+
+
 @app.route("/api/node", methods=["POST"])
 def add_node():
     try:
@@ -115,6 +136,7 @@ def add_node():
         print(Parser.parse(parsed_expression))
         if not response:
             response.append({
+                "uuid": uuid4(),
                 "name": Parser.parse(parsed_expression),
                 "parentId": "",
                 "child": [],
@@ -144,11 +166,26 @@ def add_node():
         print(e)
         return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
+
+
 @app.route("/api/rules", methods=["POST"])
 def apply_rules():
     try:
         data = request.get_json()
         print("Received data:", data)
+
+        print("THIS IS THE RESPONSE ARRAY BEFORE CHECKING PARENT_ID\n")
+        #print()
+        print("\nRESPONSE ARRAY FINISH")
+
+        parent_id = data.get("id", "0")
+        uuid = data.get("uuid", None)
+
+        #if parent_id in processed_parent_ids:
+         #   print("this id already was submitted to a rule")
+          #  return jsonify({"error": f"Parent ID {parent_id} already processed"}), 400
+
+        # processed_parent_ids.append(parent_id)
 
         expression = data.get("expression")
         if not expression:
@@ -203,13 +240,12 @@ def apply_rules():
                 "details": str(e)
             }), 400
 
-        problem_id = data.get("id", "0")
         auxiliar_formula = data.get("auxiliar_formula", "")
 
-
-        print(f"\n\nParsed expression: {parsed_expression}\n")
+        print(f"\n\nUUID: {uuid}")
+        print(f"Parsed expression: {parsed_expression}\n")
         print(f"Hypothesis set: {hypothesis_set}\n")
-        print(f"Problem ID: {problem_id}\n")
+        print(f"Problem ID: {parent_id}\n")
         print(f"Auxiliar formula: {auxiliar_formula}\n")
         print(f"Rule: {data['rule']}\n")
 
@@ -221,20 +257,19 @@ def apply_rules():
                 return jsonify({"error": f"Rule function '{function_name}' not implemented"}), 400
             function = globals()[function_name]
             # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
-            result = function(parsed_expression, hypothesis_set, problem_id, auxiliar_formula)
+            result = function(parsed_expression, hypothesis_set, parent_id, auxiliar_formula)
             print(f'Worked')
-            problem_id = int(problem_id)
+            problem_id = int(parent_id)
 
             print(knowledge_base_data_dict)
 
-            if not response:
-                print("true")
-                response.append({
-                    "name": Parser.parse(parsed_expression),
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": knowledge_base_data_dict,
-                })
+            global response
+            print("ARRAY BEFORE FILER")
+            print(response)
+            response = filter_recursive_children(parent_id)
+            print("ARRAY AFTER FILER")
+            print(response)
+
 
             # Process the result list
             if isinstance(result, list):
@@ -261,6 +296,7 @@ def apply_rules():
                     print(f"Merged knowledge_base: {new_dict}")
 
                     response.append({
+                        "uuid" : uuid4(),
                         "name": str(remove_outer_parentheses(Parser.parse(item.get("name")))),
                         "parentId": problem_id,
                         "child": [],
@@ -272,6 +308,7 @@ def apply_rules():
             print("Formatted Response:", response)
         except Exception as e:
             return jsonify({"error": "Function call failed", "details": str(e)}), 500
+
 
         return jsonify(response), 200
 
@@ -316,6 +353,29 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def process_tree(tree_data):
+    for node in tree_data:
+        name = node.get("name", "")
+        parentId = node.get("parentId", "")
+        knowledge_base = node.get("knowledge_base", {})
+        child = node.get("child", [])
+        uuid = node.get("uuid", None)
+
+        global response
+        response.append({
+            "uuid" : uuid,
+            "name": name,
+            "parentId": parentId,
+            "child": [],
+            "knowledge_base": knowledge_base
+        })
+
+        # Recursively process child nodes if they exist
+        if child:
+            process_tree(child)
+    print(response)
+
+
 @app.route("/api/file", methods=["POST"])
 def upload_file():
     if request.method == "POST":
@@ -335,10 +395,14 @@ def upload_file():
 
             with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as file:
                 treedata = file.read()
+
+                print("Debug - treedata:", treedata)
+                treedata_json = json.loads(treedata)
+                process_tree(treedata_json["tree"])
+
             return jsonify({"filename": treedata}), 200
 
     return jsonify({"error": "File not allowed"}), 400
-
 
 
 

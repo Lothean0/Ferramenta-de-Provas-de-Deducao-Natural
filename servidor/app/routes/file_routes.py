@@ -8,31 +8,34 @@ file_bp = Blueprint("file", __name__)
 
 def allowed_file(filename):
     allowed_extensions = current_app.config['ALLOWED_EXTENSIONS']
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+    return '.' in filename and  \
+        filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 @file_bp.route("/file", methods=["POST"])
 def upload_file():
-    if 'file' not in request.files:
-        flash('No file part')
-        return jsonify({"error": "No file part"}), 400
+    if request.method == "POST":
 
-    file = request.files['file']
-    if file.filename == '':
-        flash('No selected file')
-        return jsonify({"error": "No selected file"}), 400
+        if 'file' not in request.files:
+            flash('No file part')
+            return jsonify({"error": "No file part"}), 400
 
-    if file and allowed_file(file.filename):
-        upload_folder = current_app.config['UPLOAD_FOLDER']
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(upload_folder, filename)
-        file.save(file_path)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return jsonify({"error": "No selected file"}), 400
 
-        with open(file_path, 'r') as f:
-            treedata = f.read()
+        if file and allowed_file(file.filename):
+            upload_folder = current_app.config['UPLOAD_FOLDER']
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(upload_folder, filename)
+            file.save(file_path)
 
-        return jsonify({"filename": treedata}), 200
+            with open(file_path, 'r') as f:
+                treedata = f.read()
 
-    return jsonify({"error": "File not allowed"}), 400
+            return jsonify({"filename": treedata}), 200
+
+        return jsonify({"error": "File not allowed"}), 400
 
 @file_bp.route("/save", methods=["POST"])
 def save_file():
