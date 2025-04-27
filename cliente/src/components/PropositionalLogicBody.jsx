@@ -40,8 +40,10 @@ function PropositionLogicBody() {
         const selectedNode = findNodeById(tree, selectedNodeId);
         const nodeexpression = selectedNode?.name || expressionInput;
         const knowledgeBase = Object.entries(selectedNode?.knowledge_base || knowledgebaseArray);
+        const uuid = selectedNode?.uuid || 0;
 
         axios.post(url, {
+            uuid: uuid,
             expression: nodeexpression,
             rule: ruleInput,
             knowledge_base: [...knowledgeBase],
@@ -59,6 +61,7 @@ function PropositionLogicBody() {
                 id: index + 1,
             }));
             const treeData = createTreeCategoriesByParent(flatData);
+            console.log(treeData)
             setTree(treeData);
             setRuleInput('');
             setExpressionInput('');
@@ -84,6 +87,7 @@ function PropositionLogicBody() {
                 setSelectedNodeId(treeData[0]?.id || 1);
                 setRuleInput('');
                 setExpressionInput('');
+                setKnowledgebaseInput('')
                 setKnowledgebaseArray([]);
                 setScreen(1);
             })

@@ -1,12 +1,13 @@
 const SelectedNodeDetails = ({ node, language, translations, fallbackArray }) => {
     if (!node) return null;
 
-    const { id, name, parentId, knowledge_base = fallbackArray } = node;
+    const { uuid, id, name, parentId, knowledge_base = fallbackArray } = node;
     const nodeKnowledgeBase = Object.entries(knowledge_base);
     const t = translations
 
     return (
         <div className="node-details">
+            <p><strong>UUID:</strong>{uuid}</p>
             <p><strong>ID:</strong>{id}</p>
             <p><strong>{t("name")}:</strong><br />{name}</p>
             <p><strong>{t("parentId")}:</strong>{parentId}</p>
