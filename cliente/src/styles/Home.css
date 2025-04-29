@@ -16,3 +16,9 @@
     /* overflow: hidden; */
 }
   
+
+@media (max-width: 844px) {
+    .home-container {
+        margin-top: 50px;
+    }
+}

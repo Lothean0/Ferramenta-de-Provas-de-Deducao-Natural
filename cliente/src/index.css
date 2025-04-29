@@ -32,7 +32,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   /* added overflow to remove scroll */
-  overflow: hidden; 
+
+  overflow-x: hidden;
+  /*overflow: hidden; */
 }
 
 img {
