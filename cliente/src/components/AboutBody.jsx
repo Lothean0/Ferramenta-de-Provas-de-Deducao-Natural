@@ -25,7 +25,7 @@ function AboutBody() {
                         <span className="label">
                             <strong>Pedro Malainho</strong>
                             <br />
-                            <span>Not Available</span>
+                            <span>A100050</span>
                         </span>
                     </div>
                     <div className="profile">
@@ -33,7 +33,7 @@ function AboutBody() {
                         <span className="label">
                             <strong>Simão Ribeiro</strong>
                             <br />
-                            <span>Not Available</span>
+                            <span>A102877</span>
                         </span>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ function AboutBody() {
                     </p>
                 </span>
             </div>
-
+            
             <div className='report'>
                 <h2 className="report-title">Report</h2>
                 <a href='../assets/docs/............pdf' download="report.pdf" style={{ color: 'blue', textDecoration: 'underline' }}>
