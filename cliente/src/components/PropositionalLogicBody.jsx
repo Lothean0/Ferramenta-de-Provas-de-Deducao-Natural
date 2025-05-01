@@ -50,6 +50,7 @@ function PropositionLogicBody() {
             id: selectedNodeId,
             child: [],
             auxiliar_formula: auxiliarInput,
+            lambda: ""
         }, {
             headers: { 'Content-Type': 'application/json' }
         })
@@ -380,9 +381,8 @@ function PropositionLogicBody() {
                     </>
                 ) : (
                     <>
+
                     </>
-
-
                 )}
             </div>
 

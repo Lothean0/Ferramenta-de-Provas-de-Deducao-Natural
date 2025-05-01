@@ -1,7 +1,7 @@
 const SelectedNodeDetails = ({ node, language, translations, fallbackArray }) => {
     if (!node) return null;
 
-    const { uuid, id, name, parentId, knowledge_base = fallbackArray } = node;
+    const { uuid, id, name, parentId, knowledge_base, lambda = fallbackArray } = node;
     const nodeKnowledgeBase = Object.entries(knowledge_base);
     const t = translations
 
@@ -17,6 +17,7 @@ const SelectedNodeDetails = ({ node, language, translations, fallbackArray }) =>
                     <li key={index}><strong style={{ color: 'red' }}>{key}:</strong> {value}</li>
                 ))}
             </ul>
+            <p><strong>LAMBDA:</strong>{lambda}</p>
         </div>
     );
 };

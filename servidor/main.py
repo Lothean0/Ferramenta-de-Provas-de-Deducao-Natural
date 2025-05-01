@@ -1,9 +1,13 @@
 import json
 import os
 import logging
-from uuid import uuid4
+import re
+from uuid import uuid4, UUID
+
+from anyio import value
 from flask import Flask, jsonify, flash, request
 from flask_cors import CORS
+from numpy.random.mtrand import operator
 from werkzeug.utils import secure_filename
 
 from servidor.rules.axiom import apply_axiom
@@ -78,6 +82,30 @@ def filter_recursive_children(parent_id):
     return filtered_tree
 
 
+def process_tree(tree_data):
+    for node in tree_data:
+        name = node.get("name", "")
+        parentId = node.get("parentId", "")
+        knowledge_base = node.get("knowledge_base", {})
+        child = node.get("child", [])
+        uuid = node.get("uuid", None)
+
+        global response
+        response.append({
+            "uuid" : uuid,
+            "name": name,
+            "parentId": parentId,
+            "child": [],
+            "knowledge_base": knowledge_base
+        })
+
+        # Recursively process child nodes if they exist
+        if child:
+            process_tree(child)
+    print(response)
+
+
+
 @app.route("/api/node", methods=["POST"])
 def add_node():
     try:
@@ -110,12 +138,7 @@ def add_node():
             for item in data.get("knowledge_base", []):
                 print(item[1])
                 key = f"Y{local_counter}"
-                parsed_expr = CodeGenerator().generate_code(
-                    ast_2 := SemanticAnalyzer().analyze(
-                        ast_1 := Parser.parse(item[1], debug=False)
-                    )
-                )
-                local_knowledge_base[key] = parsed_expr
+                local_knowledge_base[key] = item[1]
                 local_counter += 1
         except Exception as e:
             return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
@@ -125,13 +148,35 @@ def add_node():
         
         print(parsed_expression)
         print(Parser.parse(parsed_expression))
+        bin_match = re.match(r'EBinOp\((.*?),', parsed_expression)
+        un_match = re.match(r'EUnOp\((.*?),', parsed_expression)
+
+        operator = None
+        if bin_match:
+            operator = bin_match.group(1)
+        elif un_match:
+            operator = un_match.group(1)
+        print(operator)
+        # if its -> then "lambda x. {term}"
+        # if its \/ then "lambda f. lambda g. {term}"
+        # if its /\ then "({left_term}, {right_term})"
+        # if its ~ then "lambda x. contradiction({x})
+        thisdict = {
+            "->":"λ x. {term}",
+            "∨":"λ f. λ g. {term}",
+            "ola":"({left_term}, {right_term})",
+            "~":"λ x. contradiction({x})"
+        }
+        lambda_value = thisdict.get(operator) if operator else "{term}"
+
         if not response:
             response.append({
                 "uuid": uuid4(),
                 "name": Parser.parse(parsed_expression),
                 "parentId": "",
                 "child": [],
-                "knowledge_base": local_knowledge_base
+                "knowledge_base": local_knowledge_base,
+                "lambda": lambda_value
             })
 
         """
@@ -283,7 +328,12 @@ def apply_rules():
                     }), 400
 
                     # Merge the dictionaries
-                    new_dict = {**knowledge_base_data_dict, **knowledge_base_item}
+                    new_dict = {
+                        key : Parser.parse(val)
+                        if isinstance(value, str) else val
+                        for key, val in {**knowledge_base_data_dict, **knowledge_base_item}.items()
+                    }
+
                     print(f"Merged knowledge_base: {new_dict}")
 
                     response.append({
@@ -292,9 +342,34 @@ def apply_rules():
                         "parentId": problem_id,
                         "child": [],
                         "knowledge_base": new_dict,
+                        "lambda": item.get("lambda"),
                     })
 
+            print(f"Reponse starts here")
+            print(response)
 
+            # HERE WE NEED TO RECURSIVELY CHANGE THE PARENT LAMBDA TO THE CHILD ONE
+            # RIGHT NOW ITS ONLY CHNAGING THE PARENT WITHOUT RECURSIVITY
+            for entry in response:
+                # print(f"UUID: {entry.get('uuid')}")
+                # print(f"UUID IAM LOOKING FOR: {uuid}")
+                if entry["uuid"] == UUID(uuid):
+                    # print(f"FOUND ENTRY: {entry}")
+
+                    subgoal_term = None
+                    for candidate in response:
+                        if candidate.get("parentId") == parent_id:
+                            subgoal_term = candidate.get("lambda")
+                            break
+
+                    if subgoal_term is None:
+                        return jsonify({
+                            "error": "Missing lambda term for subgoal",
+                            "details": "Could not find matching subgoal term for substitution"
+                        }), 400
+
+                    entry["lambda"] = entry["lambda"].format(term=subgoal_term)
+                    break
 
             print("Formatted Response:", response)
         except Exception as e:
@@ -312,6 +387,7 @@ def reset_data():
     print("Reseting data ...")
     response.clear()
     return jsonify(response), 200
+
 
 @app.route("/api/save", methods=["POST"])
 def save_file():
@@ -338,30 +414,6 @@ def save_file():
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
-def process_tree(tree_data):
-    for node in tree_data:
-        name = node.get("name", "")
-        parentId = node.get("parentId", "")
-        knowledge_base = node.get("knowledge_base", {})
-        child = node.get("child", [])
-        uuid = node.get("uuid", None)
-
-        global response
-        response.append({
-            "uuid" : uuid,
-            "name": name,
-            "parentId": parentId,
-            "child": [],
-            "knowledge_base": knowledge_base
-        })
-
-        # Recursively process child nodes if they exist
-        if child:
-            process_tree(child)
-    print(response)
 
 
 @app.route("/api/file", methods=["POST"])
@@ -391,6 +443,7 @@ def upload_file():
             return jsonify({"filename": treedata}), 200
 
     return jsonify({"error": "File not allowed"}), 400
+
 
 if __name__ == "__main__":
 
