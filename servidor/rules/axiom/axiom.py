@@ -1,5 +1,8 @@
 from typing import Any
 
+from servidor.propositional_logic.propositional_logic_parser import Parser
+from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
+from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import matches_any_order
 
 def apply_axiom(
@@ -13,17 +16,21 @@ def apply_axiom(
 
     try:
         if auxiliar_formula in available_hypothesis_dict:
-            new_problem = available_hypothesis_dict[auxiliar_formula]
-            print(f'THis is the problem{new_problem}')
-            print(type(new_problem))
+            new_problem = CodeGenerator().generate_code(
+                SemanticAnalyzer().analyze(
+                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
+                )
+            )
 
-            if new_problem == logical_expr or matches_any_order(new_problem, logical_expr):
+            if matches_any_order(logical_expr, new_problem):
+                print("Inisde")
                 result = [
                     {
-                        "name": "",
+                        "name": None,
                         "parentId": "",
                         "child": [],
                         "knowledge_base": [],
+                        "lambda" : f"{auxiliar_formula}"
                     }
                 ]
 

@@ -27,6 +27,11 @@ def apply_implication_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,
+            # this lambda is wrong was just to test
+            """
+            lamda wrong
+            """
+            "lambda" : "x"
         },
     ]
 
