@@ -1,34 +1,22 @@
-"""
-Em Intro Elimination estou apenas a usar como formula auxiliar X1, X2, ...
-Ainda não implementei caso o user insira p1, p2->p3, ...
-"""
-
 import json
 import os
-
-from flask import Flask, jsonify, flash, send_from_directory
-from flask_cors import CORS
-from flask import request
-from werkzeug.utils import secure_filename
+import logging
 from uuid import uuid4
+from flask import Flask, jsonify, flash, request
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
 
 from servidor.rules.axiom import apply_axiom
-
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.rules.implication.elimination import apply_implication_elimination
-
 from servidor.rules.conjunction.introduction import apply_conjunction_introduction
 from servidor.rules.conjunction.elimination import apply_conjunction_elimination_1, apply_conjunction_elimination_2
-
 from servidor.rules.disjunction.introduction import apply_disjunction_introduction_1, apply_disjunction_introduction_2
 from servidor.rules.disjunction.elimination import apply_disjunction_elimination
-
 from servidor.rules.negation.introduction import apply_negation_introduction
 from servidor.rules.negation.elimination import apply_negation_elimination
-
 from servidor.rules.equivalence.introduction import apply_equivalence_introduction
 from servidor.rules.equivalence.elimination import apply_equivalence_elimination_1, apply_equivalence_elimination_2
-
 from servidor.rules.absurd.introduction import apply_RAA
 from servidor.rules.absurd.elimination import apply_absurd_elimination
 
@@ -41,6 +29,7 @@ UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
 ALLOWED_EXTENSIONS = {'json'}
 
+logging.basicConfig(level=logging.DEBUG)
 # old
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -67,10 +56,13 @@ def serve_static(path):
 response = []
 counter = 0
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def filter_recursive_children(parent_id):
     global response
-
     nodes_to_remove = set()
 
     def collect_descendants(node_id):
@@ -80,7 +72,6 @@ def filter_recursive_children(parent_id):
                 collect_descendants(item["uuid"])
 
     collect_descendants(parent_id)
-    print(f"NODES TO REMOVE {nodes_to_remove}")
 
     filtered_tree = [item for item in response if item["uuid"] not in nodes_to_remove]
 
@@ -349,9 +340,6 @@ def save_file():
         return jsonify({"error": str(e)}), 500
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def process_tree(tree_data):
     for node in tree_data:
@@ -403,49 +391,6 @@ def upload_file():
             return jsonify({"filename": treedata}), 200
 
     return jsonify({"error": "File not allowed"}), 400
-
-
-
-@app.route("/api/teste", methods=["GET"])
-def send_data():
-
-    data = [
-        {
-            "name": "p0->((p0->p1)->p1)",
-            "parentId": "",
-            "child": []
-        },
-        {
-            "name": "(p0->p1)->p1",
-            "parentId": 1,
-            "child": []
-        },
-        {
-            "name": "p1",
-            "parentId": 2,
-            "child": []
-        },
-        {
-            "name": "p0",
-            "parentId": 3,
-            "child": []
-        },
-        {
-            "name": "p0->p1",
-            "parentId": 3,
-            "child": []
-        },
-        {
-            "name": "p0->p1->p12333",
-            "parentId": 3,
-            "child": []
-        },
-    ]
-
-    return jsonify(
-        data
-    ), 200
-
 
 if __name__ == "__main__":
 
