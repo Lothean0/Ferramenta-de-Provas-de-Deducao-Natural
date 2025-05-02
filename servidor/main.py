@@ -159,7 +159,7 @@ def add_node():
         print(operator)
         # if its -> then "lambda x. {term}"
         # if its \/ then "lambda f. lambda g. {term}"
-        # if its /\ then "({left_term}, {right_term})"
+        # if its /\ then "({left_term}, {right_term})" or <=>
         # if its ~ then "lambda x. contradiction({x})
         thisdict = {
             "->":"λ x. {term}",

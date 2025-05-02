@@ -72,6 +72,7 @@
   border-radius: 8px;
 }
 
+.operators-bttn,
 .expression-input,
 .rule-input,
 .knowledgebase-input {
@@ -92,16 +93,47 @@
   text-align: center;
 }
 
+.operators-bttn {
+  top: 30px; 
+  width: 290px;
+  height: 40px; 
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-family: 'CaveatBrush', sans-serif;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5em;
+  box-sizing: border-box;
+}
+
+.operators-bttn button {
+  flex: 1;
+  height: 100%;
+  margin: 0 2px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: white;
+  font-size: 11pt;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+
+
 .knowledgebase-input {
-  top: 20px
+  top: 71px
 }
 
 .expression-input {
-  top: 30px;
+  top: 80px;
 }
 
 .rule-input {
-  top: 131.5px;
+  top: 180.5px;
   width:290px;
 }
 
@@ -130,7 +162,7 @@
 
 .add-knowledgebase-bttn {
   margin-left: 154px ;
-  background: rgba(0, 0, 0, 0.552);
+  background: #1a1a1a;
   width: 50px;
   height: 40px;
   color: red;
@@ -143,11 +175,14 @@
   outline: none;
 }
 
+
+.operators-bttn button:focus,
+.operators-bttn button:hover,
 .add-knowledgebase-bttn:focus,
 .add-knowledgebase-bttn:hover {
   outline: none;            
   border: none;             
-  background: rgba(0, 0, 0, 0.552);
+  background: black;
 }
 
 

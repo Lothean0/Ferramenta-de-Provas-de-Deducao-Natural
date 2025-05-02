@@ -15,6 +15,7 @@ import SegmentedControl from './SegmentedControl';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
+    const [activeInput, setActiveInput] = useState(null);
     const [tree, setTree] = useState([]);
     const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
@@ -240,6 +241,15 @@ function PropositionLogicBody() {
     const handleLanguageToggle = (selectedLanguage) => {
         setLanguage(selectedLanguage);
     };
+
+    const appendToActiveInput = (value) => {
+        if (activeInput === 'expression') {
+            setExpressionInput(prev => prev + value);
+        } else if (activeInput === 'knowledgebase') {
+            setKnowledgebaseInput(prev => prev + value);
+        }
+    };
+    
       
     
 
@@ -332,11 +342,35 @@ function PropositionLogicBody() {
                                 );
                             })()}
                         </div>
+
+                        <div className='operators-bttn'>
+                            <button 
+                                aria-label='Insert implication symbol to input'
+                                onClick={() =>  appendToActiveInput('->')}>->
+                            </button>
+                            <button 
+                                aria-label='Insert conjunction symbol to input'
+                                onClick={() =>  appendToActiveInput('∧')}>∧
+                            </button>
+                            <button 
+                                aria-label='Insert disjunction symbol to input'
+                                onClick={() =>  appendToActiveInput('∨')}>∨
+                            </button>
+                            <button 
+                                aria-label='Insert equivalence symbol to input'
+                                onClick={() =>  appendToActiveInput('⇔')}>⇔
+                            </button>
+                            <button 
+                                aria-label='Insert negation symbol to input'
+                                onClick={() =>  appendToActiveInput('~')}>~
+                            </button>
+                        </div>
                         
                         <input
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
+                            onFocus={() => setActiveInput('expression')}
                             placeholder={t("expressionPlaceholder")}
                             className='expression-input'
                         />
@@ -346,6 +380,7 @@ function PropositionLogicBody() {
                                 type="text"
                                 value={knowledgebaseInput}
                                 onChange={(e) => setKnowledgebaseInput(e.target.value)}
+                                onFocus={() => setActiveInput('knowledgebase')}
                                 placeholder={t("knowledgePlaceholder")}
                                 className='knowledgebase-input'
                             />
