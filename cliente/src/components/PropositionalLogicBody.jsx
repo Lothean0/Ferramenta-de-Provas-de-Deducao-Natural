@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 import { FiCheck } from "react-icons/fi";
+import { Rnd } from 'react-rnd';
 
 import NodeTreeRender from './NodeTreeRender';
 import Warning from './Warning';
@@ -257,14 +258,6 @@ function PropositionLogicBody() {
         <>
             <div className='main-container'>
 
-                {/*
-                <ActionButton
-                    className='language-bttn'
-                    onClick={handleLanguageToggle}
-                    label={t("language")}
-                />
-                */}
-
                 <SegmentedControl
                     onChange={handleLanguageToggle}
                 />
@@ -272,19 +265,55 @@ function PropositionLogicBody() {
 
                 {screen === 0 ? (
                     <>
-                        <div className="general-information-container">
+                        <Rnd
+                            default={{
+                                x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
+                                y: 10,
+                                width: 300,
+                                height: window.innerHeight-20,
+                            }}
+                            minWidth={200}
+                            maxWidth={350}
+                            disableDragging
+                            enableResizing={{
+                                left: true,
+                                right: false,
+                                top: false,
+                                bottom: false,
+                                topLeft: false,
+                                topRight: false,
+                                bottomLeft: false,
+                                bottomRight: false,
+                            }}
+                            resizeHandleStyles={{
+                                left: {
+                                left: '-6px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                width: '12px',
+                                height: '50px',
+                                background: '#1a1a1a',
+                                cursor: 'ew-resize',
+                                borderRadius: '4px'
+                                }
+                            }}
+                            resizeHandleClasses={{
+                                left: 'resize-handle-left'
+                            }}
+                            className="general-information-container"
+                            >
                             {selectedNodeId && (() => {
                                 const selectedNode = findNodeById(tree, selectedNodeId);
                                 return (
-                                    <SelectedNodeDetails 
-                                        node={selectedNode} 
-                                        language={language} 
-                                        translations={t}
-                                        fallbackArray={knowledgebaseArray}
-                                    />
+                                <SelectedNodeDetails 
+                                    node={selectedNode} 
+                                    language={language} 
+                                    translations={t}
+                                    fallbackArray={knowledgebaseArray}
+                                />
                                 );
                             })()}
-                        </div>
+                        </Rnd>
 
                         <div className="render-tree-container">{renderTree(tree)}</div>
                     </>
@@ -329,19 +358,55 @@ function PropositionLogicBody() {
                             label={t("download")} 
                         />
 
-                        <div className="general-information-container">
+                        <Rnd
+                            default={{
+                                x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
+                                y: 10,
+                                width: 300,
+                                height: window.innerHeight-20,
+                            }}
+                            minWidth={200}
+                            maxWidth={350}
+                            disableDragging
+                            enableResizing={{
+                                left: true,
+                                right: false,
+                                top: false,
+                                bottom: false,
+                                topLeft: false,
+                                topRight: false,
+                                bottomLeft: false,
+                                bottomRight: false,
+                            }}
+                            resizeHandleStyles={{
+                                left: {
+                                left: '-6px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                width: '12px',
+                                height: '50px',
+                                background: '#1a1a1a',
+                                cursor: 'ew-resize',
+                                borderRadius: '4px'
+                                }
+                            }}
+                            resizeHandleClasses={{
+                                left: 'resize-handle-left'
+                            }}
+                            className="general-information-container"
+                            >
                             {selectedNodeId && (() => {
                                 const selectedNode = findNodeById(tree, selectedNodeId);
                                 return (
-                                    <SelectedNodeDetails 
-                                        node={selectedNode} 
-                                        language={language} 
-                                        translations={t}
-                                        fallbackArray={knowledgebaseArray}
-                                    />
+                                <SelectedNodeDetails 
+                                    node={selectedNode} 
+                                    language={language} 
+                                    translations={t}
+                                    fallbackArray={knowledgebaseArray}
+                                />
                                 );
                             })()}
-                        </div>
+                        </Rnd>
 
                         <div className='operators-bttn'>
                             <button 
