@@ -1,5 +1,8 @@
 from typing import Any
 
+from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
+from servidor.propositional_logic.propositional_logic_parser import Parser
+from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import split_expression
 
 def apply_disjunction_elimination(
@@ -13,7 +16,11 @@ def apply_disjunction_elimination(
 
     try:
         if auxiliar_formula in available_hypothesis_dict:
-            new_problem = available_hypothesis_dict[auxiliar_formula]
+            new_problem = CodeGenerator().generate_code(
+                SemanticAnalyzer().analyze(
+                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
+                )
+            )
 
             arguments = split_expression(new_problem)
 

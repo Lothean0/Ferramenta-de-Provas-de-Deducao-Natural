@@ -1,5 +1,10 @@
 from typing import Any
 
+from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
+from servidor.propositional_logic.propositional_logic_parser import Parser
+from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
+
+
 def apply_conjunction_elimination_1(
         logical_expr: str,
         available_hypothesis: set[tuple[str, Any]],  # Corrected type hint
@@ -37,7 +42,11 @@ def apply_conjunction_elimination_2(
 
     try:
         if auxiliar_formula in available_hypothesis_dict:
-            new_problem = available_hypothesis_dict[auxiliar_formula]
+            new_problem = CodeGenerator().generate_code(
+                SemanticAnalyzer().analyze(
+                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
+                )
+            )
 
             result = [
                 {
