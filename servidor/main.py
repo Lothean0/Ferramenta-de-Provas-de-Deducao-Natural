@@ -1,5 +1,5 @@
 """
-PARA AS REGRAS DE \/ E <=> NAO ESTA A FUNCIONAR
+PARA AS REGRAS DE \\/ E <=> NAO ESTA A FUNCIONAR
 PORQUE NAO SUBDIVIDI LAMBDA EM LEFT_TERM E RIGHT_TERM
 """
 
@@ -7,7 +7,10 @@ import json
 import os
 import logging
 import re
+import shutil
+import sys
 from uuid import uuid4, UUID
+import signal
 
 from anyio import value
 from flask import Flask, jsonify, flash, request
@@ -432,6 +435,30 @@ def upload_file():
 
     return jsonify({"error": "File not allowed"}), 400
 
+
+def cleanup_and_exit(signum, frame):
+    temp_dirs = [UPLOAD_FOLDER, DOWNLOAD_FOLDER]
+
+    for temp_dir in temp_dirs:
+        if os.path.exists(temp_dir):
+            for filename in os.listdir(temp_dir):
+                file_path = os.path.join(temp_dir, filename)
+                try:
+                    if os.path.isfile(file_path) or os.path.islink(file_path):
+                        os.remove(file_path)
+                        print(f"Deleted file: {file_path}")
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                        print(f"Deleted folder: {file_path}")
+                except Exception as e:
+                    print(f"Error deleting {file_path}: {e}")
+        else:
+            print(f"Directory not found: {temp_dir}")
+
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, cleanup_and_exit)
 
 if __name__ == "__main__":
 
