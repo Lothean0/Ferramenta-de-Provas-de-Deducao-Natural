@@ -4,6 +4,10 @@ import '../styles/PropositionLogicBody.css';
 import { FiCheck } from "react-icons/fi";
 import { Rnd } from 'react-rnd';
 
+import landscape1 from '../assets/img/landscape-1.png';
+import ImageWithTooltip from './ImageWithTooltip';
+
+
 import NodeTreeRender from './NodeTreeRender';
 import Warning from './Warning';
 import ActionButton from './ActionButton';
@@ -17,8 +21,11 @@ import SegmentedControl from './SegmentedControl';
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
     const [activeInput, setActiveInput] = useState(null);
+    const expressionInputRef = useRef(null);
+    const knowledgebaseInputRef = useRef(null);
+
     const [tree, setTree] = useState([]);
-    const [screen, setScreen] = useState(1);
+    const [screen, setScreen] = useState(2);
     const [expressionInput, setExpressionInput] = useState('');
     const [ruleInput, setRuleInput] = useState('');
     const [auxiliarInput, setAuxiliarInput] = useState('Y1');
@@ -244,12 +251,29 @@ function PropositionLogicBody() {
     };
 
     const appendToActiveInput = (value) => {
-        if (activeInput === 'expression') {
-            setExpressionInput(prev => prev + value);
-        } else if (activeInput === 'knowledgebase') {
-            setKnowledgebaseInput(prev => prev + value);
+        const inputMap = {
+            expression: [setExpressionInput, expressionInputRef],
+            knowledgebase: [setKnowledgebaseInput, knowledgebaseInputRef]
+        };
+    
+        const [setInput, inputRef] = inputMap[activeInput] || [];
+    
+        if (setInput && inputRef) {
+            setInput(prev => {
+                const newValue = prev + value;
+                setTimeout(() => {
+                    if (inputRef.current) {
+                        inputRef.current.focus();
+                        const len = inputRef.current.value.length;
+                        inputRef.current.setSelectionRange(len, len);
+                    }
+                }, 0);
+                return newValue;
+            });
         }
     };
+    
+    
     
       
     
@@ -411,27 +435,28 @@ function PropositionLogicBody() {
                         <div className='operators-bttn'>
                             <button 
                                 aria-label='Insert implication symbol to input'
-                                onClick={() =>  appendToActiveInput('->')}>->
+                                onClick={() =>  appendToActiveInput('->')}>{'->'}
                             </button>
                             <button 
                                 aria-label='Insert conjunction symbol to input'
-                                onClick={() =>  appendToActiveInput('∧')}>∧
+                                onClick={() =>  appendToActiveInput('∧')}>{'∧'}
                             </button>
                             <button 
                                 aria-label='Insert disjunction symbol to input'
-                                onClick={() =>  appendToActiveInput('∨')}>∨
+                                onClick={() =>  appendToActiveInput('∨')}>{'∨'}
                             </button>
                             <button 
                                 aria-label='Insert equivalence symbol to input'
-                                onClick={() =>  appendToActiveInput('⇔')}>⇔
+                                onClick={() =>  appendToActiveInput('⇔')}>{'⇔'}
                             </button>
                             <button 
                                 aria-label='Insert negation symbol to input'
-                                onClick={() =>  appendToActiveInput('~')}>~
+                                onClick={() =>  appendToActiveInput('~')}>{'~'}
                             </button>
                         </div>
                         
                         <input
+                            ref={expressionInputRef}
                             type="text"
                             value={expressionInput}
                             onChange={(e) => setExpressionInput(e.target.value)}
@@ -442,6 +467,7 @@ function PropositionLogicBody() {
 
                         <div className='knowledgebase-container'>
                             <input
+                                ref={knowledgebaseInputRef}
                                 type="text"
                                 value={knowledgebaseInput}
                                 onChange={(e) => setKnowledgebaseInput(e.target.value)}
@@ -462,13 +488,16 @@ function PropositionLogicBody() {
                             {t("selectRuleLabel")}
                             <select
                                 value={ruleInput}
-                                onChange={(e) => setRuleInput(e.target.value)}
+                                onChange={(e) => {
+                                    console.log(e.target.value)
+                                    setRuleInput(e.target.value)}
+                                }
                                 className='rule-input'
                             >
                                 <option value="">{t("selectRule")}</option>
                                 {Object.entries(ruleOptions).map(([key, label]) => (
                                 <option key={key} value={key}>
-                                    {label}
+                                    {t(key)}
                                 </option>
                                 ))}
                             </select>
@@ -481,12 +510,93 @@ function PropositionLogicBody() {
                     </>
                 ) : (
                     <>
+                        <div className='rules__container'
+                        style={{ 
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(6, 1fr)',
+                            gap: '2rem',
+                            rowGap: '3.5rem',
+                            marginLeft: '50px',
+                            marginRight: '70px',
+                            marginTop: '80px',
 
+                            fontFamily: "'GochiHand', sans-serif",
+                            position: 'absolute',
+                            background: 'transparent'
+                          }}
+                        >
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("axiom")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("implication_introduction")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("implication_elimination")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("conjunction_introduction")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("conjunction_elimination_1")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("conjunction_elimination_2")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("disjunction_introduction_1")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("disjunction_introduction_2")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("disjunction_elimination")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("negation_introduction")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("negation_elimination")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("equivalence_introduction")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("equivalence_elimination_1")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("equivalence_elimination_2")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("RAA")}
+                            />
+                            <ImageWithTooltip
+                                src={landscape1} 
+                                alt={t("absurd_elimination")}
+                            />
+                            
+                        </div>
                     </>
                 )}
             </div>
 
-            <div className='change-screen'>
+            
+            <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
                 <button 
                     className='full-tree-screen-bttn' 
                     aria-label='Switch to full tree view'

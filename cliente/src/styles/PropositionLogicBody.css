@@ -24,9 +24,22 @@
   background: transparent;
 }
 
-.change-screen {
+.change-screen.on {
   position: absolute;
-  top: calc(100vh - 50px);;
+  top: calc(100vh - 50px);
+  left: 0;
+  height:50px;
+  width: 100vw;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.change-screen.off {
+  position: absolute;
+  top: calc(100vh - 50px + 250px) !important;
   left: 0;
   height:50px;
   width: 100vw;
