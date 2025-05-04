@@ -50,6 +50,7 @@ def apply_disjunction_introduction_2(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
+            "lambda": "f ({term})"
         },
     ]
 

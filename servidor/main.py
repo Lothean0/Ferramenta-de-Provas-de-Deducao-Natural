@@ -1,3 +1,8 @@
+"""
+PARA AS REGRAS DE \/ E <=> NAO ESTA A FUNCIONAR
+PORQUE NAO SUBDIVIDI LAMBDA EM LEFT_TERM E RIGHT_TERM
+"""
+
 import json
 import os
 import logging
@@ -7,7 +12,6 @@ from uuid import uuid4, UUID
 from anyio import value
 from flask import Flask, jsonify, flash, request
 from flask_cors import CORS
-from numpy.random.mtrand import operator
 from werkzeug.utils import secure_filename
 
 from servidor.rules.axiom import apply_axiom
@@ -164,7 +168,8 @@ def add_node():
         thisdict = {
             "->":"λ x. {term}",
             "∨":"λ f. λ g. {term}",
-            "ola":"({left_term}, {right_term})",
+            "∧":"({left_term}, {right_term})",
+            "⟺": "({left_term}, {right_term})",
             "~":"λ x. contradiction({x})"
         }
         lambda_value = thisdict.get(operator) if operator else "{term}"
@@ -179,27 +184,10 @@ def add_node():
                 "lambda": lambda_value
             })
 
-        """
-        knowledge_base: {Y1: 'p0'}
-        knowledge_base:
-            Y1: "p0"
-          > [[Prototype]] : Obejct
-          
-          
-          
-        knowledge_base: {X0: 'EVar(p0)'}
-        knoledge_base:
-            X0: EVar(p0)
-            > [[Prototype]] : Obejct
-        """
-
-        print("Here_3")
-
         return jsonify(response), 200
 
 
     except Exception as e:
-        print(e)
         return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
 
@@ -351,10 +339,10 @@ def apply_rules():
             # HERE WE NEED TO RECURSIVELY CHANGE THE PARENT LAMBDA TO THE CHILD ONE
             # RIGHT NOW ITS ONLY CHNAGING THE PARENT WITHOUT RECURSIVITY
             for entry in response:
-                # print(f"UUID: {entry.get('uuid')}")
-                # print(f"UUID IAM LOOKING FOR: {uuid}")
+                print(f"UUID: {entry.get('uuid')}")
+                print(f"UUID IAM LOOKING FOR: {uuid}")
                 if entry["uuid"] == UUID(uuid):
-                    # print(f"FOUND ENTRY: {entry}")
+                    print(f"FOUND ENTRY: {entry}")
 
                     subgoal_term = None
                     for candidate in response:

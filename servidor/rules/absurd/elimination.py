@@ -13,6 +13,8 @@ def apply_absurd_elimination(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
+            # lamda wrong (just to test)
+            "lambda": "absurd elimination",
         },
     ]
 

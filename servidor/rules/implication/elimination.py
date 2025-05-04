@@ -28,12 +28,16 @@ def apply_implication_elimination(
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
+                    # lamda wrong (just to test)
+                    "lambda": "implication elimination"
                 },
                 {
                     "name": new_problem,
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
+                    # lamda wrong (just to test)
+                    "lambda": "implication elimination"
                 },
             ]
 

@@ -25,12 +25,18 @@ def apply_negation_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
+
+                # lamda wrong (just to test)
+                "lambda": "negation elimination",
             },
             {
                 "name": new_problem,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
+
+                # lamda wrong (just to test)
+                "lambda": "neagtion elimination",
             },
         ]
 

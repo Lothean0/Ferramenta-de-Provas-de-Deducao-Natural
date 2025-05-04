@@ -28,12 +28,16 @@ def apply_equivalence_elimination_1(
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
+                    # lamda wrong (just to test)
+                    "lambda": "equivalence elimination",
                 },
                 {
                     "name": new_problem,
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
+                    # lamda wrong (just to test)
+                    "lambda": "equivalence elimination",
                 },
             ]
 

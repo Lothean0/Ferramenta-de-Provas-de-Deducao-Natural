@@ -54,6 +54,8 @@ def apply_conjunction_elimination_2(
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
+                    # lamda wrong (just to test)
+                    "lambda": "conjunction elimination",
                 }
             ]
 
