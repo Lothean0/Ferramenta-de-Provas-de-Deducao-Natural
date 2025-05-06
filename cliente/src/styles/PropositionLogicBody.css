@@ -101,7 +101,7 @@
   font-family: 'CaveatBrush', sans-serif;
   background-color: #1a1a1a; 
   color: white;
-  cursor: pointer; 
+  cursor: text; 
   transition: border-color 0.25s;
   text-align: center;
 }

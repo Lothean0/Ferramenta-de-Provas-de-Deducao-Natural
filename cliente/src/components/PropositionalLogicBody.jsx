@@ -25,7 +25,7 @@ function PropositionLogicBody() {
     const knowledgebaseInputRef = useRef(null);
 
     const [tree, setTree] = useState([]);
-    const [screen, setScreen] = useState(2);
+    const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
     const [ruleInput, setRuleInput] = useState('');
     const [auxiliarInput, setAuxiliarInput] = useState('Y1');
@@ -36,10 +36,16 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
+    const [showRnd, setShowRnd] = useState(false);
+    useEffect(() => {
+        const timeout = setTimeout(() => setShowRnd(true), 100);
+        return () => clearTimeout(timeout);
+    }, []);
+
+
     const t = useMemo(() => (key) => translations[language][key] || key);
 
 
-    
     useEffect(() => {
         resetData("/api/reset");
     }, []);
@@ -84,6 +90,7 @@ function PropositionLogicBody() {
             }
         });
     };
+
 
     const resetData = (url) => {
         axios.post(url)
@@ -141,7 +148,16 @@ function PropositionLogicBody() {
             setShowUploadArea(false);
 
             try {
+                console.log(res.data.fileName)
                 const parsed = JSON.parse(res.data.filename);
+                parsed.tree.forEach(node => {
+                    if (node.name) {
+                        node.name = node.name.replace('âˆ¨', '∨');
+                        node.name = node.name.replace('âˆ§', '∧');
+                        node.name = node.name.replace('âŸº', '⟺')
+                    }
+                });   
+                console.log(parsed)
                 const uploadedTree = parsed.tree;
                 setTree(uploadedTree);
                 setSelectedNodeId(uploadedTree[0]?.id || 1);
@@ -181,10 +197,23 @@ function PropositionLogicBody() {
 
     const findNodeById = (nodes, id) => {
         for (const node of nodes) {
-            if (node.id === id) return node;
+            if (node.id === id) {
+                if (node.name) {
+                    node.name = node.name.replace('âˆ¨', '∨');
+                    node.name = node.name.replace('âˆ§', '∧');
+                    node.name = node.name.replace('âŸº', '⟺')
+                }
+                return node;
+            }
             if (node.child) {
                 const result = findNodeById(node.child, id);
-                if (result) return result;
+                if (result) 
+                    if (result.name) {
+                        result.name = result.name.replace('âˆ¨', '∨');
+                        result.name = result.name.replace('âˆ§', '∧');
+                        result.name = result.name.replace('âŸº', '⟺')
+                    }
+                    return result;
             }
         }
         return null;
@@ -237,14 +266,6 @@ function PropositionLogicBody() {
         );
     };
 
-    {/*
-        const handleLanguageToggle = () => {
-        setLanguage(prev => {
-            const newLanguage = prev === 'EN' ? 'PT' : 'EN';
-            return newLanguage;
-        });
-    };
-    */}
 
     const handleLanguageToggle = (selectedLanguage) => {
         setLanguage(selectedLanguage);
@@ -275,7 +296,7 @@ function PropositionLogicBody() {
     
     
     
-      
+    
     
 
     return (
@@ -289,55 +310,55 @@ function PropositionLogicBody() {
 
                 {screen === 0 ? (
                     <>
-                        <Rnd
-                            default={{
-                                x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
-                                y: 10,
-                                width: 300,
-                                height: window.innerHeight-20,
-                            }}
-                            minWidth={200}
-                            maxWidth={350}
-                            disableDragging
-                            enableResizing={{
-                                left: true,
-                                right: false,
-                                top: false,
-                                bottom: false,
-                                topLeft: false,
-                                topRight: false,
-                                bottomLeft: false,
-                                bottomRight: false,
-                            }}
-                            resizeHandleStyles={{
-                                left: {
-                                left: '-6px',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                width: '12px',
-                                height: '50px',
-                                background: '#1a1a1a',
-                                cursor: 'ew-resize',
-                                borderRadius: '4px'
+                        {showRnd && (
+                            <Rnd
+                                default={{
+                                    x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
+                                    y: 10,
+                                    width: 300,
+                                    height: window.innerHeight-20,
+                                }}
+                                minWidth={200}
+                                maxWidth={350}
+                                disableDragging
+                                enableResizing={{
+                                    left: true,
+                                    right: false,
+                                    top: false,
+                                    bottom: false,
+                                    topLeft: false,
+                                    topRight: false,
+                                    bottomLeft: false,
+                                    bottomRight: false,
+                                }}
+                                resizeHandleStyles={{
+                                    left: {
+                                    left: '-6px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    width: '12px',
+                                    height: '50px',
+                                    background: '#1a1a1a',
+                                    cursor: 'ew-resize',
+                                    borderRadius: '4px'
+                                    }
+                                }}
+                                resizeHandleClasses={{
+                                    left: 'resize-handle-left'
+                                }}
+                                className="general-information-container"
+                                >
+                                {selectedNode && 
+                                    <SelectedNodeDetails 
+                                        node={selectedNode} 
+                                        language={language} 
+                                        translations={t}
+                                        fallbackArray={knowledgebaseArray}
+                                    />
+                                    
                                 }
-                            }}
-                            resizeHandleClasses={{
-                                left: 'resize-handle-left'
-                            }}
-                            className="general-information-container"
-                            >
-                            {selectedNodeId && (() => {
-                                const selectedNode = findNodeById(tree, selectedNodeId);
-                                return (
-                                <SelectedNodeDetails 
-                                    node={selectedNode} 
-                                    language={language} 
-                                    translations={t}
-                                    fallbackArray={knowledgebaseArray}
-                                />
-                                );
-                            })()}
-                        </Rnd>
+                            </Rnd>
+                        )}
 
                         <div className="render-tree-container">{renderTree(tree)}</div>
                     </>
@@ -382,55 +403,55 @@ function PropositionLogicBody() {
                             label={t("download")} 
                         />
 
-                        <Rnd
-                            default={{
-                                x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
-                                y: 10,
-                                width: 300,
-                                height: window.innerHeight-20,
-                            }}
-                            minWidth={200}
-                            maxWidth={350}
-                            disableDragging
-                            enableResizing={{
-                                left: true,
-                                right: false,
-                                top: false,
-                                bottom: false,
-                                topLeft: false,
-                                topRight: false,
-                                bottomLeft: false,
-                                bottomRight: false,
-                            }}
-                            resizeHandleStyles={{
-                                left: {
-                                left: '-6px',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                width: '12px',
-                                height: '50px',
-                                background: '#1a1a1a',
-                                cursor: 'ew-resize',
-                                borderRadius: '4px'
+                        {showRnd && (
+                            <Rnd
+                                default={{
+                                    x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
+                                    y: 10,
+                                    width: 300,
+                                    height: window.innerHeight-20,
+                                }}
+                                minWidth={200}
+                                maxWidth={350}
+                                disableDragging
+                                enableResizing={{
+                                    left: true,
+                                    right: false,
+                                    top: false,
+                                    bottom: false,
+                                    topLeft: false,
+                                    topRight: false,
+                                    bottomLeft: false,
+                                    bottomRight: false,
+                                }}
+                                resizeHandleStyles={{
+                                    left: {
+                                    left: '-6px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    width: '12px',
+                                    height: '50px',
+                                    background: '#1a1a1a',
+                                    cursor: 'ew-resize',
+                                    borderRadius: '4px'
+                                    }
+                                }}
+                                resizeHandleClasses={{
+                                    left: 'resize-handle-left'
+                                }}
+                                className="general-information-container"
+                                >
+                                {selectedNode && 
+                                    <SelectedNodeDetails 
+                                        node={selectedNode} 
+                                        language={language} 
+                                        translations={t}
+                                        fallbackArray={knowledgebaseArray}
+                                    />
+                                    
                                 }
-                            }}
-                            resizeHandleClasses={{
-                                left: 'resize-handle-left'
-                            }}
-                            className="general-information-container"
-                            >
-                            {selectedNodeId && (() => {
-                                const selectedNode = findNodeById(tree, selectedNodeId);
-                                return (
-                                <SelectedNodeDetails 
-                                    node={selectedNode} 
-                                    language={language} 
-                                    translations={t}
-                                    fallbackArray={knowledgebaseArray}
-                                />
-                                );
-                            })()}
-                        </Rnd>
+                            </Rnd>
+                        )}
 
                         <div className='operators-bttn'>
                             <button 
@@ -447,7 +468,7 @@ function PropositionLogicBody() {
                             </button>
                             <button 
                                 aria-label='Insert equivalence symbol to input'
-                                onClick={() =>  appendToActiveInput('⇔')}>{'⇔'}
+                                onClick={() =>  appendToActiveInput('⟺')}>{'⟺'}
                             </button>
                             <button 
                                 aria-label='Insert negation symbol to input'

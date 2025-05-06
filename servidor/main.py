@@ -164,15 +164,21 @@ def add_node():
         elif un_match:
             operator = un_match.group(1)
         print(operator)
-        # if its -> then "lambda x. {term}"
-        # if its \/ then "lambda f. lambda g. {term}"
-        # if its /\ then "({left_term}, {right_term})" or <=>
-        # if its ~ then "lambda x. contradiction({x})
+        """
+        thisdict = {
+            "->": "λ x. {term}",
+            "∨": "{side}( {term} )",
+            "∧": "({side}( {term} ), {side}( {term} ))",
+            "⟺": "({side}( {term} ), {side}( {term} ))",
+            "~":" λ x. contradiction({x})"
+        }
+        """
+        # O de baixo esta mal (foi so teste: o de cima deve estar certo)
         thisdict = {
             "->":"λ x. {term}",
-            "∨":"λ f. λ g. {term}",
-            "∧":"({left_term}, {right_term})",
-            "⟺": "({left_term}, {right_term})",
+            "∨": "{side}( {term} )",
+            "∧":"({side}( {term} ), {side}( {term} ))",
+            "⟺": "λ x. {term}",
             "~":"λ x. contradiction({x})"
         }
         lambda_value = thisdict.get(operator) if operator else "{term}"
@@ -359,7 +365,7 @@ def apply_rules():
                             "details": "Could not find matching subgoal term for substitution"
                         }), 400
 
-                    entry["lambda"] = entry["lambda"].format(term=subgoal_term)
+                    entry["lambda"] = entry["lambda"].format(term=subgoal_term, side="left")
                     break
 
             print("Formatted Response:", response)
