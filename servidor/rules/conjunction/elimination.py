@@ -15,7 +15,11 @@ def apply_conjunction_elimination_1(
 
     try:
         if auxiliar_formula in available_hypothesis_dict:
-            new_problem = available_hypothesis_dict[auxiliar_formula]
+            new_problem = CodeGenerator().generate_code(
+                SemanticAnalyzer().analyze(
+                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
+                )
+            )
 
             result = [
                 {

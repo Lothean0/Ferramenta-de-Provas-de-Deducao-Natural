@@ -43,8 +43,8 @@ export const translations = {
       download: "Baixar",
       selectRule: "Selecione uma regra",
       dragDrop: "Arraste e solte um arquivo aqui",
-      expressionPlaceholder: "Insira expressão: p0 -> (p1 -> p2)",
-      knowledgePlaceholder: "Insira valores Gamma: p0, p5",
+      expressionPlaceholder: "Insira fórmula a provar",
+      knowledgePlaceholder: "Insira eventuais hipóteses",
       language: "PT",
   
       name: "Nome",

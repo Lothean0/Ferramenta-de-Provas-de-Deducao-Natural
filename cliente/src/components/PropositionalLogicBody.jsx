@@ -441,6 +441,7 @@ function PropositionLogicBody() {
                                 }}
                                 className="general-information-container"
                                 >
+                                {/* adicionar findNodeById(nodeId, ...) */}
                                 {selectedNode && 
                                     <SelectedNodeDetails 
                                         node={selectedNode} 

@@ -190,7 +190,7 @@ def add_node():
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base,
-                "lambda": lambda_value
+                # "lambda": lambda_value
             })
 
         return jsonify(response), 200
@@ -339,12 +339,13 @@ def apply_rules():
                         "parentId": problem_id,
                         "child": [],
                         "knowledge_base": new_dict,
-                        "lambda": item.get("lambda"),
+                        # "lambda": item.get("lambda"),
                     })
 
             print(f"Reponse starts here")
             print(response)
 
+            """
             # HERE WE NEED TO RECURSIVELY CHANGE THE PARENT LAMBDA TO THE CHILD ONE
             # RIGHT NOW ITS ONLY CHNAGING THE PARENT WITHOUT RECURSIVITY
             for entry in response:
@@ -367,6 +368,7 @@ def apply_rules():
 
                     entry["lambda"] = entry["lambda"].format(term=subgoal_term, side="left")
                     break
+            """
 
             print("Formatted Response:", response)
         except Exception as e:
