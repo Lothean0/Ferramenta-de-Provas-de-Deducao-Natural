@@ -198,22 +198,25 @@ function PropositionLogicBody() {
     const findNodeById = (nodes, id) => {
         for (const node of nodes) {
             if (node.id === id) {
+                console.log("this is the node.id", node.id)
                 if (node.name) {
-                    node.name = node.name.replace('âˆ¨', '∨');
-                    node.name = node.name.replace('âˆ§', '∧');
-                    node.name = node.name.replace('âŸº', '⟺')
+                    node.name = node.name.replace('âˆ¨', '∨')
+                                         .replace('âˆ§', '∧')
+                                         .replace('âŸº', '⟺');
                 }
                 return node;
             }
             if (node.child) {
                 const result = findNodeById(node.child, id);
-                if (result) 
+                console.log("this is the result.id", result)
+                if (result) {
                     if (result.name) {
-                        result.name = result.name.replace('âˆ¨', '∨');
-                        result.name = result.name.replace('âˆ§', '∧');
-                        result.name = result.name.replace('âŸº', '⟺')
+                        result.name = result.name.replace('âˆ¨', '∨')
+                                                 .replace('âˆ§', '∧')
+                                                 .replace('âŸº', '⟺');
                     }
-                    return result;
+                return result;
+                }
             }
         }
         return null;
@@ -348,14 +351,27 @@ function PropositionLogicBody() {
                                 }}
                                 className="general-information-container"
                                 >
+                                {/*
+                                {selectedNodeId && (() => {
+                                    const selectedNode = findNodeById(tree, selectedNodeId);
+                                    console.log(selectedNode.id)
+                                    return (
+                                        <SelectedNodeDetails 
+                                            node={selectedNode} 
+                                            language={language} 
+                                            translations={t}
+                                            fallbackArray={knowledgebaseArray}
+                                        />
+                                    );
+                                })()}
+                                */}
                                 {selectedNode && 
                                     <SelectedNodeDetails 
                                         node={selectedNode} 
                                         language={language} 
                                         translations={t}
                                         fallbackArray={knowledgebaseArray}
-                                    />
-                                    
+                                    />   
                                 }
                             </Rnd>
                         )}
