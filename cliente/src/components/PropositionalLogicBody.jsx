@@ -38,6 +38,7 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
+
     const [showRnd, setShowRnd] = useState(false);
     useEffect(() => {
         const timeout = setTimeout(() => setShowRnd(true), 100);
@@ -320,7 +321,8 @@ function PropositionLogicBody() {
 
                 {screen === 0 ? (
                     <>
-                        <div className="render-tree-container">{renderTree(tree)}</div>
+                        <div className="full-render-tree-container">
+                            {renderTree(tree)}</div>
                     </>
                 ) : screen === 1 ? (
                     <>

@@ -315,13 +315,62 @@
   transition: all 0.2s ease;
 }
 
+.full-render-tree-container {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 600px;
+  overflow: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column-reverse; 
+}
+
+.full-render-tree-container > * {
+  width: 1500px;
+}
+
+
+.full-render-tree-container::-webkit-scrollbar {
+  width: 12px;              /* width of vertical scrollbar */
+  height: 12px;             /* height of horizontal scrollbar */
+}
+
+.full-render-tree-container::-webkit-scrollbar-track {
+  background: #ffffff;      /* background of scrollbar track */
+  border-radius: 6px;
+}
+
+.full-render-tree-container::-webkit-scrollbar-thumb {
+  background: #e8e8e8;         /* color of the scrollbar thumb */
+  border-radius: 6px;
+  border: 1px  solid rgb(163, 162, 162);
+}
+
+.full-render-tree-container::-webkit-scrollbar-thumb:hover {
+  background: black;         /* color on hover */
+}
+
+
 
 .render-tree-container {
   position: absolute;
   left: 50%;
-  bottom: 1%;
-  transform: translate(-50%, -50%);
+  bottom: 1%; /* now it's 10px from the bottom */
+  transform: translateX(-50%); /* only center horizontally */
+  /* background: red; */
+  width: 400px;
+  height: 300px;
+  overflow: auto;
+  padding: 1rem;
+  box-sizing: border-box;
 }
+
+
+
 
 
 .general-information-container {
