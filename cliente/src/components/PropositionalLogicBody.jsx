@@ -492,16 +492,6 @@ function PropositionLogicBody() {
                                 onClick={() =>  appendToActiveInput('~')}>{'~'}
                             </button>
                         </div>
-                        
-                        <input
-                            ref={expressionInputRef}
-                            type="text"
-                            value={expressionInput}
-                            onChange={(e) => setExpressionInput(e.target.value)}
-                            onFocus={() => setActiveInput('expression')}
-                            placeholder={t("expressionPlaceholder")}
-                            className='expression-input'
-                        />
 
                         <div className='knowledgebase-container'>
                             <input
@@ -521,6 +511,16 @@ function PropositionLogicBody() {
                                 <FiCheck size={20} />
                             </button>
                         </div>
+                        
+                        <input
+                            ref={expressionInputRef}
+                            type="text"
+                            value={expressionInput}
+                            onChange={(e) => setExpressionInput(e.target.value)}
+                            onFocus={() => setActiveInput('expression')}
+                            placeholder={t("expressionPlaceholder")}
+                            className='expression-input'
+                        />
 
                         <label className='rule-label'>
                             {t("selectRuleLabel")}

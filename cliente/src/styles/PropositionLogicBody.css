@@ -79,7 +79,7 @@
   width: 10px;
   left: 50%;
   transform: translate(-50%, -50%);
-  top: 130px;
+  top: 80px;
   display: flex;
   gap: 10px;
   border-radius: 8px;
@@ -141,7 +141,7 @@
 }
 
 .expression-input {
-  top: 80px;
+  top: 130px;
 }
 
 .rule-input {
