@@ -39,6 +39,9 @@ def apply_disjunction_elimination(
         tmp = f'Z{problem_id}'
         local_knowledge_base2[tmp] = consequent
 
+        print(f"{tmp}:{antecedent}")
+        print(f"{tmp}:{consequent}")
+
         result = [
             {
                 "name": new_problem_parsed,

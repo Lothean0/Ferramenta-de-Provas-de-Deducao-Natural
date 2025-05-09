@@ -326,8 +326,8 @@ def apply_rules():
 
                     # Merge the dictionaries
                     new_dict = {
-                        key : Parser.parse(val)
-                        if isinstance(value, str) else val
+                        key: Parser.parse(val)
+                        if isinstance(val, str) and not key.startswith("Y") else val
                         for key, val in {**knowledge_base_data_dict, **knowledge_base_item}.items()
                     }
 

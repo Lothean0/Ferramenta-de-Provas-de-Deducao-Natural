@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
+import SelectedNodeDetails from './SelectedNodeDetails';
 
 const ReactiveRnd = ({ selectedNode, language, t, knowledgebaseArray, showRnd, screen }) => {
 
