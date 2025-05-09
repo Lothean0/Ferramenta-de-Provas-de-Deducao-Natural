@@ -28,7 +28,7 @@ function PropositionLogicBody() {
     const [screen, setScreen] = useState(1);
     const [expressionInput, setExpressionInput] = useState('');
     const [ruleInput, setRuleInput] = useState('');
-    const [auxiliarInput, setAuxiliarInput] = useState('Y1');
+    const [auxiliarInput, setAuxiliarInput] = useState('');
     const [knowledgebaseInput, setKnowledgebaseInput] = useState('');
     const [knowledgebaseArray, setKnowledgebaseArray] = useState([]);
     const [selectedNodeId, setSelectedNodeId] = useState(1);
@@ -72,6 +72,7 @@ function PropositionLogicBody() {
         .then((response) => {
             console.log(response)
             setKnowledgebaseArray([]);
+            setAuxiliarInput('');
             const flatData = response.data.map((item, index) => ({
                 ...item,
                 id: index + 1,
@@ -512,6 +513,7 @@ function PropositionLogicBody() {
                             </button>
                         </div>
                         
+                
                         <input
                             ref={expressionInputRef}
                             type="text"
@@ -522,24 +524,43 @@ function PropositionLogicBody() {
                             className='expression-input'
                         />
 
-                        <label className='rule-label'>
-                            {t("selectRuleLabel")}
-                            <select
-                                value={ruleInput}
-                                onChange={(e) => {
-                                    console.log(e.target.value)
-                                    setRuleInput(e.target.value)}
-                                }
-                                className='rule-input'
-                            >
-                                <option value="">{t("selectRule")}</option>
-                                {Object.entries(ruleOptions).map(([key, label]) => (
-                                <option key={key} value={key}>
-                                    {t(key)}
-                                </option>
-                                ))}
-                            </select>
-                        </label>
+                        <div className='rule-container'>
+                            <label className='rule-label'>
+                                {t("selectRuleLabel")}
+                                <select
+                                    value={ruleInput}
+                                    onChange={(e) => {
+                                        console.log(e.target.value)
+                                        setRuleInput(e.target.value)}
+                                    }
+                                    className='rule-input'
+                                >
+                                    <option value="">{t("selectRule")}</option>
+                                    {Object.entries(ruleOptions).map(([key, label]) => (
+                                    <option key={key} value={key}>
+                                        {t(key)}
+                                    </option>
+                                    ))}
+                                </select>
+                            </label>
+
+                            
+                            {[
+                                "Elim. Disjunção",
+                                "Disjunction Elim.",
+                                {/* missing other rules */}
+                            ].includes(t(ruleInput)) && (
+                                <>
+                                    <input
+                                    type="text"
+                                    value={auxiliarInput}
+                                    onChange={(e) => setAuxiliarInput(e.target.value)}
+                                    placeholder="Auxiliar formula"
+                                    className="auxiliar-formula-input"
+                                    />
+                                </>
+                            )}
+                        </div>
 
 
                         <div className="render-tree-container">
