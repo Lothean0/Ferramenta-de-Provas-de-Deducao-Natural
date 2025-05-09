@@ -3,14 +3,14 @@ from typing import Any
 import ply.lex as lex
 from ply.lex import TOKEN
 
-reserved = (
+reserved: tuple[str, ...] = (
     'EVAR',
     'EBINOP',
     'EUNOP',
     'ABSURD_LITERAL'
 )
 
-tokens = reserved + (
+tokens: tuple[str, ...] = reserved + (
     'ID',
     'ARROW',
     'CONJ',
@@ -23,34 +23,34 @@ tokens = reserved + (
     'COMMA'
 )
 
-t_ARROW = r'->'
-t_CONJ = r'∧'
-t_DISJ = r'∨'
-t_NOT = r'~'
-t_LONG = r'⟺'
-t_ABSURD = r'⊥'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_COMMA = r','
+t_ARROW:str = r'->'
+t_CONJ:str = r'∧'
+t_DISJ:str = r'∨'
+t_NOT:str = r'~'
+t_LONG:str = r'⟺'
+t_ABSURD:str = r'⊥'
+t_LPAREN:str = r'\('
+t_RPAREN:str = r'\)'
+t_COMMA:str = r','
 
 
-identifier = r'[a-zA-Z][a-zA-Z0-9_]*'
+identifier:str = r'[a-zA-Z][a-zA-Z0-9_]*'
 
-reserved_map = {}
+reserved_map:dict[str, str] = {}
 for r in reserved:
     reserved_map[r.lower()] = r
 
 
 @TOKEN(identifier)
-def t_ID(t):
+def t_ID(t: Any) -> Any:
     t.type = reserved_map.get(t.value.lower(), 'ID')
     return t
 
-def t_newline(t: Any):
+def t_newline(t: Any) -> None:
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-def t_error(t):
+def t_error(t : Any) -> None:
     raise SyntaxError(f"Illegal character '{t.value[0]}'")
 
 
