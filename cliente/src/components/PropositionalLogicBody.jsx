@@ -17,12 +17,14 @@ import SelectedNodeDetails from './SelectedNodeDetails';
 import { translations } from '../utils/translations';
 import { ruleOptions } from '../utils/ruleOptions';
 import SegmentedControl from './SegmentedControl';
+import ReactiveRnd from './ReactiveRnd';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
     const [activeInput, setActiveInput] = useState(null);
     const expressionInputRef = useRef(null);
     const knowledgebaseInputRef = useRef(null);
+    const auxiliarInputRef = useRef(null);
 
     const [tree, setTree] = useState([]);
     const [screen, setScreen] = useState(1);
@@ -278,7 +280,8 @@ function PropositionLogicBody() {
     const appendToActiveInput = (value) => {
         const inputMap = {
             expression: [setExpressionInput, expressionInputRef],
-            knowledgebase: [setKnowledgebaseInput, knowledgebaseInputRef]
+            knowledgebase: [setKnowledgebaseInput, knowledgebaseInputRef],
+            auxiliar: [setAuxiliarInput, auxiliarInputRef]
         };
     
         const [setInput, inputRef] = inputMap[activeInput] || [];
@@ -297,11 +300,6 @@ function PropositionLogicBody() {
             });
         }
     };
-    
-    
-    
-    
-    
 
     return (
         <>
@@ -311,72 +309,17 @@ function PropositionLogicBody() {
                     onChange={handleLanguageToggle}
                 />
 
+                <ReactiveRnd
+                    selectedNode={selectedNode}
+                    language={language}
+                    t={t}
+                    knowledgebaseArray={knowledgebaseArray}
+                    showRnd={showRnd}
+                    screen={screen}
+                />
 
                 {screen === 0 ? (
                     <>
-                        {showRnd && (
-                            <Rnd
-                                default={{
-                                    x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
-                                    y: 10,
-                                    width: 300,
-                                    height: window.innerHeight-20,
-                                }}
-                                minWidth={200}
-                                maxWidth={350}
-                                disableDragging
-                                enableResizing={{
-                                    left: true,
-                                    right: false,
-                                    top: false,
-                                    bottom: false,
-                                    topLeft: false,
-                                    topRight: false,
-                                    bottomLeft: false,
-                                    bottomRight: false,
-                                }}
-                                resizeHandleStyles={{
-                                    left: {
-                                    left: '-6px',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    width: '12px',
-                                    height: '50px',
-                                    background: '#1a1a1a',
-                                    cursor: 'ew-resize',
-                                    borderRadius: '4px'
-                                    }
-                                }}
-                                resizeHandleClasses={{
-                                    left: 'resize-handle-left'
-                                }}
-                                className="general-information-container"
-                                >
-                                {/*
-                                {selectedNodeId && (() => {
-                                    const selectedNode = findNodeById(tree, selectedNodeId);
-                                    console.log(selectedNode.id)
-                                    return (
-                                        <SelectedNodeDetails 
-                                            node={selectedNode} 
-                                            language={language} 
-                                            translations={t}
-                                            fallbackArray={knowledgebaseArray}
-                                        />
-                                    );
-                                })()}
-                                */}
-                                {selectedNode && 
-                                    <SelectedNodeDetails 
-                                        node={selectedNode} 
-                                        language={language} 
-                                        translations={t}
-                                        fallbackArray={knowledgebaseArray}
-                                    />   
-                                }
-                            </Rnd>
-                        )}
-
                         <div className="render-tree-container">{renderTree(tree)}</div>
                     </>
                 ) : screen === 1 ? (
@@ -419,57 +362,6 @@ function PropositionLogicBody() {
                             onClick={() => saveData("/api/save")} 
                             label={t("download")} 
                         />
-
-                        {showRnd && (
-                            <Rnd
-                                default={{
-                                    x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
-                                    y: 10,
-                                    width: 300,
-                                    height: window.innerHeight-20,
-                                }}
-                                minWidth={200}
-                                maxWidth={350}
-                                disableDragging
-                                enableResizing={{
-                                    left: true,
-                                    right: false,
-                                    top: false,
-                                    bottom: false,
-                                    topLeft: false,
-                                    topRight: false,
-                                    bottomLeft: false,
-                                    bottomRight: false,
-                                }}
-                                resizeHandleStyles={{
-                                    left: {
-                                    left: '-6px',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    width: '12px',
-                                    height: '50px',
-                                    background: '#1a1a1a',
-                                    cursor: 'ew-resize',
-                                    borderRadius: '4px'
-                                    }
-                                }}
-                                resizeHandleClasses={{
-                                    left: 'resize-handle-left'
-                                }}
-                                className="general-information-container"
-                                >
-                                {/* adicionar findNodeById(nodeId, ...) */}
-                                {selectedNode && 
-                                    <SelectedNodeDetails 
-                                        node={selectedNode} 
-                                        language={language} 
-                                        translations={t}
-                                        fallbackArray={knowledgebaseArray}
-                                    />
-                                    
-                                }
-                            </Rnd>
-                        )}
 
                         <div className='operators-bttn'>
                             <button 
@@ -552,11 +444,13 @@ function PropositionLogicBody() {
                             ].includes(t(ruleInput)) && (
                                 <>
                                     <input
-                                    type="text"
-                                    value={auxiliarInput}
-                                    onChange={(e) => setAuxiliarInput(e.target.value)}
-                                    placeholder="Auxiliar formula"
-                                    className="auxiliar-formula-input"
+                                        ref={auxiliarInputRef}
+                                        type="text"
+                                        value={auxiliarInput}
+                                        onChange={(e) => setAuxiliarInput(e.target.value)}
+                                        onFocus={() => setActiveInput('auxiliar')}
+                                        placeholder="Auxiliar formula"
+                                        className="auxiliar-formula-input"
                                     />
                                 </>
                             )}
