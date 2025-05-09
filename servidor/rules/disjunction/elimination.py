@@ -15,54 +15,58 @@ def apply_disjunction_elimination(
     available_hypothesis_dict = dict(available_hypothesis)
 
     try:
-        if auxiliar_formula in available_hypothesis_dict:
-            new_problem = CodeGenerator().generate_code(
-                SemanticAnalyzer().analyze(
-                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
-                )
+        new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
+
+        new_problem_parsed = CodeGenerator().generate_code(
+            SemanticAnalyzer().analyze(
+                Parser.parse(new_problem, debug=False)
             )
+        )
 
-            arguments = split_expression(new_problem)
+        print("Parsed_expression_inside_elimination: {new_problem_parsed}")
 
-            if len(arguments) != 3 or arguments[0] != '∨':
-                raise ValueError('Disjunction elimination requires 3 arguments or symbol not ∨')
+        arguments = split_expression(new_problem_parsed)
+
+        if len(arguments) != 3 or arguments[0] != '∨':
+            raise ValueError('Disjunction elimination requires 3 arguments or symbol not ∨')
             
-            antecedent, consequent = arguments[1], arguments[2]
-            local_knowledge_base1 = {}
-            tmp = f'X{problem_id}'
-            local_knowledge_base1[tmp] = antecedent
+        antecedent, consequent = arguments[1], arguments[2]
+        local_knowledge_base1 = {}
+        tmp = f'X{problem_id}'
+        local_knowledge_base1[tmp] = antecedent
 
-            local_knowledge_base2 = {}
-            tmp = f'Z{problem_id}'
-            local_knowledge_base2[tmp] = consequent
+        local_knowledge_base2 = {}
+        tmp = f'Z{problem_id}'
+        local_knowledge_base2[tmp] = consequent
 
-            result = [
-                {
-                    "name": new_problem,
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": [],
-                    # lamda wrong (just to test)
-                    "lambda": "disjunction elimination",
-                },
-                {
-                    "name": logical_expr,
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": local_knowledge_base1,
-                    # lamda wrong (just to test)
-                    "lambda": "disjunction elimination",
-                },
-                {
-                    "name": logical_expr,
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": local_knowledge_base2,
-                    # lamda wrong (just to test)
-                    "lambda": "disjunction elimination",
-                },
-            ]
-            return result
+        result = [
+            {
+                "name": new_problem_parsed,
+                "parentId": "",
+                "child": [],
+                "knowledge_base": [],
+                # lamda wrong (just to test)
+                "lambda": "disjunction elimination",
+            },
+            {
+                "name": logical_expr,
+                "parentId": "",
+                "child": [],
+                "knowledge_base": local_knowledge_base1,
+                # lamda wrong (just to test)
+                "lambda": "disjunction elimination",
+            },
+            {
+                "name": logical_expr,
+                "parentId": "",
+                "child": [],
+                "knowledge_base": local_knowledge_base2,
+                # lamda wrong (just to test)
+                "lambda": "disjunction elimination",
+            },
+        ]
+
+        return result
 
     except Exception as e:
         raise Exception(f"ERROR APPLYING EQUIVALENCE ELIMINATION: {e}")
