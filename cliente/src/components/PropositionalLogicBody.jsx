@@ -399,6 +399,10 @@ function PropositionLogicBody() {
                                 aria-label='Insert negation symbol to input'
                                 onClick={() =>  appendToActiveInput('~')}>{'~'}
                             </button>
+                            <button
+                                arial-label='Insert parenthesis to input'
+                                onClick={() =>  appendToActiveInput('⊥')}>{'⊥'}
+                            </button>
                         </div>
 
                         <div className='knowledgebase-container'>
@@ -460,6 +464,7 @@ function PropositionLogicBody() {
                                 "Disjunction Elim",
                                 "Equivalence Elim. 1",
                                 "Equivalence Elim. 2",
+                                "Negation Elim.",
                                 {/* missing other rules */},
 
                                 "Axioma",
@@ -469,6 +474,7 @@ function PropositionLogicBody() {
                                 "Elim. Disjunção",
                                 "Elim. Equivalência 1",
                                 "Elim. Equivalência 2",
+                                "Elim. Negação",
                                 {/* missing other rules */}
                             ].includes(t(ruleInput)) && (
                                 <>

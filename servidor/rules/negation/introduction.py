@@ -15,6 +15,9 @@ def apply_negation_introduction(
 
     if match:
         content = match.group(1)
+    else: 
+        raise ValueError("Logical expression must start with ~.")
+        
 
     local_knowledge_base = {}
     tmp = f'X{problem_id}'

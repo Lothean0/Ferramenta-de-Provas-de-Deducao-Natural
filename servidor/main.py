@@ -12,7 +12,6 @@ import sys
 from uuid import uuid4, UUID
 import signal
 
-from anyio import value
 from flask import Flask, jsonify, flash, request
 from flask_cors import CORS
 from werkzeug.utils import secure_filename

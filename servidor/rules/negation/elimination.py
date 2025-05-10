@@ -1,6 +1,8 @@
 from typing import Any
 
-from servidor.utils.my_utils import split_expression
+from servidor.propositional_logic.propositional_logic_codegen import CodeGenerator
+from servidor.propositional_logic.propositional_logic_parser import Parser
+from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 
 def apply_negation_elimination(
         logical_expr: str,
@@ -16,12 +18,17 @@ def apply_negation_elimination(
     available_hypothesis_dict = dict(available_hypothesis)
 
     try:
-        if auxiliar_formula in available_hypothesis_dict:
-            new_problem = available_hypothesis_dict[auxiliar_formula]
+        new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
+
+        new_problem_parsed = CodeGenerator().generate_code(
+            SemanticAnalyzer().analyze(
+                Parser.parse(new_problem, debug=False)
+            )
+        )
 
         result = [
             {
-                "name": f"EUnOp(~,{new_problem})",
+                "name": f"EUnOp(~,{new_problem_parsed})",
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
@@ -30,7 +37,7 @@ def apply_negation_elimination(
                 "lambda": "negation elimination",
             },
             {
-                "name": new_problem,
+                "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],

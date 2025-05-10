@@ -17,14 +17,19 @@ def apply_disjunction_elimination(
     try:
         new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
 
+        if not new_problem:
+            raise ValueError("Auxiliary formula cannot be empty.")
+
         new_problem_parsed = CodeGenerator().generate_code(
             SemanticAnalyzer().analyze(
                 Parser.parse(new_problem, debug=False)
             )
         )
 
-        print("Parsed_expression_inside_elimination: {new_problem_parsed}")
-
+        print(f"Parsed_expression_inside_elimination: {new_problem_parsed}")
+        
+        if not new_problem_parsed:
+            raise ValueError('Disjunction elimination requires 3 arguments or symbol not ∨')
         arguments = split_expression(new_problem_parsed)
 
         if len(arguments) != 3 or arguments[0] != '∨':
