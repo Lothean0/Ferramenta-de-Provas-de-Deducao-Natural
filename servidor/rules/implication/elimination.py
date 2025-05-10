@@ -15,33 +15,35 @@ def apply_implication_elimination(
     available_hypothesis_dict = dict(available_hypothesis)
 
     try:
-        if auxiliar_formula in available_hypothesis_dict:
-            new_problem = CodeGenerator().generate_code(
-                SemanticAnalyzer().analyze(
-                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
-                )
+        new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
+
+        new_problem_parsed = CodeGenerator().generate_code(
+            SemanticAnalyzer().analyze(
+                Parser.parse(new_problem, debug=False)
             )
+        )
 
-            result = [
-                {
-                    "name": f"EBinOp(->, {new_problem}, {logical_expr})",
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": [],
-                    # lamda wrong (just to test)
-                    "lambda": "implication elimination"
-                },
-                {
-                    "name": new_problem,
-                    "parentId": "",
-                    "child": [],
-                    "knowledge_base": [],
-                    # lamda wrong (just to test)
-                    "lambda": "implication elimination"
-                },
-            ]
+        result = [
+            {
+                "name": f"EBinOp(->, {new_problem_parsed}, {logical_expr})",
+                "parentId": "",
+                "child": [],
+                "knowledge_base": [],
+                # lamda wrong (just to test)
+                "lambda": "implication elimination"
+            },
+            {
+                "name": new_problem_parsed,
+                "parentId": "",
+                "child": [],
+                "knowledge_base": [],
+                # lamda wrong (just to test)
+                "lambda": "implication elimination"
+            },
+        ]
 
-            return result
+        return result
 
     except Exception as e:
-        raise Exception(f"ERROR APPLYING IMPLICATION ELIMINATION: {e}")
+        print(f"Exception in disjunction elimination: {e}")
+        raise
