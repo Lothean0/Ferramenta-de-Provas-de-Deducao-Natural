@@ -136,6 +136,17 @@ function PropositionLogicBody() {
         .catch((error) => console.error("API Error:", error));
     };
 
+    const charReplacements = {
+        'âˆ¨': '∨',
+        'âˆ§': '∧',
+        'âŸº': '⟺',
+    };
+
+    const cleanName = (name) => {
+        return name.replace(/âˆ¨|âˆ§|âŸº/g, (match) => charReplacements[match] || match);
+    };
+
+
     const handleFileDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -156,9 +167,7 @@ function PropositionLogicBody() {
                 const parsed = JSON.parse(res.data.filename);
                 parsed.tree.forEach(node => {
                     if (node.name) {
-                        node.name = node.name.replace('âˆ¨', '∨');
-                        node.name = node.name.replace('âˆ§', '∧');
-                        node.name = node.name.replace('âŸº', '⟺')
+                        node.name = cleanName(node.name);
                     }
                 });   
                 console.log(parsed)
@@ -284,23 +293,27 @@ function PropositionLogicBody() {
             knowledgebase: [setKnowledgebaseInput, knowledgebaseInputRef],
             auxiliar: [setAuxiliarInput, auxiliarInputRef]
         };
-    
+
         const [setInput, inputRef] = inputMap[activeInput] || [];
-    
-        if (setInput && inputRef) {
-            setInput(prev => {
-                const newValue = prev + value;
-                setTimeout(() => {
-                    if (inputRef.current) {
-                        inputRef.current.focus();
-                        const len = inputRef.current.value.length;
-                        inputRef.current.setSelectionRange(len, len);
-                    }
-                }, 0);
-                return newValue;
-            });
+
+        if (setInput && inputRef?.current) {
+            const inputEl = inputRef.current;
+            const start = inputEl.selectionStart;
+            const end = inputEl.selectionEnd;
+
+            const currentValue = inputEl.value;
+            const newValue = currentValue.slice(0, start) + value + currentValue.slice(end);
+
+            setInput(newValue);
+
+            setTimeout(() => {
+                inputEl.focus();
+                const cursorPosition = start + value.length;
+                inputEl.setSelectionRange(cursorPosition, cursorPosition);
+            }, 0);
         }
     };
+
 
     return (
         <>
