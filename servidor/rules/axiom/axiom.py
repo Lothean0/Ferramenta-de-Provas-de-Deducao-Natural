@@ -15,26 +15,28 @@ def apply_axiom(
     available_hypothesis_dict = dict(available_hypothesis)
 
     try:
-        if auxiliar_formula in available_hypothesis_dict:
-            new_problem = CodeGenerator().generate_code(
-                SemanticAnalyzer().analyze(
-                    Parser.parse(available_hypothesis_dict[auxiliar_formula], debug=False)
-                )
+        new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
+
+        new_problem_parsed = CodeGenerator().generate_code(
+            SemanticAnalyzer().analyze(
+                Parser.parse(new_problem, debug=False)
             )
+        )
 
-            if matches_any_order(logical_expr, new_problem):
-                print("Inisde")
-                result = [
-                    {
-                        "name": None,
-                        "parentId": "",
-                        "child": [],
-                        "knowledge_base": [],
-                        "lambda" : f"{auxiliar_formula}"
-                    }
-                ]
+        if matches_any_order(logical_expr, new_problem_parsed):
+            print("Inisde")
+            result = [
+                {
+                    "name": None,
+                    "parentId": "",
+                    "child": [],
+                    "knowledge_base": [],
+                    "lambda" : f"Axiom rule"
+                }
+            ]
 
-                return result
+            return result
 
     except Exception as e:
-        raise Exception(f"ERROR APPLYING AXIOM: {e}")
+        print(f"Exception in disjunction elimination: {e}")
+        raise
