@@ -24,54 +24,6 @@
   background: transparent;
 }
 
-.change-screen.on {
-  position: absolute;
-  top: calc(100vh - 50px);
-  left: 0;
-  height:50px;
-  width: 100vw;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-}
-
-.change-screen.off {
-  position: absolute;
-  top: calc(100vh - 50px + 250px) !important;
-  left: 0;
-  height:50px;
-  width: 100vw;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-}
-
-.full-tree-screen-bttn,
-.small-tree-screen-bttn,
-.help-screen-bttn {
-  width: 105px;
-  height: 10px !important;
-  padding: 0;
-  border: none;
-  background: rgb(194, 205, 215);
-  line-height: 1;
-}
-
-.full-tree-screen-bttn {
-  background: red;
-}
-
-.small-tree-screen-bttn {
-  background: green;
-}
-
-.help-screen-bttn {
-  background: blue;
-}
 
 .knowledgebase-container,
 .rule-container {
@@ -335,33 +287,31 @@
 
 
 .full-render-tree-container::-webkit-scrollbar {
-  width: 12px;              /* width of vertical scrollbar */
-  height: 12px;             /* height of horizontal scrollbar */
+  width: 12px;
+  height: 12px;
 }
 
 .full-render-tree-container::-webkit-scrollbar-track {
-  background: #ffffff;      /* background of scrollbar track */
+  background: #ffffff;
   border-radius: 6px;
 }
 
 .full-render-tree-container::-webkit-scrollbar-thumb {
-  background: #e8e8e8;         /* color of the scrollbar thumb */
+  background: #e8e8e8;
   border-radius: 6px;
   border: 1px  solid rgb(163, 162, 162);
 }
 
 .full-render-tree-container::-webkit-scrollbar-thumb:hover {
-  background: black;         /* color on hover */
+  background: black;
 }
-
 
 
 .render-tree-container {
   position: absolute;
   left: 50%;
-  bottom: 1%; /* now it's 10px from the bottom */
-  transform: translateX(-50%); /* only center horizontally */
-  /* background: red; */
+  bottom: 1%;
+  transform: translateX(-50%);
   width: 400px;
   height: 300px;
   overflow: auto;
@@ -422,8 +372,74 @@
 }  
 
 
+.information-container {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1600px;
+  font-family: 'GochiHand', sans-serif;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: flex-start;
+}
 
 
+.main-tittle,
+.sub-tittle,
+.information {
+  color: black;
+}
+
+.change-screen.on {
+  position: absolute;
+  top: calc(100vh - 50px);
+  left: 0;
+  height:50px;
+  width: 100vw;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.change-screen.off {
+  position: absolute;
+  top: calc(100vh - 50px + 720px) !important;
+  left: 0;
+  height:50px;
+  width: 100vw;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.full-tree-screen-bttn,
+.small-tree-screen-bttn,
+.help-screen-bttn {
+  width: 105px;
+  height: 10px !important;
+  padding: 0;
+  border: none;
+  background: rgb(194, 205, 215);
+  line-height: 1;
+}
+
+.full-tree-screen-bttn {
+  background: red;
+}
+
+.small-tree-screen-bttn {
+  background: green;
+}
+
+.help-screen-bttn {
+  background: blue;
+}
 
 @media (max-width: 844px) {
 
@@ -533,7 +549,3 @@
   }  
   
 }
-
-
-
-

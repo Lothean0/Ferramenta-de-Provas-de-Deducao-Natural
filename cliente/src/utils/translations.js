@@ -32,6 +32,13 @@ export const translations = {
       equivalence_elimination_2: "Equivalence Elim. 2",
       RAA: "RAA",
       absurd_elimination: "Absurd Elim.",
+
+      propositional_logic_tittle: "Propositional Logic Calculator Info",
+      about_propositional_logic: "Text about what is Propositional Logic",
+      input_syntax: "Input Syntax",
+      about_input_syntax: "Text about input syntax (eg and suported oper)",
+      suported_rules: "Suported Rules"
+
       },
       
     PT: {
@@ -67,6 +74,12 @@ export const translations = {
       equivalence_elimination_2: "Elim. Equivalência 2",
       RAA: "RAA",
       absurd_elimination: "Elim. Absurdo",
+
+      propositional_logic_tittle: "Info Calculadora de Lógica Proposicional",
+      about_propositional_logic: "Texto sobre o que é Lógica Proposicional",
+      input_syntax: "Sintaxe de entrada",
+      about_input_syntax: "Texto sobre Sintaxe de entrada (exemplos e operadores suportados)",
+      suported_rules: "Regras suportadas"
     },
 };
   
