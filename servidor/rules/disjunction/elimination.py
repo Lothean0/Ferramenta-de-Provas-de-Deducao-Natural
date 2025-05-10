@@ -72,4 +72,5 @@ def apply_disjunction_elimination(
         return result
 
     except Exception as e:
-        raise Exception(f"ERROR APPLYING EQUIVALENCE ELIMINATION: {e}")
+        print(f"Exception in disjunction elimination: {e}")
+        raise

@@ -290,6 +290,7 @@ def apply_rules():
                 return jsonify({"error": f"Rule function '{function_name}' not implemented"}), 400
             function = globals()[function_name]
             # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
+
             result = function(parsed_expression, hypothesis_set, parent_id, auxiliar_formula)
             print(f'Worked')
             problem_id = int(parent_id)
