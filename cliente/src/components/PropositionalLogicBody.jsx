@@ -87,7 +87,7 @@ function PropositionLogicBody() {
             setExpressionInput('');
         })
         .catch((error) => {
-            if (error.response?.status === 500) {
+            if (error.response?.status === 400 || error.response?.status === 500 ) {
                 setWarning(`⚠️ Error: ${error.response.data.details}`);
             } else {
                 console.error("Error fetching data:", error);
@@ -453,8 +453,22 @@ function PropositionLogicBody() {
 
                             
                             {[
+                                "Axiom",
+                                "Implication Elim.",
+                                "Conjunction Elim. 1",
+                                "Conjunction Elim. 2",
+                                "Disjunction Elim",
+                                "Equivalence Elim. 1",
+                                "Equivalence Elim. 2",
+                                {/* missing other rules */},
+
+                                "Axioma",
+                                "Elim. Implicação",
+                                "Elim. Conjunção 1",
+                                "Elim. Conjunção 2",
                                 "Elim. Disjunção",
-                                "Disjunction Elim.",
+                                "Elim. Equivalência 1",
+                                "Elim. Equivalência 2",
                                 {/* missing other rules */}
                             ].includes(t(ruleInput)) && (
                                 <>
