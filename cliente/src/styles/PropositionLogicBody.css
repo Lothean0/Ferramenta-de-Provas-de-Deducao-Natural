@@ -80,13 +80,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.5em;
+  padding: 0em;
   box-sizing: border-box;
 }
 
 .operators-bttn button {
   flex: 1;
   height: 100%;
+  width: 10px;
   margin: 0 2px;
   border: none;
   border-radius: 6px;
