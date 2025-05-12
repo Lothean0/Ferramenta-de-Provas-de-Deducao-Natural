@@ -116,7 +116,7 @@ def p_Absurd(p:Any) -> None:
 
 def p_BinaryOp_1(p:Any) -> None:
     '''BinaryOp : ARROW'''
-    p[0] = '->'
+    p[0] = '→'
 
 
 def p_BinaryOp_2(p:Any) -> None:

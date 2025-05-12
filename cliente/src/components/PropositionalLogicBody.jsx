@@ -381,7 +381,7 @@ function PropositionLogicBody() {
                         <div className='operators-bttn'>
                             <button 
                                 aria-label='Insert implication symbol to input'
-                                onClick={() =>  appendToActiveInput('->')}>{'->'}
+                                onClick={() =>  appendToActiveInput('→')}>{'→'}
                             </button>
                             <button 
                                 aria-label='Insert conjunction symbol to input'

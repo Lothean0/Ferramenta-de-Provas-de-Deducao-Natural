@@ -67,7 +67,7 @@ class SemanticAnalyzer:
     def visit_BinOpDeclaration(self, node: BinOpDeclaration) -> Any:
         # print(f"Visiting Binary Operation: {node.operation}")
         # print(f'\n\nThis is a BinOpDeclaration:\n{node}')
-        if node.operation not in ('->','→','∧','∨', '⟺'):
+        if node.operation not in ('→','∧','∨', '⟺'):
             raise SemanticError('Operation not supported')
 
         self.visit(node.left)

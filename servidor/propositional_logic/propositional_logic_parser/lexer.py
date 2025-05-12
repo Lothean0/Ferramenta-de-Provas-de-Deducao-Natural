@@ -23,7 +23,7 @@ tokens: tuple[str, ...] = reserved + (
     'COMMA'
 )
 
-t_ARROW:str = r'->'
+t_ARROW:str = r'→'
 t_CONJ:str = r'∧'
 t_DISJ:str = r'∨'
 t_NOT:str = r'~'

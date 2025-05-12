@@ -25,7 +25,7 @@ def apply_implication_elimination(
 
         result = [
             {
-                "name": f"EBinOp(->, {new_problem_parsed}, {logical_expr})",
+                "name": f"EBinOp(→, {new_problem_parsed}, {logical_expr})",
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],

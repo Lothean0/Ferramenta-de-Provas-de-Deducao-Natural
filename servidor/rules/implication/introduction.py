@@ -11,8 +11,8 @@ def apply_implication_introduction(
 
     arguments = split_expression(logical_expr)
 
-    if len(arguments) != 3 or arguments[0] != '->':
-        raise ValueError('Implication introduction requires 3 arguments or symbol not ->')
+    if len(arguments) != 3 or arguments[0] != '→':
+        raise ValueError('Implication introduction requires 3 arguments or symbol not →')
 
     antecedent, consequent = arguments[1], arguments[2]
     # print(f'{antecedent} -> {consequent}')
