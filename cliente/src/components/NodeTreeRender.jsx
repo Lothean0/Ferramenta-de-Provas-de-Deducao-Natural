@@ -30,7 +30,7 @@ function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelec
 
 function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId }) {
     const hasChildren = node.child && node.child.length > 0;
-
+    console.log(node)
     return (
         <div className="tree-node-wrapper">
             <div className="tree-node">
@@ -42,7 +42,11 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                 ><span style={{ color: 'black' }}>{node.name}</span>
                 </button>
 
-                <div className="line"><span  style={{ color: 'black' }}>Hello</span></div>
+                <div className="line"/>
+                {/*    
+                    <span style={{ color: 'black', position: 'relative', top: '10px', marginLeft: '50px' }}>{node.rule}</span>
+                </div>
+                */}
 
                 {renderTree(node.child)}
 

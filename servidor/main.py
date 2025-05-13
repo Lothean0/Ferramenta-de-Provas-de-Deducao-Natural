@@ -151,7 +151,7 @@ def add_node():
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base,
-                "lambda": "{term}"
+                "rule": "{rule}"
             })
 
         return jsonify(response), 200
@@ -303,36 +303,35 @@ def apply_rules():
                         "parentId": problem_id,
                         "child": [],
                         "knowledge_base": new_dict,
-                        "lambda": item.get("lambda"),
+                        "rule": item.get("rule"),
                     })
+
+            for entry in response:
+                if entry["uuid"] == UUID(uuid):
+
+                    subgoal_rule = None
+                    for candidate in response:
+                        print(f"ParentID: {parent_id}")
+                        print(f"CANDIDATE PARENTID. {candidate['parentId']}")
+                        if candidate.get("parentId") == parent_id:
+                            print(candidate)
+                            subgoal_rule = candidate.get("rule")
+                            print(f"SUBGOAL RULE: {subgoal_rule}")
+                            candidate["rule"] = "{rule}"
+
+
+                    if subgoal_rule is None:
+                        return jsonify({
+                            "error": "Missing rule term for subgoal",
+                            "details": "Could not find matching subgoal rule for substitution"
+                        }), 400
+
+                    print(subgoal_rule)
+                    entry["rule"] = entry["rule"].format(rule=subgoal_rule)
+                    break
 
             print(f"Reponse starts here")
             print(response)
-
-            """
-            # HERE WE NEED TO RECURSIVELY CHANGE THE PARENT LAMBDA TO THE CHILD ONE
-            # RIGHT NOW ITS ONLY CHNAGING THE PARENT WITHOUT RECURSIVITY
-            for entry in response:
-                print(f"UUID: {entry.get('uuid')}")
-                print(f"UUID IAM LOOKING FOR: {uuid}")
-                if entry["uuid"] == UUID(uuid):
-                    print(f"FOUND ENTRY: {entry}")
-
-                    subgoal_term = None
-                    for candidate in response:
-                        if candidate.get("parentId") == parent_id:
-                            subgoal_term = candidate.get("lambda")
-                            break
-
-                    if subgoal_term is None:
-                        return jsonify({
-                            "error": "Missing lambda term for subgoal",
-                            "details": "Could not find matching subgoal term for substitution"
-                        }), 400
-
-                    entry["lambda"] = entry["lambda"].format(term=subgoal_term, side="left")
-                    break
-            """
 
             print("Formatted Response:", response)
         except Exception as e:

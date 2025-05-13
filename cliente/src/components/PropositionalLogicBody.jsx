@@ -334,11 +334,6 @@ function PropositionLogicBody() {
 
                 {screen === 0 ? (
                     <>
-                        <div className="full-render-tree-container">
-                            {renderTree(tree)}</div>
-                    </>
-                ) : screen === 1 ? (
-                    <>
 
                         <ActionButton
                             className='reset-bttn'
@@ -347,15 +342,9 @@ function PropositionLogicBody() {
                         />
 
                         <ActionButton 
-                            className='add-node-bttn' 
-                            onClick={() => fetchData("/api/node")} 
-                            label={t("addNode")} 
-                        />
-
-                        <ActionButton 
-                            className='apply-rule-bttn' 
-                            onClick={() => fetchData("/api/rules")} 
-                            label={t("applyRule")} 
+                            className='save-bttn' 
+                            onClick={() => saveData("/api/save")} 
+                            label={t("download")} 
                         />
 
                         <ActionButton 
@@ -372,10 +361,44 @@ function PropositionLogicBody() {
                             message={t("dragDrop")}
                         />
 
+                        <div className="full-render-tree-container">
+                            {renderTree(tree)}</div>
+                    </>
+                ) : screen === 1 ? (
+                    <>
+
+                        <ActionButton
+                            className='reset-bttn'
+                            onClick={() => resetData("/api/reset")}
+                            label={t("reset")}
+                        />
+
+                        {/*
+                        <ActionButton 
+                            className='apply-rule-bttn' 
+                            onClick={() => fetchData("/api/rules")} 
+                            label={t("applyRule")} 
+                        />
+                        */}
+
                         <ActionButton 
                             className='save-bttn' 
                             onClick={() => saveData("/api/save")} 
                             label={t("download")} 
+                        />
+
+                        <ActionButton 
+                            className='upload-file-bttn' 
+                            onClick={() => setShowUploadArea(!showUploadArea)} 
+                            label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                        />
+
+                        <UploadArea
+                            show={showUploadArea}
+                            onDrop={handleFileDrop}
+                            onDragOver={handleDragOver}
+                            fileName={uploadedFileName}
+                            message={t("dragDrop")}
                         />
 
                         <div className='operators-bttn'>
@@ -425,15 +448,24 @@ function PropositionLogicBody() {
                         </div>
                         
                 
-                        <input
-                            ref={expressionInputRef}
-                            type="text"
-                            value={expressionInput}
-                            onChange={(e) => setExpressionInput(e.target.value)}
-                            onFocus={() => setActiveInput('expression')}
-                            placeholder={t("expressionPlaceholder")}
-                            className='expression-input'
-                        />
+                        <div className='expression-container'>
+                            <input
+                                ref={expressionInputRef}
+                                type="text"
+                                value={expressionInput}
+                                onChange={(e) => setExpressionInput(e.target.value)}
+                                onFocus={() => setActiveInput('expression')}
+                                placeholder={t("expressionPlaceholder")}
+                                className='expression-input'
+                            />
+                            <button 
+                                className='add-expression-bttn' 
+                                aria-label='Start prove'
+                                onClick={() => fetchData("/api/node")} 
+                            >
+                                <FiCheck size={20} />
+                            </button>
+                        </div>
 
                         <div className='rule-container'>
                             <label className='rule-label'>
@@ -454,6 +486,14 @@ function PropositionLogicBody() {
                                     ))}
                                 </select>
                             </label>
+
+                            <button 
+                                className='add-rule-bttn' 
+                                aria-label='Apply rule'
+                                onClick={() => fetchData("/api/rules")}
+                            >
+                                <FiCheck size={20} />
+                            </button>
 
                             
                             {[
@@ -484,13 +524,18 @@ function PropositionLogicBody() {
                                         value={auxiliarInput}
                                         onChange={(e) => setAuxiliarInput(e.target.value)}
                                         onFocus={() => setActiveInput('auxiliar')}
-                                        placeholder="Auxiliar formula"
+                                        placeholder={
+                                            // add correct rules
+                                            t(ruleInput) === "Negation Elim." || "Elim. Negação" ? 
+                                                "Hello" 
+                                                : 
+                                                "Auxiliar formula"
+                                        }
                                         className="auxiliar-formula-input"
                                     />
                                 </>
                             )}
 
-                            {/* iNDIQUE A DISJUNCAO A ELIMINAR  PARA REGRA ELI.DISJUNCAO*/}
                         </div>
 
 

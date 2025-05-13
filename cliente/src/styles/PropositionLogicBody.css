@@ -26,6 +26,7 @@
 
 
 .knowledgebase-container,
+.expression-container,
 .rule-container {
   position: absolute;
   height: 40px;
@@ -35,11 +36,14 @@
   display: flex;
   gap: 10px;
   border-radius: 8px;
-  background: red;
 }
 
 .knowledgebase-container {
   top: 80px;
+}
+
+.expression-container {
+  top: 20px;
 }
 
 .rule-container {
@@ -67,6 +71,10 @@
   cursor: text; 
   transition: border-color 0.25s;
   text-align: center;
+}
+
+.add-expression-bttn {
+  top: 110px;
 }
 
 .operators-bttn {
@@ -146,7 +154,9 @@
   outline: none;
 }
 
-.add-knowledgebase-bttn {
+.add-knowledgebase-bttn,
+.add-expression-bttn,
+.add-rule-bttn {
   position: relative;
   background: #1a1a1a;
   width: 50px;
@@ -161,15 +171,23 @@
   outline: none;
 }
 
-.add-knowledgebase-bttn {
+.add-knowledgebase-bttn,
+.add-expression-bttn {
   margin-left: 154px ;
 }
 
+.add-rule-bttn {
+  margin-left: 36px;
+}
 
 .operators-bttn button:focus,
 .operators-bttn button:hover,
 .add-knowledgebase-bttn:focus,
-.add-knowledgebase-bttn:hover {
+.add-knowledgebase-bttn:hover,
+.add-expression-bttn:focus,
+.add-expression-bttn:hover,
+.add-rule-bttn:focus,
+.add-rule-bttn:hover {
   outline: none;            
   border: none;             
   background: black;
@@ -185,16 +203,6 @@
   font-family: 'CaveatBrush', sans-serif;
 }
 
-.add-node-bttn {
-  position: absolute;
-  top: 131px;
-  left: 5%;
-  width: 150px;
-  transform: translate(-50%, -50%);
-  font-family: 'CaveatBrush', sans-serif;
-}
-
-
 .apply-rule-bttn {
   position: absolute;
   top: 180px;
@@ -206,7 +214,7 @@
 
 .save-bttn {
   position: absolute;
-  top: 230px;
+  top: 131px;
   left: 5%;
   width: 150px;
   transform: translate(-50%, -50%);
@@ -215,7 +223,7 @@
 
 .upload-file-bttn {
   position: absolute;
-  top: 280px;
+  top: 180px;
   left: 5%;
   transform: translate(-50%, -50%);
   width: 150px;
@@ -229,7 +237,7 @@
 .drop-area {
   position: absolute;
   width: 115px !important;
-  top: 295px;
+  top: 195px;
   left: 0.6%;
   border: 2px dashed #aaa;
   width: 1px;
@@ -453,27 +461,9 @@
     font-family: 'CaveatBrush', sans-serif;
   }
   
-  .add-node-bttn {
-    position: absolute;
-    top: 131px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-    font-family: 'CaveatBrush', sans-serif;
-  }
-  
-  .apply-rule-bttn {
-    position: absolute;
-    top: 180px;
-    left: 10.1%;
-    width: 150px;
-    transform: translate(-50%, -50%);
-    font-family: 'CaveatBrush', sans-serif;
-  }
-
   .save-bttn {
     position: absolute;
-    top: 229px;
+    top: 131px;
     left: 10.1%;
     min-width: 140px;
     max-width: 150px;
@@ -488,7 +478,7 @@
 
   .upload-file-bttn {
     position: absolute;
-    top: 279px;
+    top: 180px;
     left: 10.1%;
     min-width: 140px;
     max-width: 150px;
@@ -503,7 +493,7 @@
 
   .drop-area {
     position: absolute;
-    top: 288px;
+    top: 188px;
     left: 1.4%;
     border: 2px dashed #aaa;
     padding: 15px;

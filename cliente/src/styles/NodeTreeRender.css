@@ -20,11 +20,14 @@
 }
 
 .line {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;       
     height: 2px;
     background-color: #C4C4C4;
-    margin-top: 10px 0;
-    width: 100%;
+    width: calc(100% + 150px);
 }
+
 
 
 .node-label {

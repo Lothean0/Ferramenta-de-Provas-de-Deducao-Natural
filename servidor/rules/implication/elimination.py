@@ -32,21 +32,19 @@ def apply_implication_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                # lamda wrong (just to test)
-                "lambda": "implication elimination"
+                "rule": "implication elimination"
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                # lamda wrong (just to test)
-                "lambda": "implication elimination"
+                "rule": "implication elimination"
             },
         ]
 
         return result
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in implication elimination: {e}")
         raise
