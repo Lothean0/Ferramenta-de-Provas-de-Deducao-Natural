@@ -15,6 +15,7 @@ def apply_axiom(
     available_hypothesis_dict = dict(available_hypothesis)
 
     try:
+        print(f"This is the aux formula: {auxiliar_formula}")
         new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
 
         new_problem_parsed = CodeGenerator().generate_code(
@@ -23,8 +24,29 @@ def apply_axiom(
             )
         )
 
+        print(f"Thi is the parsed_problem: {new_problem_parsed}")
+        print(f"this is the logical expression: {logical_expr}")
+        print(f"Type of both = {type(new_problem_parsed)} and {type(logical_expr)}")
+
         if not new_problem_parsed:
             raise ValueError("Auxiliary formula cannot be empty.")
+
+        prefix = "EUnOp(~,"
+        if logical_expr.startswith(prefix):
+            result1 = logical_expr[len(prefix):].strip()
+
+            if result1.endswith(")"):
+                logical_expr = result1[:-1].strip()
+
+        if new_problem_parsed.startswith("EUnOp(~,"):
+
+            prefix = "EUnOp(~,"
+            if new_problem_parsed.startswith(prefix):
+                result2 = new_problem_parsed[len(prefix):].strip()
+
+                if result2.endswith(")"):
+                    new_problem_parsed = result2[:-1].strip()
+
 
         if matches_any_order(logical_expr, new_problem_parsed):
             print("Inisde")
@@ -43,3 +65,5 @@ def apply_axiom(
     except Exception as e:
         print(f"Exception in disjunction elimination: {e}")
         raise
+
+

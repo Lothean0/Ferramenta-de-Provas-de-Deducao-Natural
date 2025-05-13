@@ -489,6 +489,8 @@ function PropositionLogicBody() {
                                     />
                                 </>
                             )}
+
+                            {/* iNDIQUE A DISJUNCAO A ELIMINAR  PARA REGRA ELI.DISJUNCAO*/}
                         </div>
 
 

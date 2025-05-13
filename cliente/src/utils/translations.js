@@ -43,7 +43,7 @@ export const translations = {
       
     PT: {
       reset: "Reiniciar",
-      addNode: "Adicionar Nodo",
+      addNode: "Iniciar Prova",
       applyRule: "Aplicar Regra",
       uploadOpen: "Abrir Upload",
       uploadClose: "Fechar Upload",
@@ -54,9 +54,8 @@ export const translations = {
       knowledgePlaceholder: "Insira eventuais hipóteses",
       language: "PT",
   
-      name: "Nome",
-      parentId: "ID Pai",
-      kb: "Hipóteses",
+      name: "Formula a provar",
+      kb: "Hipóteses disponiveis",
 
       axiom: "Axioma",
       implication_introduction: "Intro. Implicação",

@@ -6,7 +6,7 @@ from propositional_logic_codegen import CodeGenerator
 if __name__ == '__main__':
     try:
         s_1 = "p0 → p1"
-        s_2 = "EBinOp(->, EVar(p0), EVar(p1))"
+        s_2 = ("EUnOp(~, EVar(B))")
         s_3 = "⊥"
         s_4 = "ABSURD_LITERAL"
         s_5 = "p1"
@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
         print(f'\nParsing content: {s_4}\n')
 
-        ast = Parser.parse(s_1, debug=False)
+        ast = Parser.parse(s_2, debug=False)
 
         if not ast:
             print('')
