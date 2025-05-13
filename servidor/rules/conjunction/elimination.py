@@ -32,6 +32,7 @@ def apply_conjunction_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
+                "lambda": "conjunction elimination",
             },
         ]
 

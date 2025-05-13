@@ -1,8 +1,3 @@
-"""
-PARA AS REGRAS DE \\/ E <=> NAO ESTA A FUNCIONAR
-PORQUE NAO SUBDIVIDI LAMBDA EM LEFT_TERM E RIGHT_TERM
-"""
-
 import json
 import os
 import logging
@@ -12,7 +7,7 @@ import sys
 from uuid import uuid4, UUID
 import signal
 
-from flask import Flask, jsonify, flash, request
+from flask import Flask, jsonify, flash, request, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -40,17 +35,10 @@ DOWNLOAD_FOLDER = 'downloads'
 ALLOWED_EXTENSIONS = {'json'}
 
 logging.basicConfig(level=logging.DEBUG)
-# old
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-CORS(app, origins="*")
 
-"""
-THIS WORKS -> CLIENT BUILD new 
 app = Flask(__name__, static_folder='dist')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
@@ -61,7 +49,7 @@ def index():
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory('dist', path)
-"""
+
 
 response = []
 counter = 0
@@ -135,6 +123,10 @@ def add_node():
                     ast_1 := Parser.parse(data.get("expression"), debug=False)
                 )
             )
+
+            if not parsed_expression:
+                return jsonify({"error": "Parsing failed", "details" : str("Missing element")}), 422
+
         except SyntaxError as e:
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
@@ -151,36 +143,6 @@ def add_node():
 
         # print(local_knowledge_base)
         print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
-        
-        print(parsed_expression)
-        print(Parser.parse(parsed_expression))
-        bin_match = re.match(r'EBinOp\((.*?),', parsed_expression)
-        un_match = re.match(r'EUnOp\((.*?),', parsed_expression)
-
-        operator = None
-        if bin_match:
-            operator = bin_match.group(1)
-        elif un_match:
-            operator = un_match.group(1)
-        print(operator)
-        """
-        thisdict = {
-            "->": "λ x. {term}",
-            "∨": "{side}( {term} )",
-            "∧": "({side}( {term} ), {side}( {term} ))",
-            "⟺": "({side}( {term} ), {side}( {term} ))",
-            "~":" λ x. contradiction({x})"
-        }
-        """
-        # O de baixo esta mal (foi so teste: o de cima deve estar certo)
-        thisdict = {
-            "->":"λ x. {term}",
-            "∨": "{side}( {term} )",
-            "∧":"({side}( {term} ), {side}( {term} ))",
-            "⟺": "λ x. {term}",
-            "~":"λ x. contradiction({x})"
-        }
-        lambda_value = thisdict.get(operator) if operator else "{term}"
 
         if not response:
             response.append({
@@ -189,7 +151,7 @@ def add_node():
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base,
-                # "lambda": lambda_value
+                "lambda": "{term}"
             })
 
         return jsonify(response), 200
@@ -341,7 +303,7 @@ def apply_rules():
                         "parentId": problem_id,
                         "child": [],
                         "knowledge_base": new_dict,
-                        # "lambda": item.get("lambda"),
+                        "lambda": item.get("lambda"),
                     })
 
             print(f"Reponse starts here")
