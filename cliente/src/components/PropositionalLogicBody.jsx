@@ -87,10 +87,7 @@ function PropositionLogicBody() {
             setExpressionInput('');
         })
         .catch((error) => {
-            if (error.response?.status === 422) {
-                setWarning(`⚠️ Error: ${error.response.data.details}`);
-            }
-            if (error.response?.status === 400 || error.response?.status === 500 ) {
+            if (error.response?.status === 400 || error.response?.status === 422 || error.response?.status === 500 ) {
                 setWarning(`⚠️ Error: ${error.response.data.details}`);
             } else {
                 console.error("Error fetching data:", error);
