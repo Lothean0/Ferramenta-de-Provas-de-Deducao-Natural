@@ -23,6 +23,9 @@ def apply_axiom(
             )
         )
 
+        if not new_problem_parsed:
+            raise ValueError("Auxiliary formula cannot be empty.")
+
         if matches_any_order(logical_expr, new_problem_parsed):
             print("Inisde")
             result = [

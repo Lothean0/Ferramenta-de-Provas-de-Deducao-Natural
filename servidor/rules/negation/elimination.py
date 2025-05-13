@@ -26,6 +26,9 @@ def apply_negation_elimination(
             )
         )
 
+        if not new_problem_parsed:
+            raise ValueError("Auxiliary formula cannot be empty.")
+
         result = [
             {
                 "name": f"EUnOp(~,{new_problem_parsed})",

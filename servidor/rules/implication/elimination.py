@@ -22,6 +22,9 @@ def apply_implication_elimination(
                 Parser.parse(new_problem, debug=False)
             )
         )
+        
+        if not new_problem_parsed:
+            raise ValueError("Auxiliary formula cannot be empty.")
 
         result = [
             {
