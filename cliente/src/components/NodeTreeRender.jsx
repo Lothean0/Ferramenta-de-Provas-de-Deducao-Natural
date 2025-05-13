@@ -2,40 +2,18 @@ import React from 'react';
 import '../styles/NodeTreeRender.css';
 
 
-// first try
-/*
-function NodeTreeRender({ node, toggleNode, renderTree, selectedNodeId, setSelectedNodeId }) {
-    const hasChildren = node.child && node.child.length > 0;
-
-    return (
-        <div className="tree-node">
-            <button
-                className={`node-label ${selectedNodeId === node.id ? 'selected' : ''}`}
-                onClick={() => {
-                    toggleNode(node.id);
-                    setSelectedNodeId(node.id);
-                }}
-            > {node.id} : {node.name}
-            </button>
-
-
-            <div className="line"></div>
-
-            {renderTree(node.child)}
-        </div>
-    );
-}
-*/
-
-
 function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId }) {
     const hasChildren = node.child && node.child.length > 0;
-    console.log(node)
+    const hasNoneChild = hasChildren && node.child.some(child => child.name === "None");
+
     return (
         <div className="tree-node-wrapper">
             <div className="tree-node">
                 <button
                     className={`node-label ${selectedNodeId === node.id ? 'selected' : ''}`}
+                    style={{
+                        backgroundColor: hasNoneChild ? '#ffcdd2' : '#32de2f71'
+                    }}
                     onClick={() => {
                         setSelectedNodeId(node.id);
                     }}
@@ -48,7 +26,7 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                 </div>
                 */}
 
-                {renderTree(node.child)}
+                {renderTree(node.child?.filter(child => child.name !== "None"))}
 
             </div>
         </div>

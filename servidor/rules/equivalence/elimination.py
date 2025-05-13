@@ -81,12 +81,14 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
+                "lambda": "equivalence elimination",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
+                "rule": "equivalence elimantion"
             },
         ]
 

@@ -55,7 +55,7 @@ def apply_disjunction_elimination(
                 "child": [],
                 "knowledge_base": [],
                 # lamda wrong (just to test)
-                "lambda": "disjunction elimination",
+                "rule": "disjunction elimination",
             },
             {
                 "name": logical_expr,
@@ -63,7 +63,7 @@ def apply_disjunction_elimination(
                 "child": [],
                 "knowledge_base": local_knowledge_base1,
                 # lamda wrong (just to test)
-                "lambda": "disjunction elimination",
+                "rule": "disjunction elimination",
             },
             {
                 "name": logical_expr,
@@ -71,7 +71,7 @@ def apply_disjunction_elimination(
                 "child": [],
                 "knowledge_base": local_knowledge_base2,
                 # lamda wrong (just to test)
-                "lambda": "disjunction elimination",
+                "rule": "disjunction elimination",
             },
         ]
 

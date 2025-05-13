@@ -24,7 +24,7 @@ def apply_conjunction_introduction(
             "child": [],
             "knowledge_base": [],
             # lamda wrong (just to test)
-            "lambda": "conjunction introduction",
+            "rule": "conjunction introduction",
         },
         {
             "name": consequent,
@@ -32,7 +32,7 @@ def apply_conjunction_introduction(
             "child": [],
             "knowledge_base": [],
             # lamda wrong (just to test)
-            "lambda": "conjunction introduction",
+            "rule": "conjunction introduction",
         },
     ]
 

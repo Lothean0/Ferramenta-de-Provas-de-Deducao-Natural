@@ -1,11 +1,13 @@
 import json
 import os
 import logging
-import re
 import shutil
 import sys
+import threading
 from uuid import uuid4, UUID
 import signal
+import os.path
+import webbrowser
 
 from flask import Flask, jsonify, flash, request, send_from_directory
 from flask_cors import CORS
@@ -42,14 +44,15 @@ app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
+"""
 @app.route('/')
 def index():
-    return send_from_directory('dist', 'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/<path:path>')
 def serve_static(path):
-    return send_from_directory('dist', path)
-
+    return send_from_directory(app.static_folder, path)
+"""
 
 response = []
 counter = 0
@@ -431,6 +434,11 @@ def cleanup_and_exit(signum, frame):
 
 signal.signal(signal.SIGINT, cleanup_and_exit)
 
+def open_browser():
+    webbrowser.open_new("http://localhost:3000")
+
 if __name__ == "__main__":
 
-    app.run(debug=True, port=3000)
+    # threading.Timer(1.0, open_browser).start()
+
+    app.run(debug=True, port=3000, use_reloader=False)

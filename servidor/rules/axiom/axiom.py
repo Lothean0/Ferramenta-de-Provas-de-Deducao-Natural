@@ -56,14 +56,14 @@ def apply_axiom(
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
-                    "lambda" : f"Axiom rule"
+                    "rule" : "axiom"
                 }
             ]
 
             return result
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in axiom: {e}")
         raise
 
 

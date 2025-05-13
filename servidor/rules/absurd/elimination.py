@@ -14,7 +14,7 @@ def apply_absurd_elimination(
             "child": [],
             "knowledge_base": [],
             # lamda wrong (just to test)
-            "lambda": "absurd elimination",
+            "rule": "absurd elimination",
         },
     ]
 
