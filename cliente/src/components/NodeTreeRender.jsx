@@ -23,8 +23,9 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                     }}
                 ><span style={{ color: 'black' }}>{node.name}</span>
                 </button>
+                
+                {hasChildren && <div className="line" />}
 
-                <div className="line"/>
                 {/*    
                     <span style={{ color: 'black', position: 'relative', top: '10px', marginLeft: '50px' }}>{node.rule}</span>
                 </div>
