@@ -12,7 +12,7 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                 <button
                     className={`node-label ${selectedNodeId === node.id ? 'selected' : ''}`}
                     style={{
-                        backgroundColor: hasNoneChild ? '#ffcdd2' : '#32de2f71'
+                        backgroundColor: hasNoneChild ? '#32de2f71' : '#ffcdd2'
                     }}
                     onClick={() => {
                         setSelectedNodeId(node.id);
