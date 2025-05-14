@@ -38,6 +38,8 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
+    const [changedScreen, setChangedScreen] = useState(false);
+
 
     const [showRnd, setShowRnd] = useState(false);
     useEffect(() => {
@@ -217,6 +219,9 @@ function PropositionLogicBody() {
                                          .replace('âˆ§', '∧')
                                          .replace('âŸº', '⟺');
                 }
+                setScreen(1)
+                setChangedScreen(true)
+                console.log("THIS THE SCREEN", screen)
                 return node;
             }
             if (node.child) {
@@ -228,6 +233,8 @@ function PropositionLogicBody() {
                                                  .replace('âˆ§', '∧')
                                                  .replace('âŸº', '⟺');
                     }
+                setScreen(1)
+                setChangedScreen(true)
                 return result;
                 }
             }
@@ -255,8 +262,20 @@ function PropositionLogicBody() {
         );
     };
 
+
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNode) return <p>Insira formula a provar</p>;
+
+        console.log("This is the selectNodeNane", selectedNode.name)
+
+        console.log("This is the state", changedScreen);
+
+        if (changedScreen === false) {
+            if (selectedNode.child.length === 1) {
+                const childId = selectedNode.child[0].id;
+                setSelectedNodeId(childId);
+            }
+        }
 
         return (
             <div className="tree-level">
