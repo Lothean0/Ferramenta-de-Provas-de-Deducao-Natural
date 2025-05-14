@@ -18,6 +18,7 @@ import { translations } from '../utils/translations';
 import { ruleOptions } from '../utils/ruleOptions';
 import SegmentedControl from './SegmentedControl';
 import ReactiveRnd from './ReactiveRnd';
+import { use } from 'react';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
@@ -37,6 +38,8 @@ function PropositionLogicBody() {
     const [warning, setWarning] = useState('');
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
+
+    const [isHidden, setIsHiden] = useState(false);
 
 
     const [showRnd, setShowRnd] = useState(false);
@@ -85,6 +88,7 @@ function PropositionLogicBody() {
             setTree(treeData);
             setRuleInput('');
             setExpressionInput('');
+            setIsHiden(true);
         })
         .catch((error) => {
             if (error.response?.status === 400 || error.response?.status === 422 || error.response?.status === 500 ) {
@@ -442,7 +446,7 @@ function PropositionLogicBody() {
                             </button>
                         </div>
 
-                        <div className='knowledgebase-container'>
+                        <div className={`knowledgebase-container ${isHidden ? 'off' : 'on'}`}>
                             <input
                                 ref={knowledgebaseInputRef}
                                 type="text"
@@ -462,7 +466,7 @@ function PropositionLogicBody() {
                         </div>
                         
                 
-                        <div className='expression-container'>
+                        <div className={`expression-container ${isHidden ? 'off' : 'on'}`}>
                             <input
                                 ref={expressionInputRef}
                                 type="text"
@@ -481,7 +485,7 @@ function PropositionLogicBody() {
                             </button>
                         </div>
 
-                        <div className='rule-container'>
+                        <div className={`rule-container ${isHidden ? 'on' : 'off'}`}>
                             <label className='rule-label'>
                                 {t("selectRuleLabel")}
                                 <select
@@ -539,12 +543,10 @@ function PropositionLogicBody() {
                                         onChange={(e) => setAuxiliarInput(e.target.value)}
                                         onFocus={() => setActiveInput('auxiliar')}
                                         placeholder={
-                                            // add correct rules
-                                            t(ruleInput) === "Negation Elim." || "Elim. Negação" ? 
-                                                "Hello" 
-                                                : 
-                                                "Auxiliar formula"
-                                        }
+                                            t(ruleInput) === "Negation Elim." || t(ruleInput) === "Elim. Negação"
+                                                ? "Hello"
+                                                : "Auxiliar formula"
+                                            }
                                         className="auxiliar-formula-input"
                                     />
                                 </>

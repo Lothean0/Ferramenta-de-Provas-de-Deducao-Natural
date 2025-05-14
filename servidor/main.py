@@ -293,7 +293,6 @@ def apply_rules():
                             "details": "Expected a list of key-value pairs or a dictionary."
                     }), 400
 
-                    # Merge the dictionaries
                     new_dict = {
                         **knowledge_base_data_dict,
                         **{

@@ -25,9 +25,9 @@
 }
 
 
-.knowledgebase-container,
-.expression-container,
-.rule-container {
+.knowledgebase-container.on,
+.expression-container.on,
+.rule-container.on {
   position: absolute;
   height: 40px;
   width: 10px;
@@ -38,16 +38,28 @@
   border-radius: 8px;
 }
 
-.knowledgebase-container {
+.knowledgebase-container.on {
   top: 80px;
 }
 
-.expression-container {
+.knowledgebase-container.off {
+  display: none;
+}
+
+.expression-container.off {
+  display: none;
+}
+
+.rule-container.off {
+  display: none;
+}
+
+.expression-container.on {
   top: 20px;
 }
 
-.rule-container {
-  top: 180px;
+.rule-container.on {
+  top: 80px;
 }
 
 
@@ -175,6 +187,7 @@
 .add-expression-bttn {
   margin-left: 154px ;
 }
+
 
 .add-rule-bttn {
   margin-left: 36px;
