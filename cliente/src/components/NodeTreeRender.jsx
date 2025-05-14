@@ -4,6 +4,7 @@ import '../styles/NodeTreeRender.css';
 
 function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId }) {
     const hasChildren = node.child && node.child.length > 0;
+    const hasValidChild = hasChildren && node.child.some(child => child.name !== "None");
     const hasNoneChild = hasChildren && node.child.some(child => child.name === "None");
 
     return (
@@ -12,7 +13,10 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                 <button
                     className={`node-label ${selectedNodeId === node.id ? 'selected' : ''}`}
                     style={{
-                        backgroundColor: hasNoneChild ? '#32de2f71' : '#ffcdd2'
+                        backgroundColor: hasNoneChild ? '#32de2f71' 
+                            : hasValidChild ? '#add8e6'
+                            : '#ffcdd2'
+
                     }}
                     onClick={() => {
                         setSelectedNodeId(node.id);

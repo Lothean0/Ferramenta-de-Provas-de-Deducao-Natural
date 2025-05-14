@@ -220,8 +220,6 @@ function PropositionLogicBody() {
                                          .replace('âŸº', '⟺');
                 }
                 setScreen(1)
-                setChangedScreen(true)
-                console.log("THIS THE SCREEN", screen)
                 return node;
             }
             if (node.child) {
@@ -234,7 +232,6 @@ function PropositionLogicBody() {
                                                  .replace('âŸº', '⟺');
                     }
                 setScreen(1)
-                setChangedScreen(true)
                 return result;
                 }
             }
@@ -247,6 +244,7 @@ function PropositionLogicBody() {
 
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
+
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => (
@@ -270,12 +268,7 @@ function PropositionLogicBody() {
 
         console.log("This is the state", changedScreen);
 
-        if (changedScreen === false) {
-            if (selectedNode.child.length === 1) {
-                const childId = selectedNode.child[0].id;
-                setSelectedNodeId(childId);
-            }
-        }
+        
 
         return (
             <div className="tree-level">
