@@ -262,7 +262,6 @@ function PropositionLogicBody() {
         );
     };
 
-
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNode) return <p>Insira formula a provar</p>;
 
@@ -271,12 +270,6 @@ function PropositionLogicBody() {
 
         if (selectedNode.hasOneChild ===  "1") {
             setSelectedNodeId(selectedNode.child[0].id)
-        }
-
-        if (selectedNode.hasOneChild !== "0" && selectedNode.hasOneChild !== "1") {
-            console.log(screen)
-            setScreen(prev => (prev === 1 ? 0 : 1));
-            console.log(screen)
         }
 
         return (
