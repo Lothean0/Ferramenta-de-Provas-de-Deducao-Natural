@@ -31,7 +31,7 @@ def apply_negation_introduction(
             "knowledge_base": local_knowledge_base,
 
             # lamda wrong (just to test)
-            "lambda": "negation introduction",
+            "rule": "negation introduction",
         },
     ]
 

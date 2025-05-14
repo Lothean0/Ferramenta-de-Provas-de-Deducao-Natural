@@ -23,7 +23,7 @@ def apply_disjunction_introduction_1(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            "rule": "disjunction introduction"
+            "rule": "disjunction introduction_1"
         }
     ]
 
@@ -50,7 +50,7 @@ def apply_disjunction_introduction_2(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            "rule": "disjunction introduction"
+            "rule": "disjunction introduction_2"
         },
     ]
 

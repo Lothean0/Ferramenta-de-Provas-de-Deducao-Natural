@@ -37,7 +37,7 @@ def apply_negation_elimination(
                 "knowledge_base": [],
 
                 # lamda wrong (just to test)
-                "lambda": "negation elimination",
+                "rule": "negation elimination",
             },
             {
                 "name": new_problem_parsed,
@@ -46,7 +46,7 @@ def apply_negation_elimination(
                 "knowledge_base": [],
 
                 # lamda wrong (just to test)
-                "lambda": "neagtion elimination",
+                "rule": "negation elimination",
             },
         ]
 

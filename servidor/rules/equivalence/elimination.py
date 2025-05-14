@@ -33,7 +33,7 @@ def apply_equivalence_elimination_1(
                 "child": [],
                 "knowledge_base": [],
                 # lamda wrong (just to test)
-                "lambda": "equivalence elimination",
+                "rule": "equivalence elimantion_1",
             },
             {
                 "name": new_problem_parsed,
@@ -41,7 +41,7 @@ def apply_equivalence_elimination_1(
                 "child": [],
                 "knowledge_base": [],
                 # lamda wrong (just to test)
-                "lambda": "equivalence elimination",
+                "rule": "equivalence elimantion_1"
             },
         ]
 
@@ -81,14 +81,14 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "lambda": "equivalence elimination",
+                "rule": "equivalence elimantion_2",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "equivalence elimantion"
+                "rule": "equivalence elimantion_2"
             },
         ]
 
