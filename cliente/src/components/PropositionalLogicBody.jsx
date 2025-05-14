@@ -38,8 +38,6 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
-    const [changedScreen, setChangedScreen] = useState(false);
-
 
     const [showRnd, setShowRnd] = useState(false);
     useEffect(() => {
@@ -245,6 +243,10 @@ function PropositionLogicBody() {
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
 
+        if (selectedNode.hasOneChild ===  "true") {
+            selectedNode.hasOneChild = "false"
+        }
+
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => (
@@ -264,11 +266,18 @@ function PropositionLogicBody() {
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNode) return <p>Insira formula a provar</p>;
 
-        console.log("This is the selectNodeNane", selectedNode.name)
+        console.log("This is the selectNodeNane", selectedNode.hasOneChild)
 
-        console.log("This is the state", changedScreen);
 
-        
+        if (selectedNode.hasOneChild ===  "1") {
+            setSelectedNodeId(selectedNode.child[0].id)
+        }
+
+        if (selectedNode.hasOneChild !== "0" && selectedNode.hasOneChild !== "1") {
+            console.log(screen)
+            setScreen(prev => (prev === 1 ? 0 : 1));
+            console.log(screen)
+        }
 
         return (
             <div className="tree-level">

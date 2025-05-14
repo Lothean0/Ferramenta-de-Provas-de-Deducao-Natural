@@ -1,13 +1,16 @@
 const SelectedNodeDetails = ({ node, language, translations, fallbackArray }) => {
     if (!node) return null;
 
-    const { rule, name, child = [], knowledge_base = fallbackArray } = node;
+    const { rule, name, child = [], hasOneChild, knowledge_base = fallbackArray } = node;
     const nodeKnowledgeBase = Object.entries(knowledge_base || {});
     const t = translations;
 
     return (
         <div className="node-details">
             <p><strong>{t("name")}:</strong><br />{name}</p>
+            <p><strong>{"FLAG"}:</strong><br />{hasOneChild}</p>
+
+
 
             <p><strong>{t("kb")}:</strong></p>
             {nodeKnowledgeBase.length === 0 ? (

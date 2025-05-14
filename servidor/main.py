@@ -155,7 +155,8 @@ def add_node():
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base,
-                "rule": "{rule}"
+                "rule": "{rule}",
+                "hasOneChild": "0",
             })
 
         return jsonify(response), 200
@@ -272,6 +273,8 @@ def apply_rules():
 
             # Process the result list
             if isinstance(result, list):
+                counter = 0
+
                 for _, item in enumerate(result, start=2):
                     knowledge_base_item = item.get("knowledge_base", {})
 
@@ -308,7 +311,15 @@ def apply_rules():
                         "child": [],
                         "knowledge_base": new_dict,
                         "rule": item.get("rule"),
+                        "hasOneChild": "0"
                     })
+
+                    counter +=1
+
+
+                for entry in response:
+                    if entry["uuid"] == UUID(uuid):
+                        entry["hasOneChild"] = f"{counter}"
 
             for entry in response:
                 if entry["uuid"] == UUID(uuid):
@@ -322,6 +333,7 @@ def apply_rules():
                             subgoal_rule = candidate.get("rule")
                             print(f"SUBGOAL RULE: {subgoal_rule}")
                             candidate["rule"] = "{rule}"
+
 
 
                     if subgoal_rule is None:

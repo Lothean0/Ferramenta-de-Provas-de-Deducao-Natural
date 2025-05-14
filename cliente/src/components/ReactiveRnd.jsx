@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
 import SelectedNodeDetails from './SelectedNodeDetails';
 
-const ReactiveRnd = ({ selectedNode, language, t, knowledgebaseArray, showRnd, screen }) => {
+const ReactiveRnd = ({ selectedNode, language, t, knowledgebaseArray, showRnd, screen, flag }) => {
 
     const [position, setPosition] = useState({
         x: window.innerWidth - (window.innerWidth <= 844 ? 210 : 310),
