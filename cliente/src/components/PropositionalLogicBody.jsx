@@ -256,7 +256,7 @@ function PropositionLogicBody() {
     };
 
     const renderSelectedNodeAndChildren = () => {
-        if (!selectedNode) return <p>Selecione um no.</p>;
+        if (!selectedNode) return <p>Insira formula a provar</p>;
 
         return (
             <div className="tree-level">

@@ -5,7 +5,7 @@ function Header() {
     return (
         <header className="header-container">
             <h1 className="title"> 
-                Ferramenta Dedução de Provas Naturais
+                Ferramenta para Construção de Provas em Dedução Natural
             </h1>
         </header>  
     )
