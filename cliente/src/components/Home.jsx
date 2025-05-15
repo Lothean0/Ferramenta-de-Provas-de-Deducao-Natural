@@ -20,10 +20,10 @@ function Home() {
 
                 <Card
                     image={landscape2}
-                    altText="Truth Table"
-                    description="Truth Table"
-                    title="Truth Table"
-                    link="/Truth-Table"
+                    altText="Info Propositional-Logic"
+                    description="Info Propositional-Logic"
+                    title="Info Propositional-Logic"
+                    link="/Info/Propositional-Logic"
                 />
 
                 <Card
