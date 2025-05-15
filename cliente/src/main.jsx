@@ -5,7 +5,7 @@ import './index.css';
 
 import HomePage from './pages/HomePage';
 import PropositionalLogic from './pages/PropositionalLogic'
-import TruthTable from './pages/TruthTable';
+import InformationPage from './pages/InformationPage';
 import About from './pages/About';
 
 createRoot(document.getElementById('root')).render(
@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/Propositional-Logic' element={<PropositionalLogic />} />
-        <Route path='/Truth-Table' element={<TruthTable />} />
+        <Route path='/Info/Propositional-Logic' element={<InformationPage />} />
         <Route path='/About' element={<About />} />
       </Routes>
     </Router>
