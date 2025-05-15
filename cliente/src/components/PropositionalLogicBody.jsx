@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
 import { FiCheck } from "react-icons/fi";
-import { Rnd } from 'react-rnd';
 
 import landscape1 from '../assets/img/landscape-1.png';
 import ImageWithTooltip from './ImageWithTooltip';
@@ -18,7 +17,6 @@ import { translations } from '../utils/translations';
 import { ruleOptions } from '../utils/ruleOptions';
 import SegmentedControl from './SegmentedControl';
 import ReactiveRnd from './ReactiveRnd';
-import { use } from 'react';
 
 function PropositionLogicBody() {
     const [language, setLanguage] = useState('PT');
@@ -39,8 +37,16 @@ function PropositionLogicBody() {
     const [showUploadArea, setShowUploadArea] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState('');
 
-    const [isHidden, setIsHiden] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
 
+    const SYMBOLS = [
+        { symbol: '→', label: 'implication' },
+        { symbol: '∧', label: 'conjunction' },
+        { symbol: '∨', label: 'disjunction' },
+        { symbol: '⟺', label: 'equivalence' },
+        { symbol: '~', label: 'negation' },
+        { symbol: '⊥', label: 'falsum' },
+    ];
 
     const [showRnd, setShowRnd] = useState(false);
     useEffect(() => {
@@ -88,7 +94,7 @@ function PropositionLogicBody() {
             setTree(treeData);
             setRuleInput('');
             setExpressionInput('');
-            setIsHiden(true);
+            setIsHidden(true);
         })
         .catch((error) => {
             if (error.response?.status === 400 || error.response?.status === 422 || error.response?.status === 500 ) {
@@ -115,6 +121,7 @@ function PropositionLogicBody() {
                 setKnowledgebaseInput('')
                 setKnowledgebaseArray([]);
                 setScreen(1);
+                setIsHidden(false)
             })
             .catch((error) => console.error("API Error:", error));
     };
@@ -266,15 +273,20 @@ function PropositionLogicBody() {
         );
     };
 
+    useEffect(() => {
+        if (
+            selectedNode?.hasOneChild ===  "1" && 
+            selectedNode.child?.[0]?.child?.length === 0
+        ) {
+            setSelectedNodeId(selectedNode.child[0].id)
+        }
+    }, [selectedNode]);
+
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNode) return <p>Insira formula a provar</p>;
 
         console.log("This is the selectNodeNane", selectedNode.hasOneChild)
 
-
-        if (selectedNode.hasOneChild ===  "1") {
-            setSelectedNodeId(selectedNode.child[0].id)
-        }
 
         return (
             <div className="tree-level">
@@ -420,30 +432,15 @@ function PropositionLogicBody() {
                         />
 
                         <div className='operators-bttn'>
-                            <button 
-                                aria-label='Insert implication symbol to input'
-                                onClick={() =>  appendToActiveInput('→')}>{'→'}
-                            </button>
-                            <button 
-                                aria-label='Insert conjunction symbol to input'
-                                onClick={() =>  appendToActiveInput('∧')}>{'∧'}
-                            </button>
-                            <button 
-                                aria-label='Insert disjunction symbol to input'
-                                onClick={() =>  appendToActiveInput('∨')}>{'∨'}
-                            </button>
-                            <button 
-                                aria-label='Insert equivalence symbol to input'
-                                onClick={() =>  appendToActiveInput('⟺')}>{'⟺'}
-                            </button>
-                            <button 
-                                aria-label='Insert negation symbol to input'
-                                onClick={() =>  appendToActiveInput('~')}>{'~'}
-                            </button>
-                            <button
-                                arial-label='Insert parenthesis to input'
-                                onClick={() =>  appendToActiveInput('⊥')}>{'⊥'}
-                            </button>
+                            {SYMBOLS.map(({ symbol, label}) => (
+                                <button
+                                    key={symbol}
+                                    aria-label={`Insert ${label} symbol to input`}
+                                    onClick={() => appendToActiveInput(symbol)}
+                                >
+                                    {symbol}
+                                </button>
+                            ))}
                         </div>
 
                         <div className={`knowledgebase-container ${isHidden ? 'off' : 'on'}`}>
@@ -497,10 +494,10 @@ function PropositionLogicBody() {
                                     className='rule-input'
                                 >
                                     <option value="">{t("selectRule")}</option>
-                                    {Object.entries(ruleOptions).map(([key, label]) => (
-                                    <option key={key} value={key}>
-                                        {t(key)}
-                                    </option>
+                                    {Object.entries(ruleOptions).map(([key, rule]) => (
+                                        <option key={key} value={key}>
+                                            {rule.label[language]}
+                                        </option>
                                     ))}
                                 </select>
                             </label>
@@ -514,28 +511,8 @@ function PropositionLogicBody() {
                             </button>
 
                             
-                            {[
-                                "Axiom",
-                                "Implication Elim.",
-                                "Conjunction Elim. 1",
-                                "Conjunction Elim. 2",
-                                "Disjunction Elim",
-                                "Equivalence Elim. 1",
-                                "Equivalence Elim. 2",
-                                "Negation Elim.",
-                                {/* missing other rules */},
-
-                                "Axioma",
-                                "Elim. Implicação",
-                                "Elim. Conjunção 1",
-                                "Elim. Conjunção 2",
-                                "Elim. Disjunção",
-                                "Elim. Equivalência 1",
-                                "Elim. Equivalência 2",
-                                "Elim. Negação",
-                                {/* missing other rules */}
-                            ].includes(t(ruleInput)) && (
-                                <>
+                            
+                            {ruleOptions[ruleInput]?.needsAuxiliary && (
                                     <input
                                         ref={auxiliarInputRef}
                                         type="text"
@@ -543,13 +520,10 @@ function PropositionLogicBody() {
                                         onChange={(e) => setAuxiliarInput(e.target.value)}
                                         onFocus={() => setActiveInput('auxiliar')}
                                         placeholder={
-                                            t(ruleInput) === "Negation Elim." || t(ruleInput) === "Elim. Negação"
-                                                ? "Hello"
-                                                : "Auxiliar formula"
-                                            }
+                                            ruleOptions[ruleInput]?.auxFormulaPlaceholder?.[language]
+                                        }
                                         className="auxiliar-formula-input"
                                     />
-                                </>
                             )}
 
                         </div>
