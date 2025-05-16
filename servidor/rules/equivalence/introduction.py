@@ -28,16 +28,14 @@ def apply_equivalence_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base1,
-            # lamda wrong (just to test)
-            "rule": "equivalence introduction",
+            "rule": "EI",
         },
         {
             "name": antecedent,
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base2,
-            # lamda wrong (just to test)
-            "rule": "equivalence introduction",
+            "rule": "EI",
         },
     ]
 

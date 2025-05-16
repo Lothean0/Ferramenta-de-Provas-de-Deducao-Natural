@@ -13,8 +13,7 @@ def apply_absurd_elimination(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            # lamda wrong (just to test)
-            "rule": "absurd elimination",
+            "rule": "AE",
         },
     ]
 

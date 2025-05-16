@@ -17,8 +17,7 @@ def apply_RAA(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,
-            # lamda wrong (just to test)
-            "rule": "absurd introduction",
+            "rule": "AI",
         },
     ]
 

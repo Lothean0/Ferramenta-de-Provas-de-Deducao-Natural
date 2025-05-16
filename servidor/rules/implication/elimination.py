@@ -32,14 +32,14 @@ def apply_implication_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "implication elimination"
+                "rule": "IE"
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "implication elimination"
+                "rule": "IE"
             },
         ]
 

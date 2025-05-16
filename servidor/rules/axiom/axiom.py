@@ -56,7 +56,7 @@ def apply_axiom(
                     "parentId": "",
                     "child": [],
                     "knowledge_base": [],
-                    "rule" : "axiom"
+                    "rule" : "A"
                 }
             ]
 

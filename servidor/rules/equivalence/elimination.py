@@ -32,16 +32,14 @@ def apply_equivalence_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                # lamda wrong (just to test)
-                "rule": "equivalence elimantion_1",
+                "rule": "EE_1",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                # lamda wrong (just to test)
-                "rule": "equivalence elimantion_1"
+                "rule": "EE_1"
             },
         ]
 
@@ -81,14 +79,14 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "equivalence elimantion_2",
+                "rule": "EE_2",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "equivalence elimantion_2"
+                "rule": "EE_2"
             },
         ]
 

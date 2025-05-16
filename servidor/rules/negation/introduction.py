@@ -29,9 +29,7 @@ def apply_negation_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,
-
-            # lamda wrong (just to test)
-            "rule": "negation introduction",
+            "rule": "NI",
         },
     ]
 

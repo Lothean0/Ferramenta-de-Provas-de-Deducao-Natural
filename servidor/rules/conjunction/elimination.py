@@ -32,7 +32,7 @@ def apply_conjunction_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "conjunction elimination",
+                "rule": "CE_1",
             },
         ]
 
@@ -70,8 +70,7 @@ def apply_conjunction_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                # lamda wrong (just to test)
-                "rule": "conjunction elimination",
+                "rule": "CE_2",
             }
         ]
 

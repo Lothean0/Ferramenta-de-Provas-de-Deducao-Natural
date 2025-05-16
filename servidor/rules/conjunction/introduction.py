@@ -23,16 +23,14 @@ def apply_conjunction_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            # lamda wrong (just to test)
-            "rule": "conjunction introduction",
+            "rule": "CI",
         },
         {
             "name": consequent,
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            # lamda wrong (just to test)
-            "rule": "conjunction introduction",
+            "rule": "CI",
         },
     ]
 

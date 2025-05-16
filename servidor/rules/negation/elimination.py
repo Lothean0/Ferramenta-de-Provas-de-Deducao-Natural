@@ -35,18 +35,14 @@ def apply_negation_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-
-                # lamda wrong (just to test)
-                "rule": "negation elimination",
+                "rule": "NE",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-
-                # lamda wrong (just to test)
-                "rule": "negation elimination",
+                "rule": "NE",
             },
         ]
 
