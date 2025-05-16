@@ -7,6 +7,8 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
     const hasValidChild = hasChildren && node.child.some(child => child.name !== "None");
     const hasNoneChild = hasChildren && node.child.some(child => child.name === "None");
 
+    console.log("node.rule:", node.rule);
+
     return (
         <div className="tree-node-wrapper">
             <div className="tree-node">
@@ -24,7 +26,14 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                 ><span style={{ color: 'black' }}>{node.name}</span>
                 </button>
                 
-                {hasChildren && <div className="line" />}
+                {hasChildren && 
+                <div className="line">
+                    <span style={{ color: 'black', position: 'relative', top: '10px', marginLeft: '130px' }}>
+                        {node.rule}
+                    </span>
+                </div>
+                }
+
 
                 {/*    
                     <span style={{ color: 'black', position: 'relative', top: '10px', marginLeft: '50px' }}>{node.rule}</span>

@@ -28,6 +28,10 @@
     width: calc(100%);
 }
 
+.line > * {
+    margin-left: 140px;
+}
+
 
 
 .node-label {
