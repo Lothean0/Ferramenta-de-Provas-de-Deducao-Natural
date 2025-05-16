@@ -31,7 +31,7 @@ export const translations = {
       uploadOpen: "Abrir Upload",
       uploadClose: "Fechar Upload",
       download: "Baixar",
-      selectRule: "Selecione uma regra",
+      selectRule: "Selecione regra ou hipótese",
       dragDrop: "Arraste e solte um arquivo aqui",
       expressionPlaceholder: "Insira fórmula a provar",
       knowledgePlaceholder: "Insira eventuais hipóteses",

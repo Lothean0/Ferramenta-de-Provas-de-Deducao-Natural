@@ -1,8 +1,8 @@
 export const ruleOptions = {
     axiom: {
         label: {
-            EN: "Axiom",
-            PT: "Axioma",
+            EN: "Hypothesis",
+            PT: "Hipótese",
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {

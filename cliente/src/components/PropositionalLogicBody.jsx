@@ -59,11 +59,13 @@ function PropositionLogicBody() {
     }, []);
     
 
-    const fetchData = (url) => {
+    const fetchData = (url, kbArray) => {
         const selectedNode = findNodeById(tree, selectedNodeId);
         const nodeexpression = selectedNode?.name || expressionInput;
-        const knowledgeBase = Object.entries(selectedNode?.knowledge_base || knowledgebaseArray);
+        const knowledgeBase = Object.entries(selectedNode?.knowledge_base || kbArray);
         const uuid = selectedNode?.uuid || 0;
+
+        console.log(knowledgeBase)
 
         axios.post(url, {
             uuid: uuid,
@@ -195,13 +197,17 @@ function PropositionLogicBody() {
 
     const handleDragOver = (e) => e.preventDefault();
 
-    const addToArray = () => {
-        if (knowledgebaseInput.trim() !== '') {
-            const newArray = [...knowledgebaseArray, knowledgebaseInput.trim()];
-            setKnowledgebaseArray(newArray);
-            setKnowledgebaseInput('');
+     const addToArray = () => {
+        if (knowledgebaseInput.trim() === '') {
+            console.log("Empty input, nothing added");
+            return knowledgebaseArray;  
         }
+        const newArray = [...knowledgebaseArray, knowledgebaseInput.trim()];
+        setKnowledgebaseArray(newArray);
+        setKnowledgebaseInput('');
+        return newArray;  
     };
+
 
     const createTreeCategoriesByParent = (categories, parentId = "") => {
         const siblings = [];
@@ -399,14 +405,6 @@ function PropositionLogicBody() {
                             label={t("reset")}
                         />
 
-                        {/*
-                        <ActionButton 
-                            className='apply-rule-bttn' 
-                            onClick={() => fetchData("/api/rules")} 
-                            label={t("applyRule")} 
-                        />
-                        */}
-
                         <ActionButton 
                             className='save-bttn' 
                             onClick={() => saveData("/api/save")} 
@@ -472,7 +470,10 @@ function PropositionLogicBody() {
                             <button 
                                 className='add-expression-bttn' 
                                 aria-label='Start prove'
-                                onClick={() => fetchData("/api/node")} 
+                                onClick={() => {
+                                    const updatedArray = addToArray(); // get updated kb array
+                                    fetchData("/api/node", updatedArray);
+                                }}
                             >
                                 <FiCheck size={20} />
                             </button>
