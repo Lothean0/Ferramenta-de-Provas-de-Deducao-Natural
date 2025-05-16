@@ -4,10 +4,10 @@ export const ruleOptions = {
             EN: "Axiom",
             PT: "Axioma",
         },
-        needsAuxiliary: false,
+        needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indentificador da hipótese",
         },
     },
     implication_introduction: {
@@ -15,11 +15,7 @@ export const ruleOptions = {
             EN: "Implication Intro.",
             PT: "Intro. Implicação",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     implication_elimination: {
         label: {
@@ -28,8 +24,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique A a eliminar: [A → B]",
         },
     },
     conjunction_introduction: {
@@ -37,11 +33,7 @@ export const ruleOptions = {
             EN: "Conjunction Intro.",
             PT: "Intro. Conjunção",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     conjunction_elimination_1: {
         label: {
@@ -50,8 +42,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique B a eliminar: [A ∧ B]",
         },
     },
     conjunction_elimination_2: {
@@ -61,8 +53,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique A a eliminar: [A ∧ B]",
         },
     },
     disjunction_introduction_1: {
@@ -70,22 +62,14 @@ export const ruleOptions = {
             EN: "Disjunction Intro. 1",
             PT: "Intro. Disjunção 1",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     disjunction_introduction_2: {
         label: {
             EN: "Disjunction Intro. 2",
             PT: "Intro. Disjunção 2",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     disjunction_elimination: {
         label: {
@@ -94,8 +78,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique a disjunção A ∨ B a eliminar",
         },
     },
     negation_introduction: {
@@ -103,11 +87,7 @@ export const ruleOptions = {
             EN: "Negation Intro.",
             PT: "Intro. Negação",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     negation_elimination: {
         label: {
@@ -116,8 +96,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique A a eliminar: [~A]",
         },
     },
     equivalence_introduction: {
@@ -125,11 +105,7 @@ export const ruleOptions = {
             EN: "Equivalence Intro.",
             PT: "Intro. Equivalência",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
     equivalence_elimination_1: {
         label: {
@@ -138,8 +114,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique A a eliminar: [A ⟺ B]",
         },
     },
     equivalence_elimination_2: {
@@ -149,8 +125,8 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
+            EN: "N/A",
+            PT: "Indique B a eliminar: [A ⟺ B]",
         },
     },
     RAA: {
@@ -158,21 +134,13 @@ export const ruleOptions = {
             EN: "RAA",
             PT: "RAA",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false
     },
     absurd_elimination: {
         label: {
             EN: "Absurd Elim.",
             PT: "Elim. Absurdo",
         },
-        needsAuxiliary: true,
-        auxFormulaPlaceholder: {
-            EN: "Enter the consequent (B) of the implication A → B",
-            PT: "Insira o consequente (B) da implicação A → B",
-        },
+        needsAuxiliary: false,
     },
 };
