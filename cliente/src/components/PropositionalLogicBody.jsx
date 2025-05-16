@@ -256,10 +256,6 @@ function PropositionLogicBody() {
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
 
-        if (selectedNode.hasOneChild ===  "true") {
-            selectedNode.hasOneChild = "false"
-        }
-
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => (
@@ -275,20 +271,39 @@ function PropositionLogicBody() {
         );
     };
 
+    {/* ISTO SERVE PARA SO MOSTRAR O FILHO MAS DEPOIS DA PROBLEMA
+
     useEffect(() => {
+        const firstChild = selectedNode?.child?.[0];
         if (
-            selectedNode?.hasOneChild ===  "1" && 
-            selectedNode.child?.[0]?.child?.length === 0
+            selectedNode?.hasOneChild === "1" &&
+            firstChild?.child?.length === 0 &&
+            firstChild?.name !== "None"
         ) {
-            setSelectedNodeId(selectedNode.child[0].id)
+            setSelectedNodeId(firstChild.id);
         }
     }, [selectedNode]);
 
+    
+    SE QUISER TROCAR DE ECRA COM AXIOMAS MAS NEM SEMPRE DA CERTO
+    useEffect(() => {
+        if (selectedNode?.rule === "A" && screen === 0) {
+            setScreen(1);
+        }
+    }, [selectedNode?.rule]);
+
+    useEffect(() => {
+        if (selectedNode?.rule === "A" && screen === 1) {
+            setScreen(0);
+        }
+    }, [selectedNode?.rule]);
+    */}
+
+
+
+
     const renderSelectedNodeAndChildren = () => {
         if (!selectedNode) return <p>Insira formula a provar</p>;
-
-        console.log("This is the selectNodeNane", selectedNode.hasOneChild)
-
 
         return (
             <div className="tree-level">
@@ -296,17 +311,20 @@ function PropositionLogicBody() {
                     node={selectedNode}
                     renderTree={(nodes) => (
                         <div className="tree-level">
-                            {nodes.map((node, index) => (
-                                <NodeTreeRender
-                                    key={index}
-                                    node={node}
-                                    renderTree={() => null}
-                                    selectedNodeId={selectedNodeId}
-                                    setSelectedNodeId={setSelectedNodeId}
-                                />
-                            ))}
+                            {nodes
+                                .filter(node => node.name !== "None")
+                                .map((node, index) => (
+                                    <NodeTreeRender
+                                        key={index}
+                                        node={node}
+                                        renderTree={() => null}
+                                        selectedNodeId={selectedNodeId}
+                                        setSelectedNodeId={setSelectedNodeId}
+                                    />
+                                ))}
                         </div>
                     )}
+
                     selectedNodeId={selectedNodeId}
                     setSelectedNodeId={setSelectedNodeId}
                 />
