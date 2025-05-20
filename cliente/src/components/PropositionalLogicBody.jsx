@@ -35,6 +35,9 @@ function PropositionLogicBody() {
 
     const [isHidden, setIsHidden] = useState(false);
 
+    const [showTutorial, setShowTutorial] = useState(true);
+    
+
     const SYMBOLS = [
         { symbol: '→', label: 'implication' },
         { symbol: '∧', label: 'conjunction' },
@@ -184,6 +187,7 @@ function PropositionLogicBody() {
                 setTree(uploadedTree);
                 setSelectedNodeId(uploadedTree[0]?.id || 1);
                 setUploadedFileName('');
+                setIsHidden(true);
             } catch (err) {
                 console.error("Parsing uploaded file failed:", err);
                 setWarning("⚠️ Invalid file format.");
@@ -271,8 +275,7 @@ function PropositionLogicBody() {
         );
     };
 
-    {/* ISTO SERVE PARA SO MOSTRAR O FILHO MAS DEPOIS DA PROBLEMA
-
+    {/*
     useEffect(() => {
         const firstChild = selectedNode?.child?.[0];
         if (
@@ -285,7 +288,6 @@ function PropositionLogicBody() {
     }, [selectedNode]);
 
     
-    SE QUISER TROCAR DE ECRA COM AXIOMAS MAS NEM SEMPRE DA CERTO
     useEffect(() => {
         if (selectedNode?.rule === "A" && screen === 0) {
             setScreen(1);
@@ -298,7 +300,6 @@ function PropositionLogicBody() {
         }
     }, [selectedNode?.rule]);
     */}
-
 
 
 
@@ -365,13 +366,16 @@ function PropositionLogicBody() {
     };
 
 
+
     return (
         <>
             <div className='main-container'>
 
-                <SegmentedControl
-                    onChange={handleLanguageToggle}
-                />
+                {!showTutorial &&
+                    <SegmentedControl
+                        onChange={handleLanguageToggle}
+                    />
+                }
 
                 <ReactiveRnd
                     selectedNode={selectedNode}
@@ -385,63 +389,72 @@ function PropositionLogicBody() {
                 {screen === 0 ? (
                     <>
 
-                        <ActionButton
-                            className='reset-bttn'
-                            onClick={() => resetData("/api/reset")}
-                            label={t("reset")}
-                        />
+                    {!showTutorial && (
+                        <>
+                            <ActionButton
+                                className='reset-bttn'
+                                onClick={() => resetData("/api/reset")}
+                                label={t("reset")}
+                            />
 
-                        <ActionButton 
-                            className='save-bttn' 
-                            onClick={() => saveData("/api/save")} 
-                            label={t("download")} 
-                        />
+                            <ActionButton 
+                                className='save-bttn' 
+                                onClick={() => saveData("/api/save")} 
+                                label={t("download")} 
+                            />
 
-                        <ActionButton 
-                            className='upload-file-bttn' 
-                            onClick={() => setShowUploadArea(!showUploadArea)} 
-                            label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
-                        />
+                            <ActionButton 
+                                className='upload-file-bttn' 
+                                onClick={() => setShowUploadArea(!showUploadArea)} 
+                                label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                            />
 
-                        <UploadArea
-                            show={showUploadArea}
-                            onDrop={handleFileDrop}
-                            onDragOver={handleDragOver}
-                            fileName={uploadedFileName}
-                            message={t("dragDrop")}
-                        />
+                            <UploadArea
+                                show={showUploadArea}
+                                onDrop={handleFileDrop}
+                                onDragOver={handleDragOver}
+                                fileName={uploadedFileName}
+                                message={t("dragDrop")}
+                            />
+                        </>
+                    )}
 
-                        <div className="full-render-tree-container">
-                            {renderTree(tree)}</div>
-                    </>
+                    <div className="full-render-tree-container">
+                        {renderTree(tree)}
+                    </div>
+                </>
                 ) : screen === 1 ? (
                     <>
 
-                        <ActionButton
-                            className='reset-bttn'
-                            onClick={() => resetData("/api/reset")}
-                            label={t("reset")}
-                        />
+                       {!showTutorial && (
+                        <>
+                            <ActionButton
+                                className='reset-bttn'
+                                onClick={() => resetData("/api/reset")}
+                                label={t("reset")}
+                            />
 
-                        <ActionButton 
-                            className='save-bttn' 
-                            onClick={() => saveData("/api/save")} 
-                            label={t("download")} 
-                        />
+                            <ActionButton 
+                                className='save-bttn' 
+                                onClick={() => saveData("/api/save")} 
+                                label={t("download")} 
+                            />
 
-                        <ActionButton 
-                            className='upload-file-bttn' 
-                            onClick={() => setShowUploadArea(!showUploadArea)} 
-                            label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
-                        />
+                            <ActionButton 
+                                className='upload-file-bttn' 
+                                onClick={() => setShowUploadArea(!showUploadArea)} 
+                                label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                            />
 
-                        <UploadArea
-                            show={showUploadArea}
-                            onDrop={handleFileDrop}
-                            onDragOver={handleDragOver}
-                            fileName={uploadedFileName}
-                            message={t("dragDrop")}
-                        />
+                            <UploadArea
+                                show={showUploadArea}
+                                onDrop={handleFileDrop}
+                                onDragOver={handleDragOver}
+                                fileName={uploadedFileName}
+                                message={t("dragDrop")}
+                            />
+                        </>
+                    )}
 
                         <div className='operators-bttn'>
                             {SYMBOLS.map(({ symbol, label}) => (
@@ -556,25 +569,6 @@ function PropositionLogicBody() {
                 )}
             </div>
 
-            
-            <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
-                <button 
-                    className='full-tree-screen-bttn' 
-                    aria-label='Switch to full tree view'
-                    onClick={() => setScreen(0)} 
-                />
-                <button 
-                    className='small-tree-screen-bttn' 
-                    aria-label='Switch to small tree view'
-                    onClick={() => setScreen(1)} 
-                    />
-                <button 
-                    className='help-screen-bttn' 
-                    aria-label='Open help screen'
-                    onClick={() => setScreen(2)}
-                />
-            </div>
-
             {warning && (
                 <Warning
                     message={warning}
@@ -582,6 +576,280 @@ function PropositionLogicBody() {
                     autoDismiss={true}
                     duration={10000}
                 />
+            )}
+
+
+           {showTutorial && (
+                <div className="tutorial-overlay">
+                    <div className="tutorial-content">
+
+                        {screen === 0 && (
+                            <>
+                                <h2>Instruções</h2>
+                                
+                                <p>This is the full tree view. You can see your entire logic structure here.</p>
+
+                                <h3>Funcionalidades</h3>
+
+                                <SegmentedControl
+                                    onChange={handleLanguageToggle}
+                                />
+
+                                <p style={{color:'blue'}}>Reniciar:</p>
+                                <p>Serve para reniciar o programa</p>
+                                <button className="reset-bttn">
+                                    {t("reset")}
+                                </button>
+                                <p style={{color:'blue'}}>Baixar:</p> 
+                                <p>Serve para baixar o programa</p>
+                                <button className="save-bttn">
+                                    {t("download")}
+                                </button>
+                                <p style={{color:'blue'}}>Abrir Upload:</p>
+                                <p>Serve para carregar o programa</p>
+                                <button className="upload-file-bttn">
+                                    {showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                                </button>
+
+                                <p style={{ color: 'blue'}}>Node Colors</p>
+                                <div 
+                                style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    justifyContent: 'center',
+                                    marginBottom: '30px'
+                                }}
+                                >   
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#32de2f71',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#7dc5dd',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#e15d6a',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+                                </div>
+                               
+                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
+                            </>
+                        )}
+
+                        {screen === 1 && (
+                            <>
+                                <h2>Instruções</h2>
+                                
+                                <p>This is the small tree view.</p>
+                
+                                <h3>Funcionalidades</h3>
+
+                                <SegmentedControl
+                                    onChange={handleLanguageToggle}
+                                />
+
+                                <p style={{color:'blue'}}>Reniciar:</p>
+                                <p>Serve para reniciar o programa</p>
+                                <button className="reset-bttn">
+                                    {t("reset")}
+                                </button>
+                                <p style={{color:'blue'}}>Baixar:</p> 
+                                <p>Serve para baixar o programa</p>
+                                <button className="save-bttn">
+                                    {t("download")}
+                                </button>
+                                <p style={{color:'blue'}}>Abrir Upload:</p>
+                                <p>Serve para carregar o programa</p>
+                                <button className="upload-file-bttn">
+                                    {showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                                </button>
+                            
+                                <p style={{ color: 'blue' }}>Operadores:</p>
+                                <div>
+                                {SYMBOLS.map(({ symbol, label }, index) => (
+                                    <span key={index} style={{ fontWeight:'bold',marginRight: '50px' }}>
+                                    {symbol}
+                                    </span>
+                                ))}
+                                </div>
+
+                                <p style={{ color: 'blue' }}>Hipóteses e Expressão:</p>
+                                <p>Permitido letras minusculas e maisculas</p>
+                                <p>
+                                    Exemplos:{" "}
+                                    <span style={{ fontWeight: "bold" }}>P1</span>,{" "}
+                                    <span style={{ fontWeight: "bold" }}>a95</span>,{" "}
+                                    <span style={{ fontWeight: "bold" }}>T</span>,{" "}
+                                    <span style={{ fontWeight: "bold" }}>b</span>
+                                </p>
+
+                                <p style={{ color: 'blue'}}>Node Colors</p>
+                                <div 
+                                style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    justifyContent: 'center',
+                                    marginBottom: '30px'
+                                }}
+                                >   
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#32de2f71',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#7dc5dd',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+
+                                    <button
+                                        style={{
+                                            padding: '8px 12px',
+                                            backgroundColor: '#e15d6a',
+                                            border: '1px solid #000000',
+                                            borderRadius: '8px',
+                                            fontSize: '14px',
+                                            marginBottom: '-10px',
+                                            textAlign: 'center',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Proved Node
+                                    </button>
+                                </div>
+
+
+
+
+                                    
+                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
+                            </>
+                        )}
+
+                        {screen === 2 && (
+                            <>
+                                <h2>Instruções</h2>
+                                
+                                <p>Help menu</p>
+
+                                <h3>Funcionalidades</h3>
+                                    
+                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
+                            </>
+                        )}
+                    </div>
+
+                    <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
+                        <button 
+                            className='full-tree-screen-bttn' 
+                            aria-label='Switch to full tree view'
+                            onClick={() => {
+                                setScreen(0);
+                            }} 
+                        />
+                        <button 
+                            className='small-tree-screen-bttn' 
+                            aria-label='Switch to small tree view'
+                            onClick={() => {
+                                setScreen(1);
+                            }}
+                        />
+                        <button 
+                            className='help-screen-bttn' 
+                            aria-label='Open help screen'
+                            onClick={() => {
+                                setScreen(2);
+                            }} 
+                        />
+                    </div>
+                </div>
+            )}
+
+
+            {!showTutorial && (
+                <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
+                    <button 
+                        className='full-tree-screen-bttn' 
+                        aria-label='Switch to full tree view'
+                        onClick={() => 
+                            setScreen(0)
+                        } 
+                    />
+                    <button 
+                        className='small-tree-screen-bttn' 
+                        aria-label='Switch to small tree view'
+                        onClick={() => 
+                            setScreen(1)
+                        } 
+                        />
+                    <button 
+                        className='help-screen-bttn' 
+                        aria-label='Open help screen'
+                        onClick={() => 
+                            setScreen(2)
+                        } 
+                    />
+                </div>
             )}
         </>
     );
