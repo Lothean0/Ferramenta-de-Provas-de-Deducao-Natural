@@ -17,8 +17,7 @@ function NodeTreeRender({ node, renderTree, selectedNodeId, setSelectedNodeId })
                     style={{
                         backgroundColor: hasNoneChild ? '#32de2f71' 
                             : hasValidChild ? '#add8e6'
-                            : '#ffcdd2'
-
+                            : '#ffcdd2',
                     }}
                     onClick={() => {
                         setSelectedNodeId(node.id);

@@ -25,7 +25,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique A a eliminar: [A → B]",
+            PT: 'Em "A->B" a eliminar, indique A:',
         },
     },
     conjunction_introduction: {
@@ -43,7 +43,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique B a eliminar: [A ∧ B]",
+            PT: 'Em "A/\\B" a eliminar, indique B:',
         },
     },
     conjunction_elimination_2: {
@@ -54,7 +54,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique A a eliminar: [A ∧ B]",
+            PT: 'Em "A/\\B" a eliminar, indique A:',
         },
     },
     disjunction_introduction_1: {
@@ -79,7 +79,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique a disjunção A ∨ B a eliminar",
+            PT: 'Indique "A ∨ B" a eliminar:',
         },
     },
     negation_introduction: {
@@ -97,7 +97,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique A a eliminar: [~A]",
+            PT: 'Em "~A" a eliminar, indique A:',
         },
     },
     equivalence_introduction: {
@@ -115,7 +115,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique A a eliminar: [A ⟺ B]",
+            PT: 'Em "A<=>B" a eliminar, indique A:',
         },
     },
     equivalence_elimination_2: {
@@ -126,7 +126,7 @@ export const ruleOptions = {
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
             EN: "N/A",
-            PT: "Indique B a eliminar: [A ⟺ B]",
+            PT: 'Em "A<=>B" a eliminar, indique B:',
         },
     },
     RAA: {

@@ -49,6 +49,7 @@
 .node-label.selected {
     background-color: #31de2f;
     color: rgb(0, 0, 0);
+    /* border: 10px solid black; */
 }
 
 .tree-level {
