@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import '../styles/PropositionLogicBody.css';
-import { FiCheck } from "react-icons/fi";
+import { FiAlertOctagon, FiCheck } from "react-icons/fi";
 
 import Info from './Info';
 import NodeTreeRender from './NodeTreeRender';
@@ -35,7 +35,7 @@ function PropositionLogicBody() {
 
     const [isHidden, setIsHidden] = useState(false);
 
-    const [showTutorial, setShowTutorial] = useState(true);
+    const [showTutorial, setShowTutorial] = useState(false);
     
 
     const SYMBOLS = [
@@ -371,20 +371,22 @@ function PropositionLogicBody() {
         <>
             <div className='main-container'>
 
-                {!showTutorial &&
-                    <SegmentedControl
-                        onChange={handleLanguageToggle}
-                    />
-                }
-
-                <ReactiveRnd
-                    selectedNode={selectedNode}
-                    language={language}
-                    t={t}
-                    knowledgebaseArray={knowledgebaseArray}
-                    showRnd={showRnd}
-                    screen={screen}
-                />
+                {!showTutorial && (
+                    <>
+                        <SegmentedControl
+                            onChange={handleLanguageToggle}
+                        />
+                    
+                        <ReactiveRnd
+                            selectedNode={selectedNode}
+                            language={language}
+                            t={t}
+                            knowledgebaseArray={knowledgebaseArray}
+                            showRnd={showRnd}
+                            screen={screen}
+                        />
+                    </>
+                )}
 
                 {screen === 0 ? (
                     <>
@@ -416,155 +418,172 @@ function PropositionLogicBody() {
                                 fileName={uploadedFileName}
                                 message={t("dragDrop")}
                             />
+
+                            <button 
+                                className="instructions-bttn"
+                                onClick={() => setShowTutorial(prev => !prev)}
+                            >
+                                <FiAlertOctagon size={25} style={{ transform: 'rotate(180deg)' }} />
+                            </button>
+
+                            <div className="full-render-tree-container">
+                                {renderTree(tree)}
+                            </div>
                         </>
                     )}
-
-                    <div className="full-render-tree-container">
-                        {renderTree(tree)}
-                    </div>
                 </>
                 ) : screen === 1 ? (
                     <>
 
                        {!showTutorial && (
-                        <>
-                            <ActionButton
-                                className='reset-bttn'
-                                onClick={() => resetData("/api/reset")}
-                                label={t("reset")}
-                            />
+                            <>
+                                <ActionButton
+                                    className='reset-bttn'
+                                    onClick={() => resetData("/api/reset")}
+                                    label={t("reset")}
+                                />
 
-                            <ActionButton 
-                                className='save-bttn' 
-                                onClick={() => saveData("/api/save")} 
-                                label={t("download")} 
-                            />
+                                <ActionButton 
+                                    className='save-bttn' 
+                                    onClick={() => saveData("/api/save")} 
+                                    label={t("download")} 
+                                />
 
-                            <ActionButton 
-                                className='upload-file-bttn' 
-                                onClick={() => setShowUploadArea(!showUploadArea)} 
-                                label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
-                            />
+                                <ActionButton 
+                                    className='upload-file-bttn' 
+                                    onClick={() => setShowUploadArea(!showUploadArea)} 
+                                    label={showUploadArea ? t("uploadClose") : t("uploadOpen")} 
+                                />
 
-                            <UploadArea
-                                show={showUploadArea}
-                                onDrop={handleFileDrop}
-                                onDragOver={handleDragOver}
-                                fileName={uploadedFileName}
-                                message={t("dragDrop")}
-                            />
-                        </>
-                    )}
+                                <UploadArea
+                                    show={showUploadArea}
+                                    onDrop={handleFileDrop}
+                                    onDragOver={handleDragOver}
+                                    fileName={uploadedFileName}
+                                    message={t("dragDrop")}
+                                />
 
-                        <div className='operators-bttn'>
-                            {SYMBOLS.map(({ symbol, label}) => (
-                                <button
-                                    key={symbol}
-                                    aria-label={`Insert ${label} symbol to input`}
-                                    onClick={() => appendToActiveInput(symbol)}
+                                <button 
+                                    className="instructions-bttn"
+                                    onClick={() => setShowTutorial(prev => !prev)}
                                 >
-                                    {symbol}
+                                    <FiAlertOctagon size={25} style={{ transform: 'rotate(180deg)' }} />
                                 </button>
-                            ))}
-                        </div>
 
-                        <div className={`knowledgebase-container ${isHidden ? 'off' : 'on'}`}>
-                            <input
-                                ref={knowledgebaseInputRef}
-                                type="text"
-                                value={knowledgebaseInput}
-                                onChange={(e) => setKnowledgebaseInput(e.target.value)}
-                                onFocus={() => setActiveInput('knowledgebase')}
-                                placeholder={t("knowledgePlaceholder")}
-                                className='knowledgebase-input'
-                            />
-                            <button 
-                                className='add-knowledgebase-bttn' 
-                                aria-label='Add to knowledge base'
-                                onClick={addToArray}
-                            >
-                                <FiCheck size={20} />
-                            </button>
-                        </div>
+
+                                <div className='operators-bttn'>
+                                    {SYMBOLS.map(({ symbol, label}) => (
+                                        <button
+                                            key={symbol}
+                                            aria-label={`Insert ${label} symbol to input`}
+                                            onClick={() => appendToActiveInput(symbol)}
+                                        >
+                                            {symbol}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className={`knowledgebase-container ${isHidden ? 'off' : 'on'}`}>
+                                    <input
+                                        ref={knowledgebaseInputRef}
+                                        type="text"
+                                        value={knowledgebaseInput}
+                                        onChange={(e) => setKnowledgebaseInput(e.target.value)}
+                                        onFocus={() => setActiveInput('knowledgebase')}
+                                        placeholder={t("knowledgePlaceholder")}
+                                        className='knowledgebase-input'
+                                    />
+                                    <button 
+                                        className='add-knowledgebase-bttn' 
+                                        aria-label='Add to knowledge base'
+                                        onClick={addToArray}
+                                    >
+                                        <FiCheck size={20} />
+                                    </button>
+                                </div>
                         
                 
-                        <div className={`expression-container ${isHidden ? 'off' : 'on'}`}>
-                            <input
-                                ref={expressionInputRef}
-                                type="text"
-                                value={expressionInput}
-                                onChange={(e) => setExpressionInput(e.target.value)}
-                                onFocus={() => setActiveInput('expression')}
-                                placeholder={t("expressionPlaceholder")}
-                                className='expression-input'
-                            />
-                            <button 
-                                className='add-expression-bttn' 
-                                aria-label='Start prove'
-                                onClick={() => {
-                                    const updatedArray = addToArray(); // get updated kb array
-                                    fetchData("/api/node", updatedArray);
-                                }}
-                            >
-                                <FiCheck size={20} />
-                            </button>
-                        </div>
-
-                        <div className={`rule-container ${isHidden ? 'on' : 'off'}`}>
-                            <label className='rule-label'>
-                                {t("selectRuleLabel")}
-                                <select
-                                    value={ruleInput}
-                                    onChange={(e) => {
-                                        console.log(e.target.value)
-                                        setRuleInput(e.target.value)}
-                                    }
-                                    className='rule-input'
-                                >
-                                    <option value="">{t("selectRule")}</option>
-                                    {Object.entries(ruleOptions).map(([key, rule]) => (
-                                        <option key={key} value={key}>
-                                            {rule.label[language]}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-
-                            <button 
-                                className='add-rule-bttn' 
-                                aria-label='Apply rule'
-                                onClick={() => fetchData("/api/rules")}
-                            >
-                                <FiCheck size={20} />
-                            </button>
-
-                            
-                            
-                            {ruleOptions[ruleInput]?.needsAuxiliary && (
+                                <div className={`expression-container ${isHidden ? 'off' : 'on'}`}>
                                     <input
-                                        ref={auxiliarInputRef}
+                                        ref={expressionInputRef}
                                         type="text"
-                                        value={auxiliarInput}
-                                        onChange={(e) => setAuxiliarInput(e.target.value)}
-                                        onFocus={() => setActiveInput('auxiliar')}
-                                        placeholder={
-                                            ruleOptions[ruleInput]?.auxFormulaPlaceholder?.[language]
-                                        }
-                                        className="auxiliar-formula-input"
+                                        value={expressionInput}
+                                        onChange={(e) => setExpressionInput(e.target.value)}
+                                        onFocus={() => setActiveInput('expression')}
+                                        placeholder={t("expressionPlaceholder")}
+                                        className='expression-input'
                                     />
-                            )}
+                                    <button 
+                                        className='add-expression-bttn' 
+                                        aria-label='Start prove'
+                                        onClick={() => {
+                                            const updatedArray = addToArray(); // get updated kb array
+                                            fetchData("/api/node", updatedArray);
+                                        }}
+                                    >
+                                        <FiCheck size={20} />
+                                    </button>
+                                </div>
 
-                        </div>
+                                <div className={`rule-container ${isHidden ? 'on' : 'off'}`}>
+                                    <label className='rule-label'>
+                                        {t("selectRuleLabel")}
+                                        <select
+                                            value={ruleInput}
+                                            onChange={(e) => {
+                                                console.log(e.target.value)
+                                                setRuleInput(e.target.value)}
+                                            }
+                                            className='rule-input'
+                                        >
+                                            <option value="">{t("selectRule")}</option>
+                                            {Object.entries(ruleOptions).map(([key, rule]) => (
+                                                <option key={key} value={key}>
+                                                    {rule.label[language]}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+
+                                    <button 
+                                        className='add-rule-bttn' 
+                                        aria-label='Apply rule'
+                                        onClick={() => fetchData("/api/rules")}
+                                    >
+                                        <FiCheck size={20} />
+                                    </button>
+
+                            
+                            
+                                    {ruleOptions[ruleInput]?.needsAuxiliary && (
+                                            <input
+                                                ref={auxiliarInputRef}
+                                                type="text"
+                                                value={auxiliarInput}
+                                                onChange={(e) => setAuxiliarInput(e.target.value)}
+                                                onFocus={() => setActiveInput('auxiliar')}
+                                                placeholder={
+                                                    ruleOptions[ruleInput]?.auxFormulaPlaceholder?.[language]
+                                                }
+                                                className="auxiliar-formula-input"
+                                            />
+                                    )}
+
+                                </div>
 
 
-                        <div className="render-tree-container">
-                            {renderSelectedNodeAndChildren()}
-                        </div>
+                                <div className="render-tree-container">
+                                    {renderSelectedNodeAndChildren()}
+                                </div>
+
+                            </>
+                        )}
                     </>
                 ) : (
                     <>
-
-                        <Info />
+                        {!showTutorial && (
+                            <Info />
+                        )}
                     </>
                 )}
             </div>
@@ -583,250 +602,111 @@ function PropositionLogicBody() {
                 <div className="tutorial-overlay">
                     <div className="tutorial-content">
 
-                        {screen === 0 && (
-                            <>
-                                <h2>Instruções</h2>
+                        <h2>Instruções</h2>
                                 
-                                <p>This is the full tree view. You can see your entire logic structure here.</p>
-
-                                <h3>Funcionalidades</h3>
-
-                                <SegmentedControl
-                                    onChange={handleLanguageToggle}
-                                />
-
-                                <p style={{color:'blue'}}>Reniciar:</p>
-                                <p>Serve para reniciar o programa</p>
-                                <button className="reset-bttn">
-                                    {t("reset")}
-                                </button>
-                                <p style={{color:'blue'}}>Baixar:</p> 
-                                <p>Serve para baixar o programa</p>
-                                <button className="save-bttn">
-                                    {t("download")}
-                                </button>
-                                <p style={{color:'blue'}}>Abrir Upload:</p>
-                                <p>Serve para carregar o programa</p>
-                                <button className="upload-file-bttn">
-                                    {showUploadArea ? t("uploadClose") : t("uploadOpen")} 
-                                </button>
-
-                                <p style={{ color: 'blue'}}>Node Colors</p>
-                                <div 
-                                style={{
-                                    display: 'flex',
-                                    gap: '10px',
-                                    justifyContent: 'center',
-                                    marginBottom: '30px'
-                                }}
-                                >   
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#32de2f71',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#7dc5dd',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#e15d6a',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-                                </div>
-                               
-                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
-                            </>
-                        )}
-
-                        {screen === 1 && (
-                            <>
-                                <h2>Instruções</h2>
-                                
-                                <p>This is the small tree view.</p>
+                        <p>This is the small tree view.</p>
                 
-                                <h3>Funcionalidades</h3>
+                        <h3>Funcionalidades</h3>
 
-                                <SegmentedControl
-                                    onChange={handleLanguageToggle}
-                                />
+                        <SegmentedControl
+                            onChange={handleLanguageToggle}
+                        />
 
-                                <p style={{color:'blue'}}>Reniciar:</p>
-                                <p>Serve para reniciar o programa</p>
-                                <button className="reset-bttn">
-                                    {t("reset")}
-                                </button>
-                                <p style={{color:'blue'}}>Baixar:</p> 
-                                <p>Serve para baixar o programa</p>
-                                <button className="save-bttn">
-                                    {t("download")}
-                                </button>
-                                <p style={{color:'blue'}}>Abrir Upload:</p>
-                                <p>Serve para carregar o programa</p>
-                                <button className="upload-file-bttn">
-                                    {showUploadArea ? t("uploadClose") : t("uploadOpen")} 
-                                </button>
-                            
-                                <p style={{ color: 'blue' }}>Operadores:</p>
-                                <div>
-                                {SYMBOLS.map(({ symbol, label }, index) => (
-                                    <span key={index} style={{ fontWeight:'bold',marginRight: '50px' }}>
-                                    {symbol}
-                                    </span>
-                                ))}
-                                </div>
-
-                                <p style={{ color: 'blue' }}>Hipóteses e Expressão:</p>
-                                <p>Permitido letras minusculas e maisculas</p>
-                                <p>
-                                    Exemplos:{" "}
-                                    <span style={{ fontWeight: "bold" }}>P1</span>,{" "}
-                                    <span style={{ fontWeight: "bold" }}>a95</span>,{" "}
-                                    <span style={{ fontWeight: "bold" }}>T</span>,{" "}
-                                    <span style={{ fontWeight: "bold" }}>b</span>
-                                </p>
-
-                                <p style={{ color: 'blue'}}>Node Colors</p>
-                                <div 
-                                style={{
-                                    display: 'flex',
-                                    gap: '10px',
-                                    justifyContent: 'center',
-                                    marginBottom: '30px'
-                                }}
-                                >   
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#32de2f71',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#7dc5dd',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-
-                                    <button
-                                        style={{
-                                            padding: '8px 12px',
-                                            backgroundColor: '#e15d6a',
-                                            border: '1px solid #000000',
-                                            borderRadius: '8px',
-                                            fontSize: '14px',
-                                            marginBottom: '-10px',
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        Proved Node
-                                    </button>
-                                </div>
-
-
-
-
-                                    
-                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
-                            </>
-                        )}
-
-                        {screen === 2 && (
-                            <>
-                                <h2>Instruções</h2>
+                        <p style={{color:'blue'}}>Reniciar:</p>
+                        <p>Serve para reniciar o programa</p>
                                 
-                                <p>Help menu</p>
+                        <p style={{color:'blue'}}>Baixar:</p> 
+                        <p>Serve para baixar o programa</p>
+                                
+                        <p style={{color:'blue'}}>Abrir Upload:</p>
+                        <p>Serve para carregar o programa</p>
+                                
+                        <p style={{ color: 'blue' }}>Operadores:</p>
+                        <div>
+                            {SYMBOLS.map(({ symbol, label }, index) => (
+                                <span key={index} style={{ fontWeight:'bold',marginRight: '50px' }}>
+                                    {symbol}
+                                </span>
+                            ))}
+                        </div>
 
-                                <h3>Funcionalidades</h3>
-                                    
-                                <button onClick={() => setShowTutorial(false)}>Close ✕</button>
-                            </>
-                        )}
-                    </div>
+                        <p style={{ color: 'blue' }}>Hipóteses e Expressão:</p>
+                        <p>Permitido letras minusculas e maisculas</p>
+                        <p>
+                            Exemplos:{" "}
+                            <span style={{ fontWeight: "bold" }}>P1</span>,{" "}
+                            <span style={{ fontWeight: "bold" }}>a95</span>,{" "}
+                            <span style={{ fontWeight: "bold" }}>T</span>,{" "}
+                            <span style={{ fontWeight: "bold" }}>b</span>
+                        </p>
 
-                    <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
-                        <button 
-                            className='full-tree-screen-bttn' 
-                            aria-label='Switch to full tree view'
-                            onClick={() => {
-                                setScreen(0);
-                            }} 
-                        />
-                        <button 
-                            className='small-tree-screen-bttn' 
-                            aria-label='Switch to small tree view'
-                            onClick={() => {
-                                setScreen(1);
+                        <p style={{ color: 'blue'}}>Node Colors</p>
+                        <div 
+                            style={{
+                                display: 'flex',
+                                gap: '10px',
+                                justifyContent: 'center',
+                                marginBottom: '30px'
                             }}
-                        />
-                        <button 
-                            className='help-screen-bttn' 
-                            aria-label='Open help screen'
-                            onClick={() => {
-                                setScreen(2);
-                            }} 
-                        />
+                        >   
+                            <button
+                                style={{
+                                    padding: '8px 12px',
+                                    backgroundColor: '#32de2f71',
+                                    border: '1px solid #000000',
+                                    borderRadius: '8px',
+                                    fontSize: '14px',
+                                    marginBottom: '-10px',
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Proved Node
+                            </button>
+
+                            <button
+                                style={{
+                                    padding: '8px 12px',
+                                    backgroundColor: '#7dc5dd',
+                                    border: '1px solid #000000',
+                                    borderRadius: '8px',
+                                    fontSize: '14px',
+                                    marginBottom: '-10px',
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Proved Node
+                            </button>
+
+                            <button
+                                style={{
+                                    padding: '8px 12px',
+                                    backgroundColor: '#e15d6a',
+                                    border: '1px solid #000000',
+                                    borderRadius: '8px',
+                                    fontSize: '14px',
+                                    marginBottom: '-10px',
+                                    textAlign: 'center',
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Proved Node
+                            </button>
+                        </div>
+                        
+                        <button onClick={() => setShowTutorial(false)}>Close ✕</button>
+
                     </div>
+
                 </div>
             )}
 
 
-            {!showTutorial && (
+        {!showTutorial && (
                 <div className={`change-screen ${screen === 0 || screen === 1 ? 'on' : 'off'}`}>
                     <button 
                         className='full-tree-screen-bttn' 
@@ -850,7 +730,7 @@ function PropositionLogicBody() {
                         } 
                     />
                 </div>
-            )}
+        )}
         </>
     );
 }
