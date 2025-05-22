@@ -62,15 +62,8 @@ function AboutBody() {
                 </span>
             </div>
             
-            <div className='report'>
-                <h2 className="report-title">Report</h2>
-                <a href='../assets/docs/............pdf' download="report.pdf" style={{ color: 'blue', textDecoration: 'underline' }}>
-                        Download the report (need to add to the path ../assets/docs/ .pdf)
-                    </a>
-            </div>
-
             <div className='misc-information'>
-                <p>© 2025 Ferramenta de Dedução Natural — Todos os direitos reservados.</p>
+                <p>© 2025 Ferramenta para Construção de Provas em Dedução Natural — Todos os direitos reservados.</p>
             </div>
 
         </div>
