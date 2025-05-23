@@ -668,7 +668,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Proved Node
+                                Finalizado
                             </button>
 
                             <button
@@ -684,7 +684,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Proved Node
+                                Problema Pai
                             </button>
 
                             <button
@@ -700,7 +700,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Proved Node
+                                Problema Gerado
                             </button>
                         </div>
                         
