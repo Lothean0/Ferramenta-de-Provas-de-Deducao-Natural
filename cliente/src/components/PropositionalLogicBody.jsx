@@ -149,9 +149,11 @@ function PropositionLogicBody() {
     };
 
     const charReplacements = {
+        'â†’' : '→',
         'âˆ¨': '∨',
         'âˆ§': '∧',
         'âŸº': '⟺',
+        'âŠ¥': '⊥'
     };
 
     const cleanName = (name) => {
@@ -230,9 +232,11 @@ function PropositionLogicBody() {
             if (node.id === id) {
                 console.log("this is the node.id", node.id)
                 if (node.name) {
-                    node.name = node.name.replace('âˆ¨', '∨')
+                    node.name = node.name.replace('â†’', '→')
+                                         .replace('âˆ¨', '∨')
                                          .replace('âˆ§', '∧')
-                                         .replace('âŸº', '⟺');
+                                         .replace('âŸº', '⟺')
+                                         .replace('âŠ¥', '⊥');
                 }
                 setScreen(1)
                 return node;
@@ -242,9 +246,11 @@ function PropositionLogicBody() {
                 console.log("this is the result.id", result)
                 if (result) {
                     if (result.name) {
-                        result.name = result.name.replace('âˆ¨', '∨')
+                        result.name = result.name.replace('â†’', '→')
+                                                 .replace('âˆ¨', '∨')
                                                  .replace('âˆ§', '∧')
-                                                 .replace('âŸº', '⟺');
+                                                 .replace('âŸº', '⟺')
+                                                 .replace('âŠ¥', '⊥');
                     }
                 setScreen(1)
                 return result;
