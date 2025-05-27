@@ -49,8 +49,7 @@ function PropositionLogicBody() {
 
     useEffect(() => {
         const ruleToCheck = "{rule}";
-        if (tree.length === 0) setCompletedProof(false)
-        if (treeHasRule(tree, ruleToCheck)) {
+        if (tree.length === 0 || treeHasRule(tree, ruleToCheck)) {
             setCompletedProof(false);
         } else {
             setCompletedProof(true);
