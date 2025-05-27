@@ -20,10 +20,28 @@ export const translations = {
       about_propositional_logic: "Text about what is Propositional Logic",
       input_syntax: "Input Syntax",
       about_input_syntax: "Text about input syntax (eg and suported oper)",
-      suported_rules: "Suported Rules"
-
-      },
+      suported_rules: "Suported Rules",
       
+      instructionsTitle: "Instructions",
+      tutorialSmallTree: "This is the small tree view.",
+      tutorialFeatures: "Features",
+      tutorialReset: "Reset:",
+      tutorialResetDesc: "Resets the program",
+      tutorialDownload: "Download:",
+      tutorialDownloadDesc: "Downloads the proof",
+      tutorialUpload: "Open Upload:",
+      tutorialUploadDesc: "Loads a proof from file",
+      tutorialConnectives: "Propositional connectives:",
+      tutorialHypothesis: "Hypotheses and Expression:",
+      tutorialHypothesisDesc: "Allowed uppercase and lowercase letters (propositional variables)",
+      tutorialExamples: "Examples:",
+      tutorialNodeColors: "Node Colors",
+      tutorialFinal: "Final Problem",
+      tutorialIntermediate: "Intermediate Problem",
+      tutorialOpen: "Open Problem",
+      tutorialClose: "Close ✕",
+    },
+    
     PT: {
       reset: "Reiniciar",
       addNode: "Iniciar Prova",
@@ -44,7 +62,26 @@ export const translations = {
       about_propositional_logic: "Texto sobre o que é Lógica Proposicional",
       input_syntax: "Sintaxe de entrada",
       about_input_syntax: "Texto sobre Sintaxe de entrada (exemplos e operadores suportados)",
-      suported_rules: "Regras suportadas"
+      suported_rules: "Regras suportadas",
+
+      instructionsTitle: "Instruções",
+      tutorialSmallTree: "Esta é a visualização da árvore pequena.",
+      tutorialFeatures: "Funcionalidades",
+      tutorialReset: "Reiniciar:",
+      tutorialResetDesc: "Serve para reiniciar o programa",
+      tutorialDownload: "Baixar:",
+      tutorialDownloadDesc: "Serve para baixar a prova",
+      tutorialUpload: "Abrir Upload:",
+      tutorialUploadDesc: "Serve para carregar uma prova do ficheiro",
+      tutorialConnectives: "Conetivos proposicionais:",
+      tutorialHypothesis: "Hipóteses e Expressão:",
+      tutorialHypothesisDesc: "Permitido letras minúsculas e maiúsculas (Variáveis proposicionais)",
+      tutorialExamples: "Exemplos:",
+      tutorialNodeColors: "Cores dos Nós",
+      tutorialFinal: "Problema Finalizado",
+      tutorialIntermediate: "Problema Intermédio",
+      tutorialOpen: "Problema em Aberto",
+      tutorialClose: "Fechar ✕",
     },
 };
-  
+

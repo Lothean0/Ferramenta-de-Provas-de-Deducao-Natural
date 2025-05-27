@@ -6,7 +6,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: "Hypothesis identifier",
             PT: "Indentificador da hipótese",
         },
     },
@@ -24,7 +24,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "A->B" to eliminate, indicate A:',
             PT: 'Em "A->B" a eliminar, indique A:',
         },
     },
@@ -42,7 +42,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "A/\\B" to eliminate, indicate B:',
             PT: 'Em "A/\\B" a eliminar, indique B:',
         },
     },
@@ -53,7 +53,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "A/\\B" to eliminate, indicate A:',
             PT: 'Em "A/\\B" a eliminar, indique A:',
         },
     },
@@ -78,7 +78,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'Indicate "A ∨ B" to eliminate:',
             PT: 'Indique "A ∨ B" a eliminar:',
         },
     },
@@ -96,7 +96,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "~A" to eliminate, indicate A:',
             PT: 'Em "~A" a eliminar, indique A:',
         },
     },
@@ -114,7 +114,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "A<=>B" to eliminate, indicate A:',	
             PT: 'Em "A<=>B" a eliminar, indique A:',
         },
     },
@@ -125,7 +125,7 @@ export const ruleOptions = {
         },
         needsAuxiliary: true,
         auxFormulaPlaceholder: {
-            EN: "N/A",
+            EN: 'In "A<=>B" to eliminate, indicate B:',
             PT: 'Em "A<=>B" a eliminar, indique B:',
         },
     },

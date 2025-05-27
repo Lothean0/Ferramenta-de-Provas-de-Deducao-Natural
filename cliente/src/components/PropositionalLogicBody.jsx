@@ -172,7 +172,7 @@ function PropositionLogicBody() {
         'â†’' : '→',
         'âˆ¨': '∨',
         'âˆ§': '∧',
-        'âŸº': '⟺',
+        'âŸº' : '⟺',
         'âŠ¥': '⊥'
     };
 
@@ -645,26 +645,26 @@ function PropositionLogicBody() {
                 <div className="tutorial-overlay">
                     <div className="tutorial-content">
 
-                        <h2>Instruções</h2>
+                        <h2>{t("instructionsTitle")}</h2>
                                 
-                        <p>This is the small tree view.</p>
+                        <p>{t("tutorialSmallTree")}</p>
                 
-                        <h3>Funcionalidades</h3>
+                        <h3>{t("tutorialFeatures")}</h3>
 
                         <SegmentedControl
                             onChange={handleLanguageToggle}
                         />
 
-                        <p style={{color:'blue'}}>Reniciar:</p>
-                        <p>Serve para reniciar o programa</p>
+                        <p style={{color:'blue'}}>{t("tutorialReset")}</p>
+                        <p>{t("tutorialResetDesc")}</p>
                                 
-                        <p style={{color:'blue'}}>Baixar:</p> 
-                        <p>Serve para baixar o programa</p>
+                        <p style={{color:'blue'}}>{t("tutorialDownload")}</p> 
+                        <p>{t("tutorialDownloadDesc")}</p>
                                 
-                        <p style={{color:'blue'}}>Abrir Upload:</p>
-                        <p>Serve para carregar o programa</p>
+                        <p style={{color:'blue'}}>{t("tutorialUpload")}</p>
+                        <p>{t("tutorialUploadDesc")}</p>
                                 
-                        <p style={{ color: 'blue' }}>Conetivos proposicionais:</p>
+                        <p style={{ color: 'blue' }}>{t("tutorialConnectives")}</p>
                         <div>
                             {SYMBOLS.map(({ symbol, label }, index) => (
                                 <span key={index} style={{ fontWeight:'bold',marginRight: '50px' }}>
@@ -673,17 +673,17 @@ function PropositionLogicBody() {
                             ))}
                         </div>
 
-                        <p style={{ color: 'blue' }}>Hipóteses e Expressão:</p>
-                        <p>Permitido letras minusculas e maisculas (Variaveis proposicionais)</p>
+                        <p style={{ color: 'blue' }}>{t("tutorialHypothesis")}</p>
+                        <p>{t("tutorialHypothesisDesc")}</p>
                         <p>
-                            Exemplos:{" "}
+                            {t("tutorialExamples")}{" "}
                             <span style={{ fontWeight: "bold" }}>P1</span>,{" "}
                             <span style={{ fontWeight: "bold" }}>a95</span>,{" "}
                             <span style={{ fontWeight: "bold" }}>T</span>,{" "}
                             <span style={{ fontWeight: "bold" }}>b</span>
                         </p>
 
-                        <p style={{ color: 'blue'}}>Node Colors</p>
+                        <p style={{ color: 'blue'}}>{t("tutorialNodeColors")}</p>
                         <div 
                             style={{
                                 display: 'flex',
@@ -705,7 +705,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Problema Finalizado
+                                {t("tutorialFinal")}
                             </button>
 
                             <button
@@ -721,7 +721,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Problema Intermédio
+                                {t("tutorialIntermediate")}
                             </button>
 
                             <button
@@ -737,11 +737,11 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Problema em Aberto
+                                {t("tutorialOpen")}
                             </button>
                         </div>
                         
-                        <button onClick={() => setShowTutorial(false)}>Close ✕</button>
+                        <button onClick={() => setShowTutorial(false)}>{t("tutorialClose")}</button>
 
                     </div>
 
