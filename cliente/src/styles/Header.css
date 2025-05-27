@@ -31,10 +31,10 @@
 
 .header-container {
     position: absolute;
-    left: 0px;
+    left: 200px;
     top: 0;
     transform: translate(-50%,50);
-    width: 100%;
+    width: 75%;
     height: 100px;
     display: flex;
     align-items: center;
