@@ -17,7 +17,7 @@ def apply_RAA(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,
-            "rule": "AI",
+            "rule": "RAA",
         },
     ]
 

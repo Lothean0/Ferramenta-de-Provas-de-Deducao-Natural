@@ -23,14 +23,14 @@ def apply_conjunction_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            "rule": "∧ I",
+            "rule": "∧I",
         },
         {
             "name": consequent,
             "parentId": "",
             "child": [],
             "knowledge_base": [],
-            "rule": "∧ I",
+            "rule": "∧I",
         },
     ]
 

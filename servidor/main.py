@@ -373,7 +373,7 @@ def save_file():
     tree_data_str = json.dumps(data, indent=2)
 
     try:
-        with open(os.path.join(app.config['DOWNLOAD_FOLDER'], filename), 'w') as file:
+        with open(os.path.join(app.config['DOWNLOAD_FOLDER'], filename), 'w', encoding='utf-8') as file:
             file.writelines(tree_data_str)
 
         return jsonify(
@@ -401,7 +401,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as file:
+            with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r', encoding='utf-8') as file:
                 treedata = file.read()
 
                 print("Debug - treedata:", treedata)

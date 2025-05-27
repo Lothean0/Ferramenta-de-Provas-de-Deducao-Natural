@@ -32,14 +32,14 @@ def apply_implication_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "→ E"
+                "rule": "→E"
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "→ E"
+                "rule": "→E"
             },
         ]
 

@@ -32,14 +32,14 @@ def apply_equivalence_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "E_1 ⟺",
+                "rule": "⟺E1",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "⟺ E_1"
+                "rule": "⟺E1"
             },
         ]
 
@@ -79,14 +79,14 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "EE_2",
+                "rule": "⟺E_2",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "⟺ E_2"
+                "rule": "⟺E_2"
             },
         ]
 

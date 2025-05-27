@@ -156,9 +156,11 @@ function PropositionLogicBody() {
         'âŠ¥': '⊥'
     };
 
+    /*
     const cleanName = (name) => {
-        return name.replace(/âˆ¨|âˆ§|âŸº/g, (match) => charReplacements[match] || match);
+        return name.replace(/â†’|âˆ¨|âˆ§|âŸº|âŠ¥/g, match => charReplacements[match] || match);
     };
+    */
 
 
     const handleFileDrop = (e) => {
@@ -179,11 +181,13 @@ function PropositionLogicBody() {
             try {
                 console.log(res.data.fileName)
                 const parsed = JSON.parse(res.data.filename);
+                /*
                 parsed.tree.forEach(node => {
                     if (node.name) {
                         node.name = cleanName(node.name);
                     }
-                });   
+                });
+                */   
                 console.log(parsed)
                 const uploadedTree = parsed.tree;
                 setTree(uploadedTree);
@@ -266,9 +270,14 @@ function PropositionLogicBody() {
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
 
+        /* const [booolean, setBooolean] = useState(true) */
+
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => (
+
+                    /* if node.rule not in [...] setBooolean(false) */
+
                     <NodeTreeRender
                         key={index}
                         node={node}
@@ -627,7 +636,7 @@ function PropositionLogicBody() {
                         <p style={{color:'blue'}}>Abrir Upload:</p>
                         <p>Serve para carregar o programa</p>
                                 
-                        <p style={{ color: 'blue' }}>Operadores:</p>
+                        <p style={{ color: 'blue' }}>Conetivos proposicionais:</p>
                         <div>
                             {SYMBOLS.map(({ symbol, label }, index) => (
                                 <span key={index} style={{ fontWeight:'bold',marginRight: '50px' }}>
@@ -637,7 +646,7 @@ function PropositionLogicBody() {
                         </div>
 
                         <p style={{ color: 'blue' }}>Hipóteses e Expressão:</p>
-                        <p>Permitido letras minusculas e maisculas</p>
+                        <p>Permitido letras minusculas e maisculas (Variaveis proposicionais)</p>
                         <p>
                             Exemplos:{" "}
                             <span style={{ fontWeight: "bold" }}>P1</span>,{" "}
@@ -668,7 +677,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Finalizado
+                                Problema Finalizado
                             </button>
 
                             <button
@@ -684,7 +693,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Problema Pai
+                                Problema Intermédio
                             </button>
 
                             <button
@@ -700,7 +709,7 @@ function PropositionLogicBody() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Problema Gerado
+                                Problema em Aberto
                             </button>
                         </div>
                         

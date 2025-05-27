@@ -31,6 +31,7 @@ def apply_axiom(
         if not new_problem_parsed:
             raise ValueError("Auxiliary formula cannot be empty.")
 
+        """
         prefix = "EUnOp(~,"
         if logical_expr.startswith(prefix):
             result1 = logical_expr[len(prefix):].strip()
@@ -46,9 +47,9 @@ def apply_axiom(
 
                 if result2.endswith(")"):
                     new_problem_parsed = result2[:-1].strip()
+        """
 
-
-        if matches_any_order(logical_expr, new_problem_parsed):
+        if logical_expr == new_problem_parsed:
             print("Inisde")
             result = [
                 {

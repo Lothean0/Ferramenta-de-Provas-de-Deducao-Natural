@@ -54,21 +54,21 @@ def apply_disjunction_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "∨ E",
+                "rule": "∨E",
             },
             {
                 "name": logical_expr,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base1,
-                "rule": "∨ E",
+                "rule": "∨E",
             },
             {
                 "name": logical_expr,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": local_knowledge_base2,
-                "rule": "∨ E",
+                "rule": "∨E",
             },
         ]
 
