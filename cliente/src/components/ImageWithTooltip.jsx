@@ -23,7 +23,7 @@ const ImageWithTooltip = ({ src, alt }) => {
         src={src}
         alt={alt}
         style={{
-          width: '300px',
+          width: '800px',
           height: 'auto',
           display: 'block',
           borderRadius: '8px',

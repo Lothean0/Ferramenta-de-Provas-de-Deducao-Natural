@@ -454,7 +454,7 @@
 
 .change-screen.off {
   position: absolute;
-  top: calc(100vh - 50px + 760px) !important;
+  top: calc(100vh - 50px + 700px) !important;
   left: 0;
   height:50px;
   width: 100vw;
