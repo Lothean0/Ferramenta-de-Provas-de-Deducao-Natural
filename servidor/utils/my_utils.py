@@ -103,6 +103,11 @@ def parse_expr(s):
 
         return EBinOp(op, left, right)
 
+    elif s.startswith("EUnOp"):
+        return "Hello"
+
+
+
     else:
         raise ValueError(f"Unknown expression format: {s}")
 
