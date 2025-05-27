@@ -28,14 +28,14 @@ def apply_equivalence_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base1,
-            "rule": "EI",
+            "rule": "⟺ I",
         },
         {
             "name": antecedent,
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base2,
-            "rule": "EI",
+            "rule": "⟺ I",
         },
     ]
 

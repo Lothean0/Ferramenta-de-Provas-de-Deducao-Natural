@@ -32,19 +32,19 @@ def apply_implication_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "IE"
+                "rule": "→ E"
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "E →"
+                "rule": "→ E"
             },
         ]
 
         return result
 
     except Exception as e:
-        print(f"Exception in equivalence elimination: {e}")
+        print(f"Exception in implication elimination: {e}")
         raise

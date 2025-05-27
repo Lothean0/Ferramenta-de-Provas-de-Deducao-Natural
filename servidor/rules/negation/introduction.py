@@ -29,7 +29,7 @@ def apply_negation_introduction(
             "parentId": "",
             "child": [],
             "knowledge_base": local_knowledge_base,
-            "rule": "I ~",
+            "rule": "~ I",
         },
     ]
 

@@ -39,7 +39,7 @@ def apply_equivalence_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "E_1 ⟺"
+                "rule": "⟺ E_1"
             },
         ]
 
@@ -86,7 +86,7 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "E_2 ⟺"
+                "rule": "⟺ E_2"
             },
         ]
 
