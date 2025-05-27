@@ -1,7 +1,4 @@
-import { useMemo, useState} from 'react';
-import { translations } from '../utils/translations';
-
-import landscape1 from '../assets/img/landscape-1.png';
+import regras from '../assets/img/regras.jpg';
 import ImageWithTooltip from './ImageWithTooltip';
 
 import '../styles/Info.css'; 
@@ -34,7 +31,7 @@ function Info({t}) {
             >
                                 
             <ImageWithTooltip
-                src={landscape1} 
+                src={regras} 
                 alt={"Regras"}
             />
                                 
