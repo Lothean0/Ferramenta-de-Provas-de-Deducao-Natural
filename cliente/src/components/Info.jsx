@@ -6,10 +6,7 @@ import ImageWithTooltip from './ImageWithTooltip';
 
 import '../styles/Info.css'; 
 
-function Info ({translations}) {
-
-    const t = translations
-    
+function Info({t}) {
     return (
         <div className='information-container'>
                                 
