@@ -39,8 +39,8 @@ function PropositionLogicBody() {
 
     const [completedproof, setCompletedProof] = useState(true);
 
-    // Helper function to recursively check the tree for a rule
     function treeHasRule(nodes, rule) {
+        if (nodes.length === 0) return true
         for (const node of nodes) {
             if (node.rule === rule) return true;
             if (node.child && treeHasRule(node.child, rule)) return true;
@@ -48,9 +48,7 @@ function PropositionLogicBody() {
         return false;
     }
 
-    // Check the tree for the rule and update completedproof
     useEffect(() => {
-        // Replace "{rule}" with the actual rule string you want to check
         const ruleToCheck = "{rule}";
         if (treeHasRule(tree, ruleToCheck)) {
             setCompletedProof(false);
@@ -170,6 +168,7 @@ function PropositionLogicBody() {
         .catch((error) => console.error("API Error:", error));
     };
 
+    /*
     const charReplacements = {
         'â†’' : '→',
         'âˆ¨': '∨',
@@ -178,7 +177,6 @@ function PropositionLogicBody() {
         'âŠ¥': '⊥'
     };
 
-    /*
     const cleanName = (name) => {
         return name.replace(/â†’|âˆ¨|âˆ§|âŸº|âŠ¥/g, match => charReplacements[match] || match);
     };
@@ -257,6 +255,7 @@ function PropositionLogicBody() {
         for (const node of nodes) {
             if (node.id === id) {
                 console.log("this is the node.id", node.id)
+                /*
                 if (node.name) {
                     node.name = node.name.replace('â†’', '→')
                                          .replace('âˆ¨', '∨')
@@ -264,6 +263,7 @@ function PropositionLogicBody() {
                                          .replace('âŸº', '⟺')
                                          .replace('âŠ¥', '⊥');
                 }
+                */
                 setScreen(1)
                 return node;
             }
@@ -271,6 +271,7 @@ function PropositionLogicBody() {
                 const result = findNodeById(node.child, id);
                 console.log("this is the result.id", result)
                 if (result) {
+                    /*
                     if (result.name) {
                         result.name = result.name.replace('â†’', '→')
                                                  .replace('âˆ¨', '∨')
@@ -278,6 +279,7 @@ function PropositionLogicBody() {
                                                  .replace('âŸº', '⟺')
                                                  .replace('âŠ¥', '⊥');
                     }
+                    */
                 setScreen(1)
                 return result;
                 }
@@ -291,8 +293,6 @@ function PropositionLogicBody() {
 
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
-
-        //const [booolean, setBooolean] = useState(true)
 
         return (
             <div className="tree-level">
@@ -462,9 +462,9 @@ function PropositionLogicBody() {
 
                             
                             {completedproof && (
-                                <div className='text'>
-                                    <span style={{ color: 'black' }}>
-                                        Hello
+                                <div className='proved-message-container'>
+                                    <span>
+                                        Prova Concluída
                                     </span>
                                 </div>
                             )}

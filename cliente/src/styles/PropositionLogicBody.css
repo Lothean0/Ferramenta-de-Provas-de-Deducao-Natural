@@ -316,6 +316,24 @@
   transition: all 0.2s ease;
 }
 
+.proved-message-container {
+  position: absolute;
+  left: 50%;
+  top: 80px;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.proved-message-container span {
+  font-family: 'GochiHand', sans-serif;
+  color: #111827;
+  font-size: 60px;
+}
+
 .full-render-tree-container {
   position: absolute;
   left: 50%;
