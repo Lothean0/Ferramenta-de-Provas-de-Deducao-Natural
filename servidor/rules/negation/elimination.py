@@ -42,11 +42,13 @@ def apply_negation_elimination(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "NE",
+                "rule": "E ~",
             },
         ]
 
         return result
 
+
     except Exception as e:
-        raise Exception(f"ERROR APPLYING EQUIVALENCE ELIMINATION: {e}")
+        print(f"Exception in negation elimination: {e}")
+        raise

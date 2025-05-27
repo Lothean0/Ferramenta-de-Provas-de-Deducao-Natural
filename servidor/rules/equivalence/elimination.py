@@ -32,14 +32,14 @@ def apply_equivalence_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "EE_1",
+                "rule": "E_1 ⟺",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "EE_1"
+                "rule": "E_1 ⟺"
             },
         ]
 
@@ -47,7 +47,7 @@ def apply_equivalence_elimination_1(
 
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in equivalence elimination: {e}")
         raise
     
 
@@ -86,7 +86,7 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "EE_2"
+                "rule": "E_2 ⟺"
             },
         ]
 
@@ -94,5 +94,5 @@ def apply_equivalence_elimination_2(
 
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in equivalence elimination: {e}")
         raise

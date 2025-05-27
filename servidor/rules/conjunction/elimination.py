@@ -30,7 +30,7 @@ def apply_conjunction_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "CE_1",
+                "rule": "E_1 ∧",
             }
         ]
 
@@ -38,7 +38,7 @@ def apply_conjunction_elimination_1(
 
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in conjunction elimination: {e}")
         raise
 
 
@@ -70,7 +70,7 @@ def apply_conjunction_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "CE_2",
+                "rule": "E_2 ∧ ",
             },
         ]
 
@@ -78,5 +78,5 @@ def apply_conjunction_elimination_2(
 
 
     except Exception as e:
-        print(f"Exception in disjunction elimination: {e}")
+        print(f"Exception in conjunction elimination: {e}")
         raise
