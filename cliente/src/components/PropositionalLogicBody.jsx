@@ -646,9 +646,104 @@ function PropositionLogicBody() {
                     <div className="tutorial-content">
 
                         <h2>{t("instructionsTitle")}</h2>
-                                
-                        <p>{t("tutorialSmallTree")}</p>
-                
+
+                        
+                        <div 
+                            style={{
+                                display: 'flex',
+                                gap: '10px',
+                                justifyContent: 'center',
+                                marginBottom: '20px'
+                            }}
+                        >   
+                            <button
+                                aria-label='Switch to full tree view'
+                                style={{
+                                width: '105px',
+                                height: '10px',    // Increased height for better visibility
+                                padding: '0',
+                                border: 'none',
+                                background: 'red',
+                                lineHeight: '1',
+                                cursor: 'pointer'
+                                }}
+                            ></button>
+
+                            <button
+                                aria-label='Switch to full tree view'
+                                style={{
+                                width: '105px',
+                                height: '10px',
+                                padding: '0',
+                                border: 'none',
+                                background: 'green',
+                                lineHeight: '1',
+                                cursor: 'pointer'
+                                }}
+                            ></button>
+
+                            <button
+                                aria-label='Switch to full tree view'
+                                style={{
+                                width: '105px',
+                                height: '10px',
+                                padding: '0',
+                                border: 'none',
+                                background: 'blue',
+                                lineHeight: '1',
+                                cursor: 'pointer'
+                                }}
+                            ></button>
+                            </div>
+
+                            <div 
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                fontSize: '12px',
+                                color: 'white',
+                                marginTop: '10px',
+                            }}
+                            >
+                            <span 
+                                style={{
+                                background: 'rgba(255, 0, 0, 0.5)',
+                                width: '330px',
+                                padding: '2px 5px',
+                                borderRadius: '3px'
+                                }}
+                            >
+                                🔴 = {t("tutorialSmallTree")}
+                            </span>
+
+                            <span 
+                                style={{
+                                background: 'rgba(0, 128, 0, 0.5)',
+                                width: '330px',
+                                padding: '2px 5px',
+                                borderRadius: '3px'
+                                }}
+                            >
+                                🟢 = {t("tutorialFullTree")}
+                            </span>
+
+                            <span 
+                                style={{
+                                background: 'rgba(0, 0, 255, 0.5)',
+                                width: '330px',
+                                padding: '2px 5px',
+                                borderRadius: '3px'
+                                }}
+                            >
+                                🔵 = {t("tutorialHelp")}
+                            </span>
+                            </div>
+
+
+                                                
                         <h3>{t("tutorialFeatures")}</h3>
 
                         <SegmentedControl
@@ -684,6 +779,7 @@ function PropositionLogicBody() {
                         </p>
 
                         <p style={{ color: 'blue'}}>{t("tutorialNodeColors")}</p>
+
                         <div 
                             style={{
                                 display: 'flex',

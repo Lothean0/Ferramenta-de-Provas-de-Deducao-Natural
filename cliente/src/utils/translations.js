@@ -23,7 +23,9 @@ export const translations = {
       suported_rules: "Suported Rules",
       
       instructionsTitle: "Instructions",
+      tutorialFullTree: "This is the full tree view",
       tutorialSmallTree: "This is the small tree view.",
+      tutorialHelp: "This is the help page",
       tutorialFeatures: "Features",
       tutorialReset: "Reset:",
       tutorialResetDesc: "Resets the program",
@@ -65,7 +67,9 @@ export const translations = {
       suported_rules: "Regras suportadas",
 
       instructionsTitle: "Instruções",
+      tutorialFullTree: "Esta é a visualização da árvore completa.",
       tutorialSmallTree: "Esta é a visualização da árvore pequena.",
+      tutorialHelp: "Esta é a página de ajuda.",
       tutorialFeatures: "Funcionalidades",
       tutorialReset: "Reiniciar:",
       tutorialResetDesc: "Serve para reiniciar o programa",
