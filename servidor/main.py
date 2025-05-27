@@ -32,9 +32,14 @@ from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import remove_outer_parentheses
 
-UPLOAD_FOLDER = 'uploads'
-DOWNLOAD_FOLDER = 'downloads'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+DOWNLOAD_FOLDER = os.path.join(BASE_DIR, 'downloads')
 ALLOWED_EXTENSIONS = {'json'}
+
+# Ensure upload/download folders exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -371,9 +376,8 @@ def save_file():
         return jsonify({"error": "Invalid file type"}), 400
 
     tree_data_str = json.dumps(data, indent=2)
-
     try:
-        with open(os.path.join(app.config['DOWNLOAD_FOLDER'], filename), 'w') as file:
+        with open(os.path.join(app.config['DOWNLOAD_FOLDER'], filename), 'w',encoding='utf-8') as file:
             file.writelines(tree_data_str)
 
         return jsonify(
@@ -401,7 +405,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r') as file:
+            with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r', encoding='utf-8') as file:
                 treedata = file.read()
 
                 print("Debug - treedata:", treedata)
