@@ -5,7 +5,7 @@ import simao_pfp from '../assets/img/simao.jpg';
 import '../styles/AboutBody.css';
 
 
-function AboutBody() {
+function AboutBody({t}) {
     
     return (
         <div className='about-container'>

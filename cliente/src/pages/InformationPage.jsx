@@ -17,10 +17,10 @@ const InformationPage = () => {
   return (
     <>
       <Header />
-        <SegmentedControl
+      <SegmentedControl
         onChange={handleLanguageToggle}
-        />
-        <Info t={t}/>
+      />
+      <Info t={t}/>
     </>
   );
 };
