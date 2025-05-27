@@ -625,7 +625,7 @@ function PropositionLogicBody() {
                 ) : (
                     <>
                         {!showTutorial && (
-                            <Info />
+                            <Info translations={t}/>
                         )}
                     </>
                 )}

@@ -6,10 +6,9 @@ import ImageWithTooltip from './ImageWithTooltip';
 
 import '../styles/Info.css'; 
 
-function Info() {
+function Info ({translations}) {
 
-    const [language, setLanguage] = useState('PT');
-    const t = useMemo(() => (key) => translations[language][key] || key);
+    const t = translations
     
     return (
         <div className='information-container'>
