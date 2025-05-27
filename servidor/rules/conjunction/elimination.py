@@ -30,7 +30,7 @@ def apply_conjunction_elimination_1(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "∧E_1",
+                "rule": "∧E1",
             }
         ]
 
@@ -70,7 +70,7 @@ def apply_conjunction_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "∧E_2",
+                "rule": "∧E2",
             },
         ]
 

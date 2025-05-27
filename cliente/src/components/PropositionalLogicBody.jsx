@@ -36,6 +36,28 @@ function PropositionLogicBody() {
     const [isHidden, setIsHidden] = useState(false);
 
     const [showTutorial, setShowTutorial] = useState(false);
+
+    const [completedproof, setCompletedProof] = useState(true);
+
+    // Helper function to recursively check the tree for a rule
+    function treeHasRule(nodes, rule) {
+        for (const node of nodes) {
+            if (node.rule === rule) return true;
+            if (node.child && treeHasRule(node.child, rule)) return true;
+        }
+        return false;
+    }
+
+    // Check the tree for the rule and update completedproof
+    useEffect(() => {
+        // Replace "{rule}" with the actual rule string you want to check
+        const ruleToCheck = "{rule}";
+        if (treeHasRule(tree, ruleToCheck)) {
+            setCompletedProof(false);
+        } else {
+            setCompletedProof(true);
+        }
+    }, [tree]);
     
 
     const SYMBOLS = [
@@ -270,14 +292,11 @@ function PropositionLogicBody() {
     const renderTree = (nodes) => {
         if (!nodes || nodes.length === 0) return null;
 
-        /* const [booolean, setBooolean] = useState(true) */
+        //const [booolean, setBooolean] = useState(true)
 
         return (
             <div className="tree-level">
                 {nodes.map((node, index) => (
-
-                    /* if node.rule not in [...] setBooolean(false) */
-
                     <NodeTreeRender
                         key={index}
                         node={node}
@@ -441,6 +460,16 @@ function PropositionLogicBody() {
                                 <FiAlertOctagon size={25} style={{ transform: 'rotate(180deg)' }} />
                             </button>
 
+                            
+                            {completedproof && (
+                                <div className='text'>
+                                    <span style={{ color: 'black' }}>
+                                        Hello
+                                    </span>
+                                </div>
+                            )}
+                    
+                            
                             <div className="full-render-tree-container">
                                 {renderTree(tree)}
                             </div>

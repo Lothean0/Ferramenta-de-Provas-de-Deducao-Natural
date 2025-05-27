@@ -79,14 +79,14 @@ def apply_equivalence_elimination_2(
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "⟺E_2",
+                "rule": "⟺E2",
             },
             {
                 "name": new_problem_parsed,
                 "parentId": "",
                 "child": [],
                 "knowledge_base": [],
-                "rule": "⟺E_2"
+                "rule": "⟺E2"
             },
         ]
 

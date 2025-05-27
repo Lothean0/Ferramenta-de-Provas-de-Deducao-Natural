@@ -92,6 +92,7 @@ def process_tree(tree_data):
         knowledge_base = node.get("knowledge_base", {})
         child = node.get("child", [])
         uuid = node.get("uuid", None)
+        rule = node.get("rule", "{rule}")
 
         global response
         response.append({
@@ -99,7 +100,8 @@ def process_tree(tree_data):
             "name": name,
             "parentId": parentId,
             "child": [],
-            "knowledge_base": knowledge_base
+            "knowledge_base": knowledge_base,
+            "rule": rule
         })
 
         # Recursively process child nodes if they exist
@@ -327,7 +329,8 @@ def apply_rules():
                             print(candidate)
                             subgoal_rule = candidate.get("rule")
                             print(f"SUBGOAL RULE: {subgoal_rule}")
-                            candidate["rule"] = "{rule}"
+                            if subgoal_rule in ["∧E1","∧E2","∧I","∨E","⟺E1","⟺E2","⟺I","→E","→I","~E","~I","AE","RAA"]:
+                                candidate["rule"] = "{rule}"
 
 
 
