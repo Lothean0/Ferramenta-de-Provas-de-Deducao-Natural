@@ -40,7 +40,15 @@ ALLOWED_EXTENSIONS = {'json'}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
+    handlers=[
+        logging.FileHandler("server.log"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger("server")
 
 app = Flask(__name__, static_folder='dist')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -119,11 +127,11 @@ def add_node():
             return jsonify({"error": "Reset first", "details": str(response)}), 400
 
         data = request.get_json()
-        # print("Received data:", data)
+        logger.debug("POST /api/node - Received data: %s", data)
 
 
         if not data.get("expression"):
-            # print("No expression provided")
+            logger.warning("POST /api/node - Missing 'expression' parameter in request: %s", data)
             return jsonify({"error": "Missing 'expression' parameter"}), 400
 
         # Parse the expression
@@ -135,12 +143,12 @@ def add_node():
             )
 
             if not parsed_expression:
+                logger.error("POST /api/node - Parsing failed: Missing element in expression")
                 return jsonify({"error": "Parsing failed", "details" : str("Missing element")}), 422
 
         except SyntaxError as e:
+            logger.error("POST /api/node - Syntax error: %s", e)
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
-
-        # print("Here_1")
 
         try:
             for item in data.get("knowledge_base", []):
@@ -149,10 +157,8 @@ def add_node():
                 local_knowledge_base[key] = item[1]
                 local_counter += 1
         except Exception as e:
+            logger.error("POST /api/node - Exception: %s", e)
             return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
-
-        # print(local_knowledge_base)
-        # print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
 
         if not response:
             response.append({
@@ -168,6 +174,7 @@ def add_node():
 
 
     except Exception as e:
+        logger.error("POST /api/node - Exception: %s", e)
         return jsonify({"error": "Failed to process request", "details": str(e)}), 500
 
 
@@ -176,28 +183,17 @@ def add_node():
 def apply_rules():
     try:
         data = request.get_json()
-        # print("Received data:", data)
 
-        # print("THIS IS THE RESPONSE ARRAY BEFORE CHECKING PARENT_ID\n")
-        #print()
-        # print("\nRESPONSE ARRAY FINISH")
+        logger.debug("POST /api/rules - Received data: %s", data)
 
         parent_id = data.get("id", "0")
         uuid = data.get("uuid", None)
 
-        #if parent_id in processed_parent_ids:
-         #   print("this id already was submitted to a rule")
-          #  return jsonify({"error": f"Parent ID {parent_id} already processed"}), 400
-
-        # processed_parent_ids.append(parent_id)
-
         expression = data.get("expression")
         if not expression:
+            logger.warning("POST /api/rules - Missing 'expression' parameter in request: %s", data)
             return jsonify({"error": "Missing 'expression' parameter"}), 400
 
-        # print(data.get("knowledge_base"))
-
-        # Parse the expression
         try:
             parsed_expression = CodeGenerator().generate_code(
                 ast_2 := SemanticAnalyzer().analyze(
@@ -205,18 +201,17 @@ def apply_rules():
                 )
             )
         except SyntaxError as e:
+            logger.error("POST /api/rules - Syntax error: %s", e)
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
-        # print(f"Parsed Expression: {parsed_expression}")
 
-        # Process the knowledge base
         knowledge_base_data = data.get("knowledge_base", [])
-        knowledge_base_data_dict = {}
 
         if isinstance(knowledge_base_data, list):
             try:
                 knowledge_base_data_dict = dict(knowledge_base_data)
             except (ValueError, TypeError) as e:
+                logger.error("POST /api/rules - (ValueError, TypeError) error: %s", e)
                 return jsonify({
                     "error": "Invalid knowledge_base format",
                     "details": f"Expected list of key-value pairs. Error: {str(e)}"
@@ -229,16 +224,13 @@ def apply_rules():
                 "details": "Expected a list of key-value pairs or a dictionary."
             }), 400
 
-        # print(f"Type of knowledge_base: {type(data['knowledge_base'])}")
-        # print(f"Content of knowledge_base: {data['knowledge_base']}")
-
-        # Convert knowledge_base_data to a set of tuples for hypothesis_set
         try:
             if isinstance(knowledge_base_data_dict, dict):
                 hypothesis_set = set(knowledge_base_data_dict.items())
             else:
                 hypothesis_set = set()
         except Exception as e:
+            logger.error("POST /api/rules - Exception: %s", e)
             return jsonify({
                 "error": "Failed to process knowledge_base for hypothesis_set",
                 "details": str(e)
@@ -246,47 +238,31 @@ def apply_rules():
 
         auxiliar_formula = data.get("auxiliar_formula", "")
 
-        # print(f"\n\nUUID: {uuid}")
-        # print(f"Parsed expression: {parsed_expression}\n")
-        # print(f"Hypothesis set: {hypothesis_set}\n")
-        # print(f"Problem ID: {parent_id}\n")
-        # print(f"Auxiliar formula: {auxiliar_formula}\n")
-        # print(f"Rule: {data['rule']}\n")
-
-        # Apply the rule
         try:
             rule_name = data.get("rule")
             function_name = 'apply_' + rule_name
             if function_name not in globals():
+                logger.warning("POST /api/rules - Rule function '%s' not implemented", function_name)
                 return jsonify({"error": f"Rule function '{function_name}' not implemented"}), 400
             function = globals()[function_name]
-            # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
 
             result = function(parsed_expression, hypothesis_set, parent_id, auxiliar_formula)
-            # print(f'Worked')
+
             problem_id = int(parent_id)
 
-            # print(knowledge_base_data_dict)
-
             global response
-            # print("ARRAY BEFORE FILER")
-            # print(response)
             response = filter_recursive_children(parent_id)
-            # print("ARRAY AFTER FILER")
-            # print(response)
 
-
-            # Process the result list
             if isinstance(result, list):
 
                 for _, item in enumerate(result, start=2):
                     knowledge_base_item = item.get("knowledge_base", {})
 
-                    # Ensure knowledge_base_item is a dictionary
                     if isinstance(knowledge_base_item, list):
                         try:
                             knowledge_base_item = dict(knowledge_base_item)
                         except (ValueError, TypeError) as e:
+                            logger.error("POST /api/rules - (ValueError, TypeError) error: %s", e)
                             return jsonify({
                                 "error": "Invalid knowledge_base format in item",
                                  "details": f"Expected list of key-value pairs. Error: {str(e)}"
@@ -304,8 +280,6 @@ def apply_rules():
                             for key, val in knowledge_base_item.items()
                         }
                     }
-
-                    # print(f"Merged knowledge_base: {new_dict}")
 
                     response.append({
                         "uuid" : uuid4(),
@@ -346,12 +320,10 @@ def apply_rules():
                     entry["rule"] = "{rule}".format(rule=subgoal_rule)
                     break
 
-            print("After for_loop entry in response")
-            # print(f"Reponse starts here")
-            # print(response)
+            logger.info("POST /api/rules - DONE")
 
-            # print("Formatted Response:", response)
         except Exception as e:
+            logger.error("POST /api/rules - Exception: %s", e)
             return jsonify({"error": "Function call failed", "details": str(e)}), 500
 
 
@@ -363,7 +335,7 @@ def apply_rules():
 
 @app.route("/api/reset", methods=["POST"])
 def reset_data():
-    print("Reseting data ...")
+    logger.info("Resetting response state.")
     response.clear()
     return jsonify(response), 200
 
