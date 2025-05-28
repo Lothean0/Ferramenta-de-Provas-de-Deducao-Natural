@@ -3,7 +3,6 @@ import os
 import logging
 import shutil
 import sys
-import threading
 from uuid import uuid4, UUID
 import signal
 import os.path
@@ -96,7 +95,7 @@ def process_tree(tree_data):
 
         global response
         response.append({
-            "uuid" : uuid,
+            "uuid" : UUID(uuid),
             "name": name,
             "parentId": parentId,
             "child": [],
@@ -107,7 +106,7 @@ def process_tree(tree_data):
         # Recursively process child nodes if they exist
         if child:
             process_tree(child)
-    print(response)
+    # print(f"This is the array after process_tree: {response}")
 
 
 
@@ -120,7 +119,7 @@ def add_node():
             return jsonify({"error": "Reset first", "details": str(response)}), 400
 
         data = request.get_json()
-        print("Received data:", data)
+        # print("Received data:", data)
 
 
         if not data.get("expression"):
@@ -141,7 +140,7 @@ def add_node():
         except SyntaxError as e:
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
-        print("Here_1")
+        # print("Here_1")
 
         try:
             for item in data.get("knowledge_base", []):
@@ -153,7 +152,7 @@ def add_node():
             return jsonify({"error": "Invalid knowledge_base format", "details": str(e)}), 400
 
         # print(local_knowledge_base)
-        print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
+        # print(f'ADD NODE TYPE: {type(local_knowledge_base)}') # dict
 
         if not response:
             response.append({
@@ -177,11 +176,11 @@ def add_node():
 def apply_rules():
     try:
         data = request.get_json()
-        print("Received data:", data)
+        # print("Received data:", data)
 
-        print("THIS IS THE RESPONSE ARRAY BEFORE CHECKING PARENT_ID\n")
+        # print("THIS IS THE RESPONSE ARRAY BEFORE CHECKING PARENT_ID\n")
         #print()
-        print("\nRESPONSE ARRAY FINISH")
+        # print("\nRESPONSE ARRAY FINISH")
 
         parent_id = data.get("id", "0")
         uuid = data.get("uuid", None)
@@ -196,7 +195,7 @@ def apply_rules():
         if not expression:
             return jsonify({"error": "Missing 'expression' parameter"}), 400
 
-        print(data.get("knowledge_base"))
+        # print(data.get("knowledge_base"))
 
         # Parse the expression
         try:
@@ -208,7 +207,7 @@ def apply_rules():
         except SyntaxError as e:
             return jsonify({"error": "Parsing failed", "details": str(e)}), 422
 
-        print(f"Parsed Expression: {parsed_expression}")
+        # print(f"Parsed Expression: {parsed_expression}")
 
         # Process the knowledge base
         knowledge_base_data = data.get("knowledge_base", [])
@@ -230,8 +229,8 @@ def apply_rules():
                 "details": "Expected a list of key-value pairs or a dictionary."
             }), 400
 
-        print(f"Type of knowledge_base: {type(data['knowledge_base'])}")
-        print(f"Content of knowledge_base: {data['knowledge_base']}")
+        # print(f"Type of knowledge_base: {type(data['knowledge_base'])}")
+        # print(f"Content of knowledge_base: {data['knowledge_base']}")
 
         # Convert knowledge_base_data to a set of tuples for hypothesis_set
         try:
@@ -247,12 +246,12 @@ def apply_rules():
 
         auxiliar_formula = data.get("auxiliar_formula", "")
 
-        print(f"\n\nUUID: {uuid}")
-        print(f"Parsed expression: {parsed_expression}\n")
-        print(f"Hypothesis set: {hypothesis_set}\n")
-        print(f"Problem ID: {parent_id}\n")
-        print(f"Auxiliar formula: {auxiliar_formula}\n")
-        print(f"Rule: {data['rule']}\n")
+        # print(f"\n\nUUID: {uuid}")
+        # print(f"Parsed expression: {parsed_expression}\n")
+        # print(f"Hypothesis set: {hypothesis_set}\n")
+        # print(f"Problem ID: {parent_id}\n")
+        # print(f"Auxiliar formula: {auxiliar_formula}\n")
+        # print(f"Rule: {data['rule']}\n")
 
         # Apply the rule
         try:
@@ -264,17 +263,17 @@ def apply_rules():
             # 'expression': '(p0->p1)', 'rule': 'implication_introduction', 'knowledge_base': '[]', 'id': 1}
 
             result = function(parsed_expression, hypothesis_set, parent_id, auxiliar_formula)
-            print(f'Worked')
+            # print(f'Worked')
             problem_id = int(parent_id)
 
-            print(knowledge_base_data_dict)
+            # print(knowledge_base_data_dict)
 
             global response
-            print("ARRAY BEFORE FILER")
-            print(response)
+            # print("ARRAY BEFORE FILER")
+            # print(response)
             response = filter_recursive_children(parent_id)
-            print("ARRAY AFTER FILER")
-            print(response)
+            # print("ARRAY AFTER FILER")
+            # print(response)
 
 
             # Process the result list
@@ -306,7 +305,7 @@ def apply_rules():
                         }
                     }
 
-                    print(f"Merged knowledge_base: {new_dict}")
+                    # print(f"Merged knowledge_base: {new_dict}")
 
                     response.append({
                         "uuid" : uuid4(),
@@ -317,6 +316,9 @@ def apply_rules():
                         "rule": item.get("rule"),
                     })
 
+            print("Before for_loop entry in response")
+            print(f"Just the uuid {uuid}")
+            print(f"Just the uuid formated {UUID(uuid)}")
 
             for entry in response:
                 if entry["uuid"] == UUID(uuid):
@@ -340,14 +342,15 @@ def apply_rules():
                             "details": "Could not find matching subgoal rule for substitution"
                         }), 400
 
-                    print(subgoal_rule)
+                    # print(subgoal_rule)
                     entry["rule"] = "{rule}".format(rule=subgoal_rule)
                     break
 
-            print(f"Reponse starts here")
-            print(response)
+            print("After for_loop entry in response")
+            # print(f"Reponse starts here")
+            # print(response)
 
-            print("Formatted Response:", response)
+            # print("Formatted Response:", response)
         except Exception as e:
             return jsonify({"error": "Function call failed", "details": str(e)}), 500
 
@@ -368,7 +371,7 @@ def reset_data():
 @app.route("/api/save", methods=["POST"])
 def save_file():
     data = request.get_json()
-    print("Received data:", data)
+    # print("Received data:", data)
 
     global counter
     counter += 1
@@ -415,6 +418,7 @@ def upload_file():
                 print("Debug - treedata:", treedata)
                 treedata_json = json.loads(treedata)
                 process_tree(treedata_json["tree"])
+                print("Processed_tree finished")
 
             return jsonify({"filename": treedata}), 200
 
@@ -431,10 +435,10 @@ def cleanup_and_exit(signum, frame):
                 try:
                     if os.path.isfile(file_path) or os.path.islink(file_path):
                         os.remove(file_path)
-                        print(f"Deleted file: {file_path}")
+                        # print(f"Deleted file: {file_path}")
                     elif os.path.isdir(file_path):
                         shutil.rmtree(file_path)
-                        print(f"Deleted folder: {file_path}")
+                        # print(f"Deleted folder: {file_path}")
                 except Exception as e:
                     print(f"Error deleting {file_path}: {e}")
         else:
