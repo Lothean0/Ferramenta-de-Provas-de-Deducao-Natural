@@ -1,9 +1,9 @@
 .information-container {
   position: absolute;
-  top: 300px;
+  top: 135px;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1600px;
+  width: 1300px;
   font-family: 'GochiHand', sans-serif;
   display: flex;
   flex-direction: column; 
@@ -12,15 +12,15 @@
 }
 
 
-.sub-tittle,
-.information {
+.sub-tittle {
+  margin-top: 200px;
   color: black;
 }
 
 
 .white-space {
   position: absolute;
-  top: 1350px;
+  top: 1250px;
   height: 100px;
   width: 100px;
   background: transparent;

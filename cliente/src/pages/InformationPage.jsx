@@ -16,7 +16,6 @@ const InformationPage = () => {
 
   return (
     <>
-      <Header />
       <SegmentedControl
         onChange={handleLanguageToggle}
       />

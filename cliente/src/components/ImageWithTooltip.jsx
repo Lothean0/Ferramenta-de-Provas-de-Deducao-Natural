@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImageWithTooltip = ({ src, alt }) => {
+const ImageWithTooltip = ({ src, alt , showAlt}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ const ImageWithTooltip = ({ src, alt }) => {
           borderRadius: '8px',
         }}
       />
-      {isHovered && (
+      {showAlt && isHovered && (
         <div
           style={{
             position: 'absolute',

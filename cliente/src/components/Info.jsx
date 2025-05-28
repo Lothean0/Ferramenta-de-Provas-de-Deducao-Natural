@@ -6,12 +6,8 @@ import '../styles/Info.css';
 function Info({t}) {
     return (
         <div className='information-container'>
-                                
-            <p className='information'>{t("about_propositional_logic")}</p>
-                            
-            <h2 className='sub-tittle'>{t("input_syntax")}</h2>
 
-            <p className='information'>{t("about_input_syntax")}</p>
+            <h1 className='title'>{t("title")}</h1>
 
             <h2 className='sub-tittle'>{t("suported_rules")}</h2>
 
@@ -22,18 +18,20 @@ function Info({t}) {
                     rowGap: '3.5rem',
                     marginLeft: '50px',
                     marginRight: '70px',
-                    marginTop: '420px',
+                    marginTop: '360px',
 
                     fontFamily: "'GochiHand', sans-serif",
                     position: 'absolute',
                     background: 'transparent'
                 }}
             >
-                                
+                             
             <ImageWithTooltip
                 src={regras} 
-                alt={"Regras"}
+                alt={""}
+                showAlt={false}
             />
+            
                                 
         </div>
 

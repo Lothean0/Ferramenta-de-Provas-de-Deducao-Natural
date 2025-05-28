@@ -16,12 +16,9 @@ export const translations = {
       parentId: "Parent ID",
       kb: "Knowledge Base",
 
-      propositional_logic_tittle: "Propositional Logic Calculator Info",
-      about_propositional_logic: "Text about what is Propositional Logic",
-      input_syntax: "Input Syntax",
-      about_input_syntax: "Text about input syntax (eg and suported oper)",
+      title: "Tool for Proof Construction in Natural Deduction",
       suported_rules: "Suported Rules",
-      
+
       instructionsTitle: "Instructions",
       tutorialFullTree: "This is the full tree view",
       tutorialSmallTree: "This is the small tree view.",
@@ -68,10 +65,7 @@ export const translations = {
       name: "Formula a provar",
       kb: "Hipóteses disponiveis",
 
-      propositional_logic_tittle: "Info Calculadora de Lógica Proposicional",
-      about_propositional_logic: "Texto sobre o que é Lógica Proposicional",
-      input_syntax: "Sintaxe de entrada",
-      about_input_syntax: "Texto sobre Sintaxe de entrada (exemplos e operadores suportados)",
+      title: "Ferramenta para Construção de Provas em Dedução Natural",
       suported_rules: "Regras suportadas",
 
       instructionsTitle: "Instruções",
