@@ -32,13 +32,16 @@ from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import remove_outer_parentheses
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 DOWNLOAD_FOLDER = os.path.join(BASE_DIR, 'downloads')
 ALLOWED_EXTENSIONS = {'json'}
 
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
+
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -57,18 +60,20 @@ app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
-"""
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
+
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
-"""
+
 
 response = []
 counter = 0
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -111,11 +116,8 @@ def process_tree(tree_data):
             "rule": rule
         })
 
-        # Recursively process child nodes if they exist
         if child:
             process_tree(child)
-    # print(f"This is the array after process_tree: {response}")
-
 
 
 @app.route("/api/node", methods=["POST"])
@@ -172,11 +174,9 @@ def add_node():
 
         return jsonify(response), 200
 
-
     except Exception as e:
         logger.error("POST /api/node - Exception: %s", e)
         return jsonify({"error": "Failed to process request", "details": str(e)}), 500
-
 
 
 @app.route("/api/rules", methods=["POST"])
@@ -343,7 +343,6 @@ def reset_data():
 @app.route("/api/save", methods=["POST"])
 def save_file():
     data = request.get_json()
-    # print("Received data:", data)
 
     global counter
     counter += 1
@@ -421,11 +420,13 @@ def cleanup_and_exit(signum, frame):
 
 signal.signal(signal.SIGINT, cleanup_and_exit)
 
+
 def open_browser():
     webbrowser.open_new("http://localhost:3000")
 
+
 if __name__ == "__main__":
 
-    #threading.Timer(1.0, open_browser).start()
+    threading.Timer(1.0, open_browser).start()
 
     app.run(debug=True, port=3000, use_reloader=False)
