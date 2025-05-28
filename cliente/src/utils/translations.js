@@ -42,6 +42,14 @@ export const translations = {
       tutorialIntermediate: "Intermediate Problem",
       tutorialOpen: "Open Problem",
       tutorialClose: "Close ✕",
+
+      statement_title: "Statement",
+      p1 : "Natural Deduction refers to a type of formal proof system where reasoning within the context of hypotheses is allowed, and where there are both introduction and elimination rules for the logical connectives being studied. For example, this type of formalism is studied in the Logic course of LCC.",
+      p2 : "The goal of this project is to develop a computational tool for the assisted construction of proofs in Natural Deduction, within the context of classical and intuitionistic logics. Such a tool could be a useful instrument in the teaching and learning of formal proof systems.",
+      p3 : "In the development of the tool, it will be essential to model the concept of 'proof state'. In particular, at each moment, the proof state should allow the identification of sub-problems/sub-proofs that still need to be resolved.",
+      p4 : "It is proposed that the tool also allows the representation of the constructed proofs through lambda-terms, using the Curry-Howard correspondence (which relates Natural Deduction with programming languages with functional types). Any additional functionalities of the tool should be discussed during the course of the project.",
+      p5 : "The programming languages to be used in the development of the tool will be chosen in the initial phase of the project.",
+      copyright : "© 2025 Tool for Proof Construction in Natural Deduction — All rights reserved.",
     },
     
     PT: {
@@ -86,6 +94,15 @@ export const translations = {
       tutorialIntermediate: "Problema Intermédio",
       tutorialOpen: "Problema em Aberto",
       tutorialClose: "Fechar ✕",
+
+      statement_title: "Enunciado",
+      p1 : "Dedução Natural designa um tipo de sistemas formais de prova, onde é permitido raciocinar no contexto de hipóteses e onde  coexistem regras para introdução e para eliminação dos conetivos da lógica em estudo. Por exemplo, este tipo de formalismo é estudado na UC de Lógica de LCC.",
+      p2 : "O objetivo deste projeto é o desenvolvimento de uma ferramenta computacional para a construção assistida de provas em Dedução Natural, no contexto das lógicas clássica e intuicionista. Tal ferramenta poderá ser um instrumento útil no ensino-aprendizagem de sistemas formais de prova.",
+      p3 : "No desenvolvimento da ferramenta tornar-se-á essencial modelar o conceito 'estado da prova'. Em particular, em cada momento, Em particular, em cada momento, o estado da prova deverá  permitir identificar os sub-problemas/sub-provas que ainda carecem de resolução.",
+      p4 : "Propõe-se que a ferramenta permita ainda representar as provas construídas através de termos-lambda, com recurso à  correspondência Curry-Howard (que relaciona Dedução Natural com  linguagens de programação com tipos funcionais).  Eventuais funcionalidades adicionais da ferramenta deverão ser  discutidas no decurso do projeto.",
+      p5 : "As  linguagens de programação a utilizar no desenvolvimento da ferramenta  serão escolhidas na fase inicial do projeto.",
+      copyright : "© 2025 Ferramenta para Construção de Provas em Dedução Natural — Todos os direitos reservados.",
+
     },
 };
 

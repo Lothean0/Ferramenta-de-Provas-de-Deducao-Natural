@@ -5,8 +5,9 @@ import simao_pfp from '../assets/img/simao.jpg';
 import '../styles/AboutBody.css';
 
 
-function AboutBody({t}) {
-    
+function AboutBody({translate}) {
+
+    const t = translate
     return (
         <div className='about-container'>
 
@@ -41,29 +42,28 @@ function AboutBody({t}) {
 
 
             <div className='statement'>
-                <h2 className="statement-title">Enunciado</h2>
+                <h2 className="statement-title">{t("statement_title")}</h2>
                 <span style={{ color: 'black' }}>
                     <p style={{ textIndent: '20px' }}>
-                        Dedução Natural designa um tipo de sistemas formais de prova, onde é permitido raciocinar no contexto de hipóteses e onde  coexistem regras para introdução e para eliminação dos conetivos da lógica em estudo. Por exemplo, este tipo de formalismo é estudado na UC de Lógica de LCC.
+                        {t("p1")}
                     </p>
                     <p style={{ textIndent: '20px' }}>
-                        O objetivo deste projeto é o desenvolvimento de uma ferramenta computacional para a construção assistida de provas em Dedução Natural, no contexto das lógicas clássica e intuicionista. Tal ferramenta poderá ser um instrumento útil no ensino-aprendizagem de sistemas formais de prova.
+                        {t("p2")}
                     </p>
                     <p style={{ textIndent: '20px' }}>
-                        No desenvolvimento da ferramenta tornar-se-á essencial modelar o conceito "estado da prova". Em particular, em cada momento, Em particular, em cada momento, o estado da prova deverá  permitir identificar os sub-problemas/sub-provas que ainda carecem de resolução.
+                        {t("p3")}
                     </p>
                     <p style={{ textIndent: '20px' }}>
-                        Propõe-se que a ferramenta permita ainda representar as provas construídas através de termos-lambda, com recurso à  correspondência Curry-Howard (que relaciona Dedução Natural com  linguagens de programação com tipos funcionais).  Eventuais funcionalidades adicionais da ferramenta deverão ser  discutidas no decurso do projeto.
-                        As  linguagens de programação a utilizar no desenvolvimento da ferramenta  serão escolhidas na fase inicial do projeto.
+                        {t("p4")}
                     </p>
                     <p style={{ textIndent: '20px' }}>
-                        As  linguagens de programação a utilizar no desenvolvimento da ferramenta  serão escolhidas na fase inicial do projeto.
+                        {t("p5")}
                     </p>
                 </span>
             </div>
             
             <div className='misc-information'>
-                <p>© 2025 Ferramenta para Construção de Provas em Dedução Natural — Todos os direitos reservados.</p>
+                <p>{t("copyright")}</p>
             </div>
 
         </div>

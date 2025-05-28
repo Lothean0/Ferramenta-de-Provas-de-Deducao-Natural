@@ -22,7 +22,7 @@ const About = () => {
       <SegmentedControl
         onChange={handleLanguageToggle}
       />
-      <AboutBody />
+      <AboutBody translate={t}/>
     </>
   );
 };
