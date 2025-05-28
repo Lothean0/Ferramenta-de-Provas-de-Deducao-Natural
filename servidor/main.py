@@ -3,6 +3,7 @@ import os
 import logging
 import shutil
 import sys
+import threading
 from uuid import uuid4, UUID
 import signal
 import os.path
@@ -36,7 +37,6 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 DOWNLOAD_FOLDER = os.path.join(BASE_DIR, 'downloads')
 ALLOWED_EXTENSIONS = {'json'}
 
-# Ensure upload/download folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
@@ -50,12 +50,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger("server")
 
+
 app = Flask(__name__, static_folder='dist')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
-
 
 """
 @app.route('/')
@@ -426,6 +426,6 @@ def open_browser():
 
 if __name__ == "__main__":
 
-    # threading.Timer(1.0, open_browser).start()
+    #threading.Timer(1.0, open_browser).start()
 
     app.run(debug=True, port=3000, use_reloader=False)

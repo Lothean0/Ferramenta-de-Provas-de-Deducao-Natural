@@ -14,7 +14,7 @@ function AboutBody({translate}) {
             <div className="carousel">
                 <div className="elements">
                     <div className="profile">
-                        <img src={daniel_pfp} alt="Daniel" />
+                        <img src={daniel_pfp} alt="Daniel" loading="lazy"/>
                         <span className="label">
                             <strong>Daniel Andrade</strong> 
                             <br />
@@ -22,7 +22,7 @@ function AboutBody({translate}) {
                         </span>
                     </div>
                     <div className="profile">
-                        <img src={malainho_pfp} alt="Malainho" />
+                        <img src={malainho_pfp} alt="Malainho" loading="lazy"/>
                         <span className="label">
                             <strong>Pedro Malainho</strong>
                             <br />
@@ -30,7 +30,7 @@ function AboutBody({translate}) {
                         </span>
                     </div>
                     <div className="profile">
-                        <img src={simao_pfp} alt="Simao" />
+                        <img src={simao_pfp} alt="Simao" loading="lazy"/>
                         <span className="label">
                             <strong>Simão Ribeiro</strong>
                             <br />

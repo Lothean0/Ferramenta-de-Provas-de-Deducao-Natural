@@ -22,6 +22,7 @@ const ImageWithTooltip = ({ src, alt , showAlt}) => {
       <img
         src={src}
         alt={alt}
+        loading="lazy"
         style={{
           width: '800px',
           height: 'auto',
