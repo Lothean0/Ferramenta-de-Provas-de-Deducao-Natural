@@ -1,11 +1,11 @@
 import '../styles/Header.css';
 
-function Header() {
-  
+function Header({translate}) {
+    const t = translate 
     return (
         <header className="header-container">
             <h1 className="title"> 
-                Ferramenta para Construção de Provas em Dedução Natural
+                {t("title")}
             </h1>
         </header>  
     )

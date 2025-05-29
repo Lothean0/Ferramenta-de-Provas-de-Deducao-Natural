@@ -18,6 +18,10 @@ def apply_axiom(
         print(f"This is the aux formula: {auxiliar_formula}")
         new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
 
+        print(list(available_hypothesis_dict.values()))
+        if new_problem not in list(available_hypothesis_dict.values()):
+            raise ValueError(f"Auxiliary formula '{auxiliar_formula}' not found in available hypotheses.")
+        
         new_problem_parsed = CodeGenerator().generate_code(
             SemanticAnalyzer().analyze(
                 Parser.parse(new_problem, debug=False)

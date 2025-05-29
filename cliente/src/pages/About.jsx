@@ -18,7 +18,7 @@ const About = () => {
 
   return (
     <>
-      <Header />
+      <Header translate={t}/>
       <SegmentedControl
         onChange={handleLanguageToggle}
       />
