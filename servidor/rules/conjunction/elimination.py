@@ -15,6 +15,9 @@ def apply_conjunction_elimination_1(
     try:
         new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
 
+        if not new_problem:
+            raise ValueError("Auxiliary formula cannot be empty.")
+
         new_problem_parsed = CodeGenerator().generate_code(
             SemanticAnalyzer().analyze(
                 Parser.parse(new_problem, debug=False)
@@ -22,7 +25,7 @@ def apply_conjunction_elimination_1(
         )
 
         if not new_problem_parsed:
-            raise ValueError("Auxiliary formula cannot be empty.")
+            raise ValueError("No new problem parsed.")
 
         result = [
             {
@@ -53,7 +56,10 @@ def apply_conjunction_elimination_2(
 
     try:
         new_problem = available_hypothesis_dict.get(auxiliar_formula.upper(), auxiliar_formula)
-    
+
+        if not new_problem:
+            raise ValueError("Auxiliary formula cannot be empty.")
+
         new_problem_parsed = CodeGenerator().generate_code(
             SemanticAnalyzer().analyze(
                 Parser.parse(new_problem, debug=False)
@@ -61,7 +67,7 @@ def apply_conjunction_elimination_2(
         )
 
         if not new_problem_parsed:
-            raise ValueError("Auxiliary formula cannot be empty.")
+            raise ValueError("No new problem parsed.")
 
 
         result = [
