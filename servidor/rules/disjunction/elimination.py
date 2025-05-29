@@ -27,10 +27,6 @@ def apply_disjunction_elimination(
         if not new_problem_parsed:
             raise ValueError("Auxiliary formula cannot be empty.")
 
-        print(f"Parsed_expression_inside_elimination: {new_problem_parsed}")
-        
-        if not new_problem_parsed:
-            raise ValueError('Disjunction elimination requires 3 arguments or symbol not ∨')
         arguments = split_expression(new_problem_parsed)
 
         if len(arguments) != 3 or arguments[0] != '∨':
