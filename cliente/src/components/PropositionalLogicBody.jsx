@@ -39,6 +39,8 @@ function PropositionLogicBody() {
 
     const [completedproof, setCompletedProof] = useState(true);
 
+    const [canBackTracking, setCanBackTracking] = useState(true);
+
     function treeHasRule(nodes, rule) {
         for (const node of nodes) {
             if (node.rule === rule) return true;
@@ -141,7 +143,8 @@ function PropositionLogicBody() {
                 setKnowledgebaseInput('')
                 setKnowledgebaseArray([]);
                 setScreen(1);
-                setIsHidden(false)
+                setIsHidden(false);
+                setCanBackTracking(true);
             })
             .catch((error) => console.error("API Error:", error));
     };
@@ -213,6 +216,7 @@ function PropositionLogicBody() {
                 setSelectedNodeId(uploadedTree[0]?.id || 1);
                 setUploadedFileName('');
                 setIsHidden(true);
+                setCanBackTracking(false);
             } catch (err) {
                 console.error("Parsing uploaded file failed:", err);
                 setWarning("⚠️ Invalid file format.");
@@ -513,7 +517,7 @@ function PropositionLogicBody() {
                                     <FiAlertOctagon size={25} style={{ transform: 'rotate(180deg)' }} />
                                 </button>
 
-
+                                {canBackTracking && (
                                 <div className='operators-bttn'>
                                     {SYMBOLS.map(({ symbol, label}) => (
                                         <button
@@ -525,6 +529,7 @@ function PropositionLogicBody() {
                                         </button>
                                     ))}
                                 </div>
+                                )}
 
                                 <div className={`knowledgebase-container ${isHidden ? 'off' : 'on'}`}>
                                     <input
@@ -568,6 +573,7 @@ function PropositionLogicBody() {
                                     </button>
                                 </div>
 
+                                {canBackTracking && (
                                 <div className={`rule-container ${isHidden ? 'on' : 'off'}`}>
                                     <label className='rule-label'>
                                         {t("selectRuleLabel")}
@@ -594,9 +600,7 @@ function PropositionLogicBody() {
                                         onClick={() => fetchData("/api/rules")}
                                     >
                                         <FiCheck size={20} />
-                                    </button>
-
-                            
+                                    </button>                            
                             
                                     {ruleOptions[ruleInput]?.needsAuxiliary && (
                                             <input
@@ -613,6 +617,7 @@ function PropositionLogicBody() {
                                     )}
 
                                 </div>
+                                )}
 
 
                                 <div className="render-tree-container">

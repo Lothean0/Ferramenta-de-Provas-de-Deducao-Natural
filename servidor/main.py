@@ -13,6 +13,7 @@ from flask import Flask, jsonify, flash, request, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
+from servidor.config import C_RED, C_END
 from servidor.rules.axiom import apply_axiom
 from servidor.rules.implication.introduction import apply_implication_introduction
 from servidor.rules.implication.elimination import apply_implication_elimination
@@ -31,7 +32,6 @@ from servidor.propositional_logic.propositional_logic_codegen import CodeGenerat
 from servidor.propositional_logic.propositional_logic_parser import Parser
 from servidor.propositional_logic.propositional_logic_semantic import SemanticAnalyzer
 from servidor.utils.my_utils import remove_outer_parentheses
-
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
@@ -60,7 +60,7 @@ app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
-
+"""
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -72,7 +72,7 @@ def serve_static(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
-
+"""
 
 
 response = []
@@ -133,7 +133,7 @@ def add_node():
             return jsonify({"error": "Reset first", "details": str(response)}), 400
 
         data = request.get_json()
-        logger.debug("POST /api/node - Received data: %s", data)
+        # logger.debug("POST /api/node - Received data: %s", data)
 
 
         if not data.get("expression"):
@@ -158,7 +158,7 @@ def add_node():
 
         try:
             for item in data.get("knowledge_base", []):
-                print(item[1])
+                # print(item[1])
                 key = f"Y{local_counter}"
                 local_knowledge_base[key] = item[1]
                 local_counter += 1
@@ -188,7 +188,7 @@ def apply_rules():
     try:
         data = request.get_json()
 
-        logger.debug("POST /api/rules - Received data: %s", data)
+        # logger.debug("POST /api/rules - Received data: %s", data)
 
         parent_id = data.get("id", "0")
         uuid = data.get("uuid", None)
@@ -253,6 +253,7 @@ def apply_rules():
             result = function(parsed_expression, hypothesis_set, parent_id, auxiliar_formula)
 
             problem_id = int(parent_id)
+            print(C_RED + f"THIS IS THE MAIN PROBLEM ID: {problem_id}\n\n" + C_END)
 
             global response
             response = filter_recursive_children(parent_id)
@@ -285,6 +286,8 @@ def apply_rules():
                         }
                     }
 
+                    print(C_RED + f"THIS IS THE NEW PROBLEM PARENT ID {problem_id}\n\n" + C_END)
+
                     response.append({
                         "uuid" : uuid4(),
                         "name": str(remove_outer_parentheses(Parser.parse(item.get("name")))),
@@ -295,20 +298,19 @@ def apply_rules():
                     })
 
             print("Before for_loop entry in response")
-            print(f"Just the uuid {uuid}")
-            print(f"Just the uuid formated {UUID(uuid)}")
+            print(f"Just the uuid {uuid}\n\n")
 
             for entry in response:
                 if entry["uuid"] == UUID(uuid):
 
                     subgoal_rule = None
                     for candidate in response:
-                        print(f"ParentID: {parent_id}")
-                        print(f"CANDIDATE PARENTID. {candidate['parentId']}")
+                        # print(f"ParentID: {parent_id}")
+                        # print(f"CANDIDATE PARENTID. {candidate['parentId']}")
                         if candidate.get("parentId") == parent_id:
-                            print(candidate)
+                            print(C_RED + f"THIS IS THE CANDIDATE: {candidate}\n\n" + C_END)
                             subgoal_rule = candidate.get("rule")
-                            print(f"SUBGOAL RULE: {subgoal_rule}")
+                            # print(f"SUBGOAL RULE: {subgoal_rule}")
                             if subgoal_rule in ["∧E1","∧E2","∧I","∨E","⟺E1","⟺E2","⟺I","→E","→I","~E","~I","AE","RAA"]:
                                 candidate["rule"] = "{rule}"
 
@@ -325,6 +327,8 @@ def apply_rules():
                     break
 
             logger.info("POST /api/rules - DONE")
+            for i, _ in enumerate(response):
+                print(C_RED + f"This is the response: {response[i]}\n\n" + C_END)
 
         except Exception as e:
             logger.error("POST /api/rules - Exception: %s", e)
@@ -431,6 +435,6 @@ def open_browser():
 
 if __name__ == "__main__":
 
-    threading.Timer(1.0, open_browser).start()
+    # threading.Timer(1.0, open_browser).start()
 
     app.run(debug=True, port=3000, use_reloader=False)
