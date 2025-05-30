@@ -1,0 +1,195 @@
+{
+  "tree": [
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [
+                {
+                  "child": [],
+                  "knowledge_base": {
+                    "Y1": "A→B",
+                    "Y2": "A∧C"
+                  },
+                  "name": "None",
+                  "parentId": 4,
+                  "rule": "Y1",
+                  "uuid": "bfcdaaea-dcbe-4192-b04a-56ba351c6637",
+                  "id": 6
+                }
+              ],
+              "knowledge_base": {
+                "Y1": "A→B",
+                "Y2": "A∧C"
+              },
+              "name": "A→B",
+              "parentId": 2,
+              "rule": "Y1",
+              "uuid": "dbac91c9-6dcd-434c-8099-2446ed46cb6f",
+              "id": 4
+            },
+            {
+              "child": [
+                {
+                  "child": [
+                    {
+                      "child": [],
+                      "knowledge_base": {
+                        "Y1": "A→B",
+                        "Y2": "A∧C"
+                      },
+                      "name": "None",
+                      "parentId": 7,
+                      "rule": "Y2",
+                      "uuid": "f775cb8c-46bf-4b2e-9806-9dd439f12d6b",
+                      "id": 8
+                    }
+                  ],
+                  "knowledge_base": {
+                    "Y1": "A→B",
+                    "Y2": "A∧C"
+                  },
+                  "name": "A∧C",
+                  "parentId": 5,
+                  "rule": "Y2",
+                  "uuid": "b222ef41-2455-4d90-80af-bb782a1b8643",
+                  "id": 7
+                }
+              ],
+              "knowledge_base": {
+                "Y1": "A→B",
+                "Y2": "A∧C"
+              },
+              "name": "A",
+              "parentId": 2,
+              "rule": "∧E1",
+              "uuid": "f58a5288-236d-4d3b-ae6d-24a3946e4860",
+              "id": 5
+            }
+          ],
+          "knowledge_base": {
+            "Y1": "A→B",
+            "Y2": "A∧C"
+          },
+          "name": "B",
+          "parentId": 1,
+          "rule": "→E",
+          "uuid": "9de8b5fc-fd1b-465c-afeb-5b305128e52f",
+          "id": 2
+        },
+        {
+          "child": [
+            {
+              "child": [
+                {
+                  "child": [
+                    {
+                      "child": [
+                        {
+                          "child": [],
+                          "knowledge_base": {
+                            "Y1": "A→B",
+                            "Y2": "A∧C"
+                          },
+                          "name": "None",
+                          "parentId": 12,
+                          "rule": "Y2",
+                          "uuid": "77b34c04-1e19-4ee6-82a9-06e3f223c090",
+                          "id": 13
+                        }
+                      ],
+                      "knowledge_base": {
+                        "Y1": "A→B",
+                        "Y2": "A∧C"
+                      },
+                      "name": "A∧C",
+                      "parentId": 10,
+                      "rule": "Y2",
+                      "uuid": "bcf3a4d0-a60f-4d50-8939-95d9efd4ac7b",
+                      "id": 12
+                    }
+                  ],
+                  "knowledge_base": {
+                    "Y1": "A→B",
+                    "Y2": "A∧C"
+                  },
+                  "name": "C",
+                  "parentId": 9,
+                  "rule": "∧E2",
+                  "uuid": "39eda91c-a6eb-4ada-b7a5-7056ea1b1a66",
+                  "id": 10
+                },
+                {
+                  "child": [
+                    {
+                      "child": [
+                        {
+                          "child": [],
+                          "knowledge_base": {
+                            "Y1": "A→B",
+                            "Y2": "A∧C"
+                          },
+                          "name": "None",
+                          "parentId": 14,
+                          "rule": "Y2",
+                          "uuid": "00cb571b-4a23-40f6-8dae-7a24c48f7c26",
+                          "id": 15
+                        }
+                      ],
+                      "knowledge_base": {
+                        "Y1": "A→B",
+                        "Y2": "A∧C"
+                      },
+                      "name": "A∧C",
+                      "parentId": 11,
+                      "rule": "Y2",
+                      "uuid": "43c824ba-b260-4195-8ff0-d64dffc72caa",
+                      "id": 14
+                    }
+                  ],
+                  "knowledge_base": {
+                    "Y1": "A→B",
+                    "Y2": "A∧C"
+                  },
+                  "name": "A",
+                  "parentId": 9,
+                  "rule": "∧E1",
+                  "uuid": "521625c6-9622-4749-9145-d6be697356d6",
+                  "id": 11
+                }
+              ],
+              "knowledge_base": {
+                "Y1": "A→B",
+                "Y2": "A∧C"
+              },
+              "name": "C∧A",
+              "parentId": 3,
+              "rule": "∧I",
+              "uuid": "9f961429-3cdb-4e70-94ae-22081c957ec6",
+              "id": 9
+            }
+          ],
+          "knowledge_base": {
+            "Y1": "A→B",
+            "Y2": "A∧C"
+          },
+          "name": "C",
+          "parentId": 1,
+          "rule": "∧E1",
+          "uuid": "9062e32d-8ca8-4ea2-bb13-7206519f7bea",
+          "id": 3
+        }
+      ],
+      "knowledge_base": {
+        "Y1": "A→B",
+        "Y2": "A∧C"
+      },
+      "name": "(B∧C)",
+      "parentId": "",
+      "rule": "∧I",
+      "uuid": "69094265-4c18-4507-9cb9-0798feaaef1d",
+      "id": 1
+    }
+  ]
+}

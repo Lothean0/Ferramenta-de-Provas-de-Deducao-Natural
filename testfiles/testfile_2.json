@@ -1,0 +1,257 @@
+{
+  "tree": [
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [
+                {
+                  "child": [],
+                  "knowledge_base": {
+                    "X1": "~(A∨B)",
+                    "Y1": "~(~A∧~B)"
+                  },
+                  "name": "None",
+                  "parentId": 3,
+                  "rule": "Y1",
+                  "uuid": "099e0fca-ad80-46bd-a738-f5b536f9e4cf",
+                  "id": 5
+                }
+              ],
+              "knowledge_base": {
+                "X1": "~(A∨B)",
+                "Y1": "~(~A∧~B)"
+              },
+              "name": "~(~A∧~B)",
+              "parentId": 2,
+              "rule": "Y1",
+              "uuid": "bfb14296-edec-4c7b-9132-87f072463e59",
+              "id": 3
+            },
+            {
+              "child": [
+                {
+                  "child": [
+                    {
+                      "child": [
+                        {
+                          "child": [
+                            {
+                              "child": [],
+                              "knowledge_base": {
+                                "X1": "~(A∨B)",
+                                "X6": "A",
+                                "Y1": "~(~A∧~B)"
+                              },
+                              "name": "None",
+                              "parentId": 9,
+                              "rule": "X1",
+                              "uuid": "2843a4ac-893b-4bea-b929-57abe507f9a2",
+                              "id": 11
+                            }
+                          ],
+                          "knowledge_base": {
+                            "X1": "~(A∨B)",
+                            "X6": "A",
+                            "Y1": "~(~A∧~B)"
+                          },
+                          "name": "~(A∨B)",
+                          "parentId": 8,
+                          "rule": "X1",
+                          "uuid": "76a711ea-db0b-4f11-9fa4-ac248443cd91",
+                          "id": 9
+                        },
+                        {
+                          "child": [
+                            {
+                              "child": [
+                                {
+                                  "child": [],
+                                  "knowledge_base": {
+                                    "X1": "~(A∨B)",
+                                    "X6": "A",
+                                    "Y1": "~(~A∧~B)"
+                                  },
+                                  "name": "None",
+                                  "parentId": 12,
+                                  "rule": "X6",
+                                  "uuid": "f4933496-5265-41a2-9d0d-e7045c482c00",
+                                  "id": 13
+                                }
+                              ],
+                              "knowledge_base": {
+                                "X1": "~(A∨B)",
+                                "X6": "A",
+                                "Y1": "~(~A∧~B)"
+                              },
+                              "name": "A",
+                              "parentId": 10,
+                              "rule": "X6",
+                              "uuid": "ea0f1eba-4c7c-4c70-b054-a7e82ae599fe",
+                              "id": 12
+                            }
+                          ],
+                          "knowledge_base": {
+                            "X1": "~(A∨B)",
+                            "X6": "A",
+                            "Y1": "~(~A∧~B)"
+                          },
+                          "name": "A∨B",
+                          "parentId": 8,
+                          "rule": "∨I1",
+                          "uuid": "1949903c-ac86-417c-91ca-4bd66d18a873",
+                          "id": 10
+                        }
+                      ],
+                      "knowledge_base": {
+                        "X1": "~(A∨B)",
+                        "X6": "A",
+                        "Y1": "~(~A∧~B)"
+                      },
+                      "name": "⊥",
+                      "parentId": 6,
+                      "rule": "~E",
+                      "uuid": "77e834de-12f4-473d-a444-f30e3fbcc168",
+                      "id": 8
+                    }
+                  ],
+                  "knowledge_base": {
+                    "X1": "~(A∨B)",
+                    "Y1": "~(~A∧~B)"
+                  },
+                  "name": "~A",
+                  "parentId": 4,
+                  "rule": "~I",
+                  "uuid": "f1a780a6-660b-4a54-96d6-b53d09d3f033",
+                  "id": 6
+                },
+                {
+                  "child": [
+                    {
+                      "child": [
+                        {
+                          "child": [
+                            {
+                              "child": [],
+                              "knowledge_base": {
+                                "X1": "~(A∨B)",
+                                "X7": "B",
+                                "Y1": "~(~A∧~B)"
+                              },
+                              "name": "None",
+                              "parentId": 15,
+                              "rule": "X1",
+                              "uuid": "97bb2f91-4e1b-4c26-86d9-0bc820510fa0",
+                              "id": 17
+                            }
+                          ],
+                          "knowledge_base": {
+                            "X1": "~(A∨B)",
+                            "X7": "B",
+                            "Y1": "~(~A∧~B)"
+                          },
+                          "name": "~(A∨B)",
+                          "parentId": 14,
+                          "rule": "X1",
+                          "uuid": "e98ffe3b-3388-457d-bdf1-8f25953d1d29",
+                          "id": 15
+                        },
+                        {
+                          "child": [
+                            {
+                              "child": [
+                                {
+                                  "child": [],
+                                  "knowledge_base": {
+                                    "X1": "~(A∨B)",
+                                    "X7": "B",
+                                    "Y1": "~(~A∧~B)"
+                                  },
+                                  "name": "None",
+                                  "parentId": 18,
+                                  "rule": "X7",
+                                  "uuid": "29060ff2-f722-4a42-82fc-c9bee98cf146",
+                                  "id": 19
+                                }
+                              ],
+                              "knowledge_base": {
+                                "X1": "~(A∨B)",
+                                "X7": "B",
+                                "Y1": "~(~A∧~B)"
+                              },
+                              "name": "B",
+                              "parentId": 16,
+                              "rule": "X7",
+                              "uuid": "5cc1732f-62f6-4e47-921f-8b40d5db7c92",
+                              "id": 18
+                            }
+                          ],
+                          "knowledge_base": {
+                            "X1": "~(A∨B)",
+                            "X7": "B",
+                            "Y1": "~(~A∧~B)"
+                          },
+                          "name": "A∨B",
+                          "parentId": 14,
+                          "rule": "∨I2",
+                          "uuid": "638b77fb-1f1a-4eca-a9a4-b2b287d42418",
+                          "id": 16
+                        }
+                      ],
+                      "knowledge_base": {
+                        "X1": "~(A∨B)",
+                        "X7": "B",
+                        "Y1": "~(~A∧~B)"
+                      },
+                      "name": "⊥",
+                      "parentId": 7,
+                      "rule": "~E",
+                      "uuid": "d765a0f5-7eb6-4b0d-98f0-1ce6958fc41d",
+                      "id": 14
+                    }
+                  ],
+                  "knowledge_base": {
+                    "X1": "~(A∨B)",
+                    "Y1": "~(~A∧~B)"
+                  },
+                  "name": "~B",
+                  "parentId": 4,
+                  "rule": "~I",
+                  "uuid": "a34d6b13-ffef-4681-b546-860dfe841b67",
+                  "id": 7
+                }
+              ],
+              "knowledge_base": {
+                "X1": "~(A∨B)",
+                "Y1": "~(~A∧~B)"
+              },
+              "name": "~A∧~B",
+              "parentId": 2,
+              "rule": "∧I",
+              "uuid": "73d3e9fa-db64-4092-83c8-afacd8f4cf8f",
+              "id": 4
+            }
+          ],
+          "knowledge_base": {
+            "X1": "~(A∨B)",
+            "Y1": "~(~A∧~B)"
+          },
+          "name": "⊥",
+          "parentId": 1,
+          "rule": "~E",
+          "uuid": "c624229e-843d-4742-9ee1-e47fc3c2cf7e",
+          "id": 2
+        }
+      ],
+      "knowledge_base": {
+        "Y1": "~(~A∧~B)"
+      },
+      "name": "(A∨B)",
+      "parentId": "",
+      "rule": "RAA",
+      "uuid": "40ec1c0e-4ab9-4626-8a59-0caff48ce1bd",
+      "id": 1
+    }
+  ]
+}
