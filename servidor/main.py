@@ -60,7 +60,7 @@ app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 CORS(app, origins="*")
 
-"""
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -72,7 +72,7 @@ def serve_static(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
-"""
+
 
 
 response = []
@@ -435,6 +435,6 @@ def open_browser():
 
 if __name__ == "__main__":
 
-    # threading.Timer(1.0, open_browser).start()
+    threading.Timer(1.0, open_browser).start()
 
     app.run(debug=True, port=3000, use_reloader=False)
