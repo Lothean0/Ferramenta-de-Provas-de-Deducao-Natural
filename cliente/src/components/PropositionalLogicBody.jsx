@@ -721,7 +721,7 @@ function PropositionLogicBody() {
                                 borderRadius: '3px'
                                 }}
                             >
-                                🔴 = {t("tutorialSmallTree")}
+                                🔴 = {t("tutorialFullTree")}
                             </span>
 
                             <span 
@@ -732,7 +732,7 @@ function PropositionLogicBody() {
                                 borderRadius: '3px'
                                 }}
                             >
-                                🟢 = {t("tutorialFullTree")}
+                                🟢 = {t("tutorialSmallTree")}
                             </span>
 
                             <span 
